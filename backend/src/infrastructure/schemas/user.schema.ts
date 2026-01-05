@@ -20,12 +20,6 @@ export class UserDocument extends Document {
   @Prop({ required: true, trim: true })
   lastName!: string;
 
-  @Prop({ trim: true })
-  phoneNumber?: string;
-
-  @Prop({ trim: true })
-  bio?: string;
-
   @Prop({ type: [String], default: [], required: false })
   skills!: string[];
 
@@ -42,15 +36,18 @@ export class UserDocument extends Document {
       added_at: Date;
       module_name: string;
   }>;
-  
-  @Prop({ trim: true })
-  studentNumber?: string;
 
   @Prop({ trim: true })
   studyProgram?: string;
 
   @Prop()
-  yearOfStudy?: number;
+  studyYear?: number;
+
+  @Prop()
+  studyLocation?: string;
+
+  @Prop()
+  studyCredits?: string;
 
   @Prop({ default: false })
   twoFactorEnabled!: boolean;
