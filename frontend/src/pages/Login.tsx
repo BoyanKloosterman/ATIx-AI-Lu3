@@ -38,6 +38,9 @@ export default function Login() {
         </div>
 
         <div className="text-center mt-6">
+          <Link to="/register" className="text-white text-sm hover:underline">
+            Nog geen account? Registreren
+          </Link>
           <p className="text-white text-sm">
             Problemen met inloggen?{' '}
             <br />
