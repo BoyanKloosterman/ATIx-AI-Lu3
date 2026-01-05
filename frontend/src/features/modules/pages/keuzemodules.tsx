@@ -83,12 +83,12 @@ export default function Keuzemodules() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 w-full overflow-x-hidden">
       {/* Header */}
-      <div className="bg-gray-800 text-white py-2 px-4">
+      <div className="bg-gray-800 text-white py-2 px-4 w-full">
         <div className="text-sm font-medium">Keuzenmodules</div>
       </div>
-      <div className="bg-gray-200 flex items-center justify-between px-4 py-3">
+      <div className="bg-gray-200 flex items-center justify-between px-4 py-3 w-full">
         <div className="text-orange-400 font-semibold text-lg">Avans</div>
         <button className="text-black">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
