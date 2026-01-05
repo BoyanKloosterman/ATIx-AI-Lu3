@@ -1,0 +1,51 @@
+import { Link } from 'react-router-dom';
+
+export default function Login() {
+  return (
+    <div className="min-h-screen bg-neutral-950 flex items-center justify-center p-4">
+      <div className="w-full max-w-sm">
+        <h1 className="text-white text-4xl font-normal text-center mb-8">Login</h1>
+        
+        <div className="bg-neutral-800 rounded-3xl p-6 space-y-4">
+          <div>
+            <label htmlFor="email" className="block text-white text-sm mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-white text-sm mb-2">
+              Wachtwoord
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+            />
+          </div>
+
+          <button className="w-full bg-indigo-300 hover:bg-indigo-400 text-neutral-900 font-medium rounded-lg px-4 py-3 mt-4 transition-colors">
+            Inloggen
+          </button>
+        </div>
+
+        <div className="text-center mt-6">
+          <p className="text-white text-sm">
+            Problemen met inloggen?{' '}
+            <br />
+            Neem <span className="font-bold">contact</span> op!
+          </p>
+        </div>
+
+        <div className="text-red-600 text-xl font-bold mt-8">
+          Avans
+        </div>
+      </div>
+    </div>
+  );
+}
