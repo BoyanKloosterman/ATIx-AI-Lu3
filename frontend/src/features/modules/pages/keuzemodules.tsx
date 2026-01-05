@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { moduleService } from '../services/module.service';
 import type { Module } from '../../../shared/types/index';
 
+const MODULES_PER_PAGE = 10;
+
 export default function Keuzemodules() {
   const [modules, setModules] = useState<Module[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -9,6 +11,7 @@ export default function Keuzemodules() {
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [showAiKeuze, setShowAiKeuze] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     loadModules();
@@ -20,6 +23,7 @@ export default function Keuzemodules() {
       setError(null);
       const data = await moduleService.getAllModules();
       setModules(data);
+      setCurrentPage(1);
       console.log('Loaded modules:', data);
     } catch (error) {
       console.error('Failed to load modules:', error);
@@ -39,6 +43,7 @@ export default function Keuzemodules() {
       setIsLoading(true);
       const data = await moduleService.searchModules(searchQuery);
       setModules(data);
+      setCurrentPage(1);
     } catch (error) {
       console.error('Failed to search modules:', error);
     } finally {
@@ -65,6 +70,16 @@ export default function Keuzemodules() {
 
   const getLevelTag = (level: string): string => {
     return level || 'P3';
+  };
+
+  const totalPages = Math.ceil(modules.length / MODULES_PER_PAGE);
+  const startIndex = (currentPage - 1) * MODULES_PER_PAGE;
+  const endIndex = startIndex + MODULES_PER_PAGE;
+  const currentModules = modules.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -163,8 +178,9 @@ export default function Keuzemodules() {
             <p className="text-sm mt-2">Check de console voor meer details</p>
           </div>
         ) : (
-          <div className="space-y-6">
-            {modules.map((module) => (
+          <>
+            <div className="space-y-6 mb-8">
+              {currentModules.map((module) => (
               <div key={module.id} className="bg-gray-200 rounded-lg p-6 flex gap-6">
                 {/* Circular Image */}
                 <div className="flex-shrink-0">
@@ -224,8 +240,69 @@ export default function Keuzemodules() {
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-8">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className={`px-4 py-2 rounded-lg font-medium ${
+                    currentPage === 1
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-gray-700 text-white hover:bg-gray-600'
+                  }`}
+                >
+                  Vorige
+                </button>
+
+                <div className="flex gap-2">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                    if (
+                      page === 1 ||
+                      page === totalPages ||
+                      (page >= currentPage - 1 && page <= currentPage + 1)
+                    ) {
+                      return (
+                        <button
+                          key={page}
+                          onClick={() => handlePageChange(page)}
+                          className={`px-4 py-2 rounded-lg font-medium ${
+                            currentPage === page
+                              ? 'bg-gray-700 text-white'
+                              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      );
+                    } else if (page === currentPage - 2 || page === currentPage + 2) {
+                      return <span key={page} className="px-2 text-gray-500">...</span>;
+                    }
+                    return null;
+                  })}
+                </div>
+
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className={`px-4 py-2 rounded-lg font-medium ${
+                    currentPage === totalPages
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-gray-700 text-white hover:bg-gray-600'
+                  }`}
+                >
+                  Volgende
+                </button>
+              </div>
+            )}
+
+            <div className="text-center text-gray-600 text-sm mt-4">
+              Pagina {currentPage} van {totalPages} ({modules.length} modules totaal)
+            </div>
+          </>
         )}
       </div>
     </div>
