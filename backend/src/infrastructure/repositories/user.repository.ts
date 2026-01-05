@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { User, UserFavorite } from '../../domain/entities/user.entity';
 import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
 import { UserDocument } from '../schemas/user.schema';
@@ -12,12 +12,20 @@ export class UserRepository implements IUserRepository {
     ) {}
 
     async findById(id: string): Promise<User | null> {
-        const userDoc = await this.userModel.findById(id);
+        // Validate and sanitize ID to prevent NoSQL injection
+        if (!id || typeof id !== 'string' || !Types.ObjectId.isValid(id)) {
+            return null;
+        }
+        const userDoc = await this.userModel.findById(new Types.ObjectId(id));
         return userDoc ? this.mapToEntity(userDoc) : null;
     }
 
     async findByEmail(email: string): Promise<User | null> {
-        const userDoc = await this.userModel.findOne({ email });
+        // Validate and sanitize email to prevent NoSQL injection
+        if (!email || typeof email !== 'string') {
+            return null;
+        }
+        const userDoc = await this.userModel.findOne({ email: { $eq: email.toString() } });
         return userDoc ? this.mapToEntity(userDoc) : null;
     }
 
@@ -74,12 +82,20 @@ export class UserRepository implements IUserRepository {
     }
 
     async delete(id: string): Promise<boolean> {
-        const result = await this.userModel.findByIdAndDelete(id);
+        // Validate and sanitize ID to prevent NoSQL injection
+        if (!id || typeof id !== 'string' || !Types.ObjectId.isValid(id)) {
+            return false;
+        }
+        const result = await this.userModel.findByIdAndDelete(new Types.ObjectId(id));
         return !!result;
     }
 
     async addFavorite(userId: string, favorite: UserFavorite): Promise<User> {
-        const user = await this.userModel.findById(userId);
+        // Validate and sanitize userId to prevent NoSQL injection
+        if (!userId || typeof userId !== 'string' || !Types.ObjectId.isValid(userId)) {
+            throw new Error(`Invalid user ID: ${userId}`);
+        }
+        const user = await this.userModel.findById(new Types.ObjectId(userId));
         if (!user) {
         throw new Error(`User with ID ${userId} not found`);
         }
@@ -93,7 +109,15 @@ export class UserRepository implements IUserRepository {
     }
 
     async removeFavorite(userId: string, moduleId: string): Promise<User> {
-        const user = await this.userModel.findById(userId);
+        // Validate and sanitize userId to prevent NoSQL injection
+        if (!userId || typeof userId !== 'string' || !Types.ObjectId.isValid(userId)) {
+            throw new Error(`Invalid user ID: ${userId}`);
+        }
+        // Validate and sanitize moduleId
+        if (!moduleId || typeof moduleId !== 'string') {
+            throw new Error(`Invalid module ID: ${moduleId}`);
+        }
+        const user = await this.userModel.findById(new Types.ObjectId(userId));
         if (!user) {
         throw new Error(`User with ID ${userId} not found`);
         }
