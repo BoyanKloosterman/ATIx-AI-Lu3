@@ -66,10 +66,10 @@ export default function Register() {
             Neem <span className="font-bold">contact</span> op!
           </p>
         </div>
-
-        <div className="text-red-600 text-xl font-bold mt-8">
-          Avans
-        </div>
+      </div>
+      
+      <div className="fixed bottom-4 left-4 text-red-600 text-xl font-bold">
+        Avans
       </div>
     </div>
   );
