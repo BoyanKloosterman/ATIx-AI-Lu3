@@ -17,7 +17,6 @@ export class ModuleRepository implements IModuleRepository {
     const raw = rawDoc as Record<string, unknown>;
     return {
       id: doc._id.toString(),
-      externalId: doc.externalId,
       name: doc.name,
       shortdescription: (doc.shortDescription ||
         raw.shortdescription ||
@@ -31,7 +30,7 @@ export class ModuleRepository implements IModuleRepository {
       learningoutcomes: (doc.learningOutcomes ||
         raw.learningoutcomes ||
         '') as string,
-      tags: doc.tags,
+      module_tags: doc.module_tags,
       interests_match_score: (doc.interestsMatchScore ??
         raw.interests_match_score) as number,
       popularity_score: (doc.popularityScore ?? raw.popularity_score) as number,
@@ -41,7 +40,6 @@ export class ModuleRepository implements IModuleRepository {
         | number
         | undefined,
       start_date: (doc.startDate || raw.start_date) as Date | undefined,
-      combinedText: doc.combinedText,
     };
   }
 
@@ -76,17 +74,6 @@ export class ModuleRepository implements IModuleRepository {
 
   async count(): Promise<number> {
     return this.moduleModel.countDocuments().exec();
-  }
-
-  async saveMany(modules: Omit<Module, 'id'>[]): Promise<void> {
-    const bulkOps = modules.map((module) => ({
-      updateOne: {
-        filter: { externalId: module.externalId },
-        update: { $set: module },
-        upsert: true,
-      },
-    }));
-    await this.moduleModel.bulkWrite(bulkOps);
   }
 
   async deleteAll(): Promise<void> {

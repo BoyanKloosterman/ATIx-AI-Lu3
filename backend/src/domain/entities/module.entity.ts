@@ -1,7 +1,6 @@
 export class Module {
   constructor(
     public readonly id: string,
-    public readonly externalId: number,
     public readonly name: string,
     public readonly shortdescription: string,
     public readonly description: string,
@@ -11,8 +10,7 @@ export class Module {
     public readonly contactId: number,
     public readonly level: string,
     public readonly learningoutcomes: string,
-    public readonly tags: string[],
-    public readonly combinedText: string,
+    public readonly module_tags: string[],
     public readonly interests_match_score?: number,
     public readonly popularity_score?: number,
     public readonly estimated_difficulty?: number,
