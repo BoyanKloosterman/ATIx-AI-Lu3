@@ -37,6 +37,13 @@ export class AuthService {
         false, // twoFactorEnabled
         new Date(), // createdAt
         new Date(), // updatedAt
+        "", // phoneNumber
+        "",  // bio
+        "", // studentNumber
+        "", // studyProgram
+        0,   // yearOfStudy
+        "",  // twoFactorSecret
+        "", // refreshToken
     );
 
     const savedUser = await this.userRepository.create(newUser);

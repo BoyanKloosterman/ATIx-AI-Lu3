@@ -51,6 +51,18 @@ export class UserRepository implements IUserRepository {
             added_at: fav.addedAt,
             module_name: fav.moduleName,
         })),
+        skills: user.skills,
+        interests: user.interests,
+        twoFactorEnabled: user.twoFactorEnabled,
+        created_at: user.createdAt,
+        updated_at: user.updatedAt,
+        phoneNumber: user.phoneNumber,
+        bio: user.bio,
+        studentNumber: user.studentNumber,
+        studyProgram: user.studyProgram,
+        yearOfStudy: user.yearOfStudy,
+        twoFactorSecret: user.twoFactorSecret,
+        refreshToken: user.refreshToken,
         });
         
         const savedDoc = await userDoc.save();

@@ -8,7 +8,6 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() registerDto: RegisterDto): Promise<AuthResponseDto> {
-    console.log('Register endpoint hit with data:', registerDto);
     try {
       return await this.authService.register(registerDto);
     } catch (error) {
