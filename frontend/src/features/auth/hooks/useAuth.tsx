@@ -18,7 +18,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const savedToken = localStorage.getItem('token');
     if (savedToken) {
       setToken(savedToken);
-      // Here you could also validate the token and get user info
     }
   }, []);
 
@@ -34,6 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       setUser(response.user);
       setToken(response.access_token);
+      localStorage.setItem('token', response.access_token);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       throw err;
@@ -56,6 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       setUser(response.user);
       setToken(response.access_token);
+      localStorage.setItem('token', response.access_token);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       throw err;
@@ -69,6 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setToken(null);
     setError(null);
+    localStorage.removeItem('token');
   };
 
   const value: AuthContextType = {

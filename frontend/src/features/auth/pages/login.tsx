@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.tsx';
 
@@ -9,8 +9,15 @@ export default function Login() {
   });
   const [showError, setShowError] = useState(false);
   
-  const { login, isLoading, error } = useAuth();
+  const { login, isLoading, error, token } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (token || storedToken) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [token, navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,7 +33,7 @@ export default function Login() {
     
     try {
       await login(formData.email, formData.password);
-      navigate('/dashboard'); // Redirect after successful login
+      navigate('/dashboard', { replace: true });
     } catch (err) {
       setShowError(true);
     }
