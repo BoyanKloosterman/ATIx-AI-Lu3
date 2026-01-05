@@ -11,11 +11,10 @@ export class User {
     public readonly twoFactorEnabled: boolean,
     public readonly createdAt: Date,
     public readonly updatedAt: Date,
-    public readonly phoneNumber?: string,
-    public readonly bio?: string,
-    public readonly studentNumber?: string,
     public readonly studyProgram?: string,
     public readonly yearOfStudy?: number,
+    public readonly studyLocation?: string,
+    public readonly studyCredits?: string,
     public readonly twoFactorSecret?: string,
     public readonly refreshToken?: string,
   ) {}
