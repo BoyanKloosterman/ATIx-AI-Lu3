@@ -1,12 +1,21 @@
-import { Link } from 'react-router-dom';
-
-export default function Login() {
+export default function Register() {
   return (
     <div className="min-h-screen bg-neutral-950 flex items-center justify-center px-6 py-4">
       <div className="w-full max-w-sm">
-        <h1 className="text-white text-4xl font-normal text-center mb-8">Login</h1>
+        <h1 className="text-white text-4xl font-normal text-center mb-8">Register</h1>
         
         <div className="bg-neutral-800 rounded-3xl p-6 space-y-4">
+          <div>
+            <label htmlFor="fullname" className="block text-white text-sm mb-2">
+              Voledige naam
+            </label>
+            <input
+              type="text"
+              id="fullname"
+              className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+            />
+          </div>
+
           <div>
             <label htmlFor="email" className="block text-white text-sm mb-2">
               Email
@@ -29,20 +38,28 @@ export default function Login() {
             />
           </div>
 
+          <div>
+            <label htmlFor="confirmPassword" className="block text-white text-sm mb-2">
+              Herhaal wachtwoord
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+            />
+          </div>
+
           <button 
             style={{ backgroundColor: '#c4b5fd' }}
             className="w-full hover:bg-violet-400 text-black font-medium rounded-lg px-4 py-3 mt-4 transition-colors"
           >
-            Inloggen
+            Register
           </button>
         </div>
 
         <div className="text-center mt-6">
-          <Link to="/register" className="text-white text-sm hover:underline">
-            Nog geen account? Registreren
-          </Link>
           <p className="text-white text-sm">
-            Problemen met inloggen?{' '}
+            Problemen met Registereren?{' '}
             <br />
             Neem <span className="font-bold">contact</span> op!
           </p>
@@ -55,3 +72,4 @@ export default function Login() {
     </div>
   );
 }
+
