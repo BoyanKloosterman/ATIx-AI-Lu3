@@ -1,42 +1,54 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+const NAV_LINKS = [
+    { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Keuzenmodules', path: '/dashboard' },
+    { label: 'AI Keuzenmodules', path: '/dashboard' },
+    { label: 'Instellingen', path: '/dashboard' },
+];
+
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+    const bgClass = mobileMenuOpen ? 'bg-[#2a2a2a]' : 'bg-neutral-950';
+
     return (
         <header className="text-white py-2 px-6">
-            <div className={`hidden md:flex items-center justify-center relative px-6 py-3 rounded-2xl ${mobileMenuOpen ? 'bg-[#2a2a2a]' : 'bg-neutral-950'}`}>
+            {/* Desktop Navigation */}
+            <div className={`hidden md:flex items-center justify-center relative px-6 py-3 rounded-2xl ${bgClass}`}>
                 <Link to="/dashboard" className="absolute left-6 text-2xl font-bold !text-red-600">
                     Avans
                 </Link>
+
                 <nav className="flex items-center gap-1 bg-[#3a3a3a] rounded-full p-1">
-                    <Link to="/dashboard" className="!text-black bg-white hover:opacity-80 transition-opacity px-5 py-2 rounded-full font-medium">
-                        Dashboard
-                    </Link>
-                    <Link to="/dashboard" className="!text-white bg-[#3a3a3a] hover:bg-[#4a4a4a] transition-colors px-5 py-2 rounded-full font-medium">
-                        Keuzenmodules
-                    </Link>
-                    <Link to="/dashboard" className="!text-white bg-[#3a3a3a] hover:bg-[#4a4a4a] transition-colors px-5 py-2 rounded-full font-medium">
-                        AI Keuzenmodules
-                    </Link>
-                    <Link to="/dashboard" className="!text-white bg-[#3a3a3a] hover:bg-[#4a4a4a] transition-colors px-5 py-2 rounded-full font-medium">
-                        Instellingen
-                    </Link>
+                    {NAV_LINKS.map((link, index) => (
+                        <Link
+                            key={link.label}
+                            to={link.path}
+                            className={`
+                                ${index === 0 
+                                    ? '!text-black bg-white hover:opacity-80' 
+                                    : '!text-white bg-[#3a3a3a] hover:bg-[#4a4a4a]'
+                                }
+                                transition-all px-5 py-2 rounded-full font-medium
+                            `}
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
                 </nav>
             </div>
 
-            <div className={`md:hidden rounded-2xl ${mobileMenuOpen ? 'bg-[#2a2a2a]' : 'bg-neutral-950'}`}>
+            {/* Mobile Navigation */}
+            <div className={`md:hidden rounded-2xl ${bgClass}`}>
                 <div className="flex items-center justify-between px-6 py-4">
-                    <Link
-                        to="/dashboard"
-                        className="text-3xl font-bold !text-red-600 !bg-transparent !border-0 !p-0 cursor-pointer !outline-none focus:!outline-none"
-                    >
+                    <Link to="/dashboard" className="text-3xl font-bold !text-red-600">
                         Avans
                     </Link>
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="text-4xl font-bold text-white !bg-transparent !border-0 !p-0 cursor-pointer !outline-none focus:!outline-none"
+                        className="text-4xl font-bold text-white"
                         aria-label="Toggle menu"
                     >
                         {mobileMenuOpen ? '✕' : '☰'}
@@ -45,34 +57,16 @@ export default function Header() {
 
                 {mobileMenuOpen && (
                     <nav className="flex flex-col items-center py-8 space-y-6 text-lg">
-                        <Link
-                            to="/dashboard"
-                            className="!text-white hover:opacity-80 transition-opacity"
-                            onClick={() => setMobileMenuOpen(false)}
-                        >
-                            Dashboard
-                        </Link>
-                        <Link
-                            to="/dashboard"
-                            className="!text-white hover:opacity-80 transition-opacity"
-                            onClick={() => setMobileMenuOpen(false)}
-                        >
-                            Keuzenmodules
-                        </Link>
-                        <Link
-                            to="/dashboard"
-                            className="!text-white hover:opacity-80 transition-opacity"
-                            onClick={() => setMobileMenuOpen(false)}
-                        >
-                            AI Keuzenmodules
-                        </Link>
-                        <Link
-                            to="/dashboard"
-                            className="!text-white hover:opacity-80 transition-opacity"
-                            onClick={() => setMobileMenuOpen(false)}
-                        >
-                            Instellingen
-                        </Link>
+                        {NAV_LINKS.map((link) => (
+                            <Link
+                                key={link.label}
+                                to={link.path}
+                                className="!text-white hover:opacity-80 transition-opacity"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
                     </nav>
                 )}
             </div>
