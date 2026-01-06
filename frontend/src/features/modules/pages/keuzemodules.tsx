@@ -160,9 +160,7 @@ export default function Keuzemodules() {
         }
 
         if (filters.locations.size > 0) {
-            filtered = filtered.filter((module) =>
-                filters.locations.has(module.location.trim()),
-            );
+            filtered = filtered.filter((module) => filters.locations.has(module.location.trim()));
         }
 
         return filtered;
@@ -187,10 +185,7 @@ export default function Keuzemodules() {
         setCurrentPage(1);
     }, [searchFilteredModules]);
 
-    const toggleFilter = (
-        filterType: keyof FilterState,
-        value: number | string,
-    ) => {
+    const toggleFilter = (filterType: keyof FilterState, value: number | string) => {
         setFilters((prev) => {
             const newFilters = { ...prev };
             if (filterType === 'studyCredits') {
@@ -349,20 +344,20 @@ export default function Keuzemodules() {
                 <div className="flex gap-4 justify-center mb-8">
                     <button
                         onClick={() => setShowAiKeuze(false)}
-                        className={`px-6 py-2 rounded-lg font-medium ${
+                        className={`px-6 py-3 rounded-lg font-semibold text-base transition-colors ${
                             !showAiKeuze
-                                ? 'bg-gray-300 text-black'
-                                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                                ? 'bg-gray-800 text-white shadow-md'
+                                : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                         }`}
                     >
                         Filters
                     </button>
                     <button
                         onClick={() => setShowAiKeuze(true)}
-                        className={`px-6 py-2 rounded-lg font-medium ${
+                        className={`px-6 py-3 rounded-lg font-semibold text-base transition-colors ${
                             showAiKeuze
-                                ? 'bg-gray-700 text-white'
-                                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                                ? 'bg-gray-800 text-white shadow-md'
+                                : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                         }`}
                     >
                         Ai Keuze
@@ -371,13 +366,13 @@ export default function Keuzemodules() {
 
                 {/* Filter Panel */}
                 {!showAiKeuze && (
-                    <div className="bg-gray-800 rounded-lg p-6 mb-8">
+                    <div className="bg-white rounded-lg p-6 mb-8 border border-gray-200 shadow-sm">
                         <div className="flex items-center justify-between mb-6">
-                            <h2 className="text-2xl font-bold text-white">Filters</h2>
+                            <h2 className="text-2xl font-bold text-black">Filters</h2>
                             {hasActiveFilters && (
                                 <button
                                     onClick={clearFilters}
-                                    className="text-sm text-white hover:text-orange-400 underline transition-colors"
+                                    className="text-sm text-gray-600 hover:text-orange-500 underline transition-colors"
                                 >
                                     Filters wissen
                                 </button>
@@ -387,7 +382,9 @@ export default function Keuzemodules() {
                         <div className="space-y-8">
                             {/* Moeilijkheidsgraad Filter */}
                             <div>
-                                <h3 className="text-xl font-bold text-white mb-4">Moeilijkheidsgraad</h3>
+                                <h3 className="text-xl font-bold text-black mb-4">
+                                    Moeilijkheidsgraad
+                                </h3>
                                 <div className="flex flex-wrap gap-4">
                                     {availableDifficulties.map((difficulty) => (
                                         <label
@@ -397,10 +394,12 @@ export default function Keuzemodules() {
                                             <input
                                                 type="checkbox"
                                                 checked={filters.difficulties.has(difficulty)}
-                                                onChange={() => toggleFilter('difficulties', difficulty)}
-                                                className="w-5 h-5 text-orange-500 bg-gray-700 border-gray-600 rounded focus:ring-orange-500 focus:ring-2"
+                                                onChange={() =>
+                                                    toggleFilter('difficulties', difficulty)
+                                                }
+                                                className="w-5 h-5 text-orange-500 bg-white border-gray-300 rounded focus:ring-orange-500 focus:ring-2"
                                             />
-                                            <span className="text-white">{difficulty}</span>
+                                            <span className="text-black">{difficulty}</span>
                                         </label>
                                     ))}
                                 </div>
@@ -408,7 +407,7 @@ export default function Keuzemodules() {
 
                             {/* Locatie Filter */}
                             <div>
-                                <h3 className="text-xl font-bold text-white mb-4">Locatie</h3>
+                                <h3 className="text-xl font-bold text-black mb-4">Locatie</h3>
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     {availableLocations.map((location) => (
                                         <label
@@ -419,9 +418,9 @@ export default function Keuzemodules() {
                                                 type="checkbox"
                                                 checked={filters.locations.has(location)}
                                                 onChange={() => toggleFilter('locations', location)}
-                                                className="w-5 h-5 text-orange-500 bg-gray-700 border-gray-600 rounded focus:ring-orange-500 focus:ring-2"
+                                                className="w-5 h-5 text-orange-500 bg-white border-gray-300 rounded focus:ring-orange-500 focus:ring-2"
                                             />
-                                            <span className="text-white">{location}</span>
+                                            <span className="text-black">{location}</span>
                                         </label>
                                     ))}
                                 </div>
@@ -429,7 +428,7 @@ export default function Keuzemodules() {
 
                             {/* Studiepunten Filter */}
                             <div>
-                                <h3 className="text-xl font-bold text-white mb-4">Studiepunten</h3>
+                                <h3 className="text-xl font-bold text-black mb-4">Studiepunten</h3>
                                 <div className="flex flex-wrap gap-4">
                                     {availableStudyCredits.map((credits) => (
                                         <label
@@ -439,10 +438,12 @@ export default function Keuzemodules() {
                                             <input
                                                 type="checkbox"
                                                 checked={filters.studyCredits.has(credits)}
-                                                onChange={() => toggleFilter('studyCredits', credits)}
-                                                className="w-5 h-5 text-orange-500 bg-gray-700 border-gray-600 rounded focus:ring-orange-500 focus:ring-2"
+                                                onChange={() =>
+                                                    toggleFilter('studyCredits', credits)
+                                                }
+                                                className="w-5 h-5 text-orange-500 bg-white border-gray-300 rounded focus:ring-orange-500 focus:ring-2"
                                             />
-                                            <span className="text-white">{credits} ETC</span>
+                                            <span className="text-black">{credits} ETC</span>
                                         </label>
                                     ))}
                                 </div>
@@ -451,7 +452,7 @@ export default function Keuzemodules() {
                             {/* Thema Filter */}
                             {availableThemes.length > 0 && (
                                 <div>
-                                    <h3 className="text-xl font-bold text-white mb-4">Thema</h3>
+                                    <h3 className="text-xl font-bold text-black mb-4">Thema</h3>
                                     <div className="flex flex-wrap gap-4">
                                         {availableThemes.map((theme) => (
                                             <label
@@ -462,9 +463,9 @@ export default function Keuzemodules() {
                                                     type="checkbox"
                                                     checked={filters.themes.has(theme)}
                                                     onChange={() => toggleFilter('themes', theme)}
-                                                    className="w-5 h-5 text-orange-500 bg-gray-700 border-gray-600 rounded focus:ring-orange-500 focus:ring-2"
+                                                    className="w-5 h-5 text-orange-500 bg-white border-gray-300 rounded focus:ring-orange-500 focus:ring-2"
                                                 />
-                                                <span className="text-white">{theme}</span>
+                                                <span className="text-black">{theme}</span>
                                             </label>
                                         ))}
                                     </div>
@@ -473,7 +474,7 @@ export default function Keuzemodules() {
                         </div>
 
                         {hasActiveFilters && (
-                            <div className="mt-6 text-sm text-white">
+                            <div className="mt-6 text-sm text-gray-600">
                                 {filteredModules.length} module(s) gevonden
                             </div>
                         )}
@@ -502,7 +503,7 @@ export default function Keuzemodules() {
                         <p className="text-red-600 mb-4">{error}</p>
                         <button
                             onClick={loadModules}
-                            className="bg-gray-700 text-white px-6 py-2 rounded-lg hover:bg-gray-600"
+                            className="bg-gray-800 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-700 transition-colors shadow-sm"
                         >
                             Opnieuw proberen
                         </button>
@@ -547,7 +548,7 @@ export default function Keuzemodules() {
 
                                         {/* Action Buttons */}
                                         <div className="flex items-center gap-4 justify-end">
-                                            <button className="bg-gray-700 text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-600 transition-colors">
+                                            <button className="bg-gray-800 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-700 transition-colors shadow-sm">
                                                 Meer weten
                                             </button>
                                             <button
@@ -589,10 +590,10 @@ export default function Keuzemodules() {
                                 <button
                                     onClick={() => handlePageChange(currentPage - 1)}
                                     disabled={currentPage === 1}
-                                    className={`px-4 py-2 rounded-lg font-medium ${
+                                    className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                                         currentPage === 1
-                                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                            : 'bg-gray-700 text-white hover:bg-gray-600'
+                                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                            : 'bg-gray-800 text-white hover:bg-gray-700 shadow-sm'
                                     }`}
                                 >
                                     Vorige
@@ -610,10 +611,10 @@ export default function Keuzemodules() {
                                                     <button
                                                         key={page}
                                                         onClick={() => handlePageChange(page)}
-                                                        className={`px-4 py-2 rounded-lg font-medium ${
+                                                        className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                                                             currentPage === page
-                                                                ? 'bg-gray-700 text-white'
-                                                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                                                ? 'bg-gray-800 text-white shadow-md'
+                                                                : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                                                         }`}
                                                     >
                                                         {page}
@@ -637,10 +638,10 @@ export default function Keuzemodules() {
                                 <button
                                     onClick={() => handlePageChange(currentPage + 1)}
                                     disabled={currentPage === totalPages}
-                                    className={`px-4 py-2 rounded-lg font-medium ${
+                                    className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                                         currentPage === totalPages
-                                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                            : 'bg-gray-700 text-white hover:bg-gray-600'
+                                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                            : 'bg-gray-800 text-white hover:bg-gray-700 shadow-sm'
                                     }`}
                                 >
                                     Volgende
