@@ -9,7 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { ModuleService } from './application/services/module.service';
 import { ModuleController } from './interfaces/controllers/module.controller';
 import { ModuleRepository } from './infrastructure/repositories/module.repository';
-import { ModuleSchema, ModuleModel } from './infrastructure/schemas/module.schema';
+import { MODULESCHEMA, ModuleModel } from './infrastructure/schemas/module.schema';
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ import { ModuleSchema, ModuleModel } from './infrastructure/schemas/module.schem
     RepositoryModule,
     AuthModule,
     MongooseModule.forFeature([
-      { name: ModuleModel.name, schema: ModuleSchema },
+      { name: ModuleModel.name, schema: MODULESCHEMA },
     ]),
   ],
   controllers: [AppController, ModuleController],

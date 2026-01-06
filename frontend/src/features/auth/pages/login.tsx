@@ -2,6 +2,22 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.tsx';
 
+function isValidToken(token: string | null): boolean {
+    if (!token) return false;
+
+    try {
+        const parts = token.split('.');
+        if (parts.length !== 3) return false;
+        
+        const payload = JSON.parse(atob(parts[1]));
+        if (!payload.exp) return false;
+        
+        return payload.exp * 1000 > Date.now();
+    } catch {
+        return false;
+    }
+}
+
 export default function Login() {
     const [formData, setFormData] = useState({
         email: '',
@@ -13,8 +29,11 @@ export default function Login() {
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
-        if (token || storedToken) {
+        const currentToken = token || storedToken;
+        if (currentToken && isValidToken(currentToken)) {
             navigate('/dashboard', { replace: true });
+        } else if (storedToken && !isValidToken(storedToken)) {
+            localStorage.removeItem('token');
         }
     }, [token, navigate]);
 
@@ -27,22 +46,11 @@ export default function Login() {
         setShowError(false);
     };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             await login(formData.email, formData.password);
             navigate('/dashboard', { replace: true });
-        } catch {
-            setShowError(true);
-        }
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        try {
-            await login(formData.email, formData.password);
-            navigate('/dashboard'); // Redirect after successful login
         } catch {
             setShowError(true);
         }

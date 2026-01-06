@@ -1,8 +1,15 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './features/auth/pages/login';
 import RegisterPage from './features/auth/pages/register';
+import DashboardPage from './features/auth/pages/dashboard';
 import ProtectedRoute from './shared/components/ProtectedRoute';
 import KeuzemodulesPage from './features/modules/pages/keuzemodules';
+
+function LogoutRedirect() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('authToken');
+    return <Navigate to="/login" replace />;
+}
 
 export default function AppRoutes() {
     return (
@@ -14,9 +21,7 @@ export default function AppRoutes() {
                     path="/dashboard"
                     element={
                         <ProtectedRoute>
-                            <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
-                                <h1 className="text-white text-4xl">Dashboard - Coming Soon</h1>
-                            </div>
+                            <DashboardPage />
                         </ProtectedRoute>
                     }
                 />
@@ -30,6 +35,7 @@ export default function AppRoutes() {
                     }
                 />
 
+                <Route path="/logout" element={<LogoutRedirect />} />
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="*" element={<Navigate to="/login" />} />
             </Routes>
