@@ -77,6 +77,13 @@ export class UserRepository implements IUserRepository {
     }
 
     async update(id: string, userData: Partial<User>): Promise<User | null> {
+        // UpdatedProfileDto updatedUser = profileData;
+        // user.studyProgram = profileData.studyProgram;
+        // user.yearOfStudy = profileData.yearOfStudy;
+        // user.studyLocation = profileData.studyLocation;
+        // user.studyCredits = profileData.studyCredits.toString();
+        // user.skills = profileData.skills;
+        // user.interests = profileData.interests;
         throw new Error('Method not implemented.');
     }
 
