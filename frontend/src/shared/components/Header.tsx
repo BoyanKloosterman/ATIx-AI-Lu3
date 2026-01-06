@@ -5,28 +5,28 @@ export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
-        <header className={`text-white ${mobileMenuOpen ? 'bg-[#2a2a2a]' : 'bg-neutral-950'}`}>
-            <div className="hidden md:flex items-center justify-between px-6 py-4">
-                <Link to="/dashboard" className="text-base font-bold !text-red-600">
+        <header className="text-white py-2 px-6">
+            <div className={`hidden md:flex items-center justify-center relative px-6 py-3 rounded-2xl ${mobileMenuOpen ? 'bg-[#2a2a2a]' : 'bg-neutral-950'}`}>
+                <Link to="/dashboard" className="absolute left-6 text-2xl font-bold !text-red-600">
                     Avans
                 </Link>
-                <nav className="flex items-center gap-8">
-                    <Link to="/dashboard" className="!text-white hover:opacity-80 transition-opacity">
+                <nav className="flex items-center gap-1 bg-[#3a3a3a] rounded-full p-1">
+                    <Link to="/dashboard" className="!text-black bg-white hover:opacity-80 transition-opacity px-5 py-2 rounded-full font-medium">
                         Dashboard
                     </Link>
-                    <Link to="/dashboard" className="!text-white hover:opacity-80 transition-opacity">
+                    <Link to="/dashboard" className="!text-white bg-[#3a3a3a] hover:bg-[#4a4a4a] transition-colors px-5 py-2 rounded-full font-medium">
                         Keuzenmodules
                     </Link>
-                    <Link to="/dashboard" className="!text-white hover:opacity-80 transition-opacity">
+                    <Link to="/dashboard" className="!text-white bg-[#3a3a3a] hover:bg-[#4a4a4a] transition-colors px-5 py-2 rounded-full font-medium">
                         AI Keuzenmodules
                     </Link>
-                    <Link to="/dashboard" className="!text-white hover:opacity-80 transition-opacity">
+                    <Link to="/dashboard" className="!text-white bg-[#3a3a3a] hover:bg-[#4a4a4a] transition-colors px-5 py-2 rounded-full font-medium">
                         Instellingen
                     </Link>
                 </nav>
             </div>
 
-            <div className="md:hidden">
+            <div className={`md:hidden rounded-2xl ${mobileMenuOpen ? 'bg-[#2a2a2a]' : 'bg-neutral-950'}`}>
                 <div className="flex items-center justify-between px-6 py-4">
                     <Link
                         to="/dashboard"
