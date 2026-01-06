@@ -9,30 +9,30 @@ import { UserRepository } from '../infrastructure/repositories/user.repository';
 import { UserSchema } from '../infrastructure/schemas/user.schema';
 
 @Module({
-  imports: [
-    PassportModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET || 'your-secret-key',
-      signOptions: { expiresIn: '24h' },
-    }),
-    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
-  ],
-  controllers: [AuthController],
-  providers: [
-    AuthService,
-    JwtStrategy,
-    {
-      provide: 'IUserRepository',
-      useClass: UserRepository,
-    },
-  ],
-  exports: [
-    AuthService,
-    JwtStrategy,
-    {
-      provide: 'IUserRepository',
-      useClass: UserRepository,
-    },
-  ],
+    imports: [
+        PassportModule,
+        JwtModule.register({
+            secret: process.env.JWT_SECRET || 'your-secret-key',
+            signOptions: { expiresIn: '24h' },
+        }),
+        MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
+    ],
+    controllers: [AuthController],
+    providers: [
+        AuthService,
+        JwtStrategy,
+        {
+            provide: 'IUserRepository',
+            useClass: UserRepository,
+        },
+    ],
+    exports: [
+        AuthService,
+        JwtStrategy,
+        {
+            provide: 'IUserRepository',
+            useClass: UserRepository,
+        },
+    ],
 })
 export class AuthModule {}
