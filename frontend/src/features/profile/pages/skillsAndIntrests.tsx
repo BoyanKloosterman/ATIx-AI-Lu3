@@ -81,19 +81,15 @@ export default function SkillsAndIntrests(): JSX.Element {
             skills,
             interests,
         };
-
-        // console.log("FULL PROFILE:", createProfileData);
         
         try {
+            console.log("test calling api call");
+
             await createProfile(createProfileData);
             navigate('/dashboard'); // Redirect after successful creation
         } catch (err) {
             console.error('Error creating profile:', err);
         }
-        // Later you can send to backend:
-        // fetch("/api/profile", { method: "POST", body: JSON.stringify(fullProfile) })
-
-        //redirect to dashboard.
     }
 
 return (

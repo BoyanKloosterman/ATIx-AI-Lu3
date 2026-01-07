@@ -10,7 +10,7 @@ export interface CreateProfileDto {
 export interface ProfileApi{
     studyProgram: string;
     studyLocation: string;
-    studyCredits: string;
+    studyCredits: number;
     yearOfStudy: number;
     skills: string[];
     interests: string[];

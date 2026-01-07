@@ -2,11 +2,19 @@ import { environment } from '../../../shared/environments/environment';
 import type { UpdateProfileResponse, CreateProfileDto, ProfileApi } from '../types/profile.types';
 
 export class ProfileService {
+    private getAuthHeaders(): HeadersInit {
+        const token = localStorage.getItem('token') || localStorage.getItem('authToken');
+        return {
+            'Content-Type': 'application/json',
+            ...(token && { Authorization: `Bearer ${token}` }),
+        };
+    }
     async createProfile(createProfileData: CreateProfileDto): Promise<UpdateProfileResponse> {
+        console.log("test in api call");
         const newUser : ProfileApi = {
             studyProgram: createProfileData.opleiding,
             studyLocation: createProfileData.studielocatie,
-            studyCredits: createProfileData.studiepunten,
+            studyCredits: Number(createProfileData.studiepunten),
             yearOfStudy: Number(createProfileData.leerjaar),
             skills: createProfileData.skills,
             interests: createProfileData.interests,
@@ -14,9 +22,7 @@ export class ProfileService {
         console.log("Creating profile with data:", newUser);
         const response = await fetch(`${environment.apiUrl}/user/updateProfile`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: this.getAuthHeaders(),
             body: JSON.stringify(newUser),
         });
 

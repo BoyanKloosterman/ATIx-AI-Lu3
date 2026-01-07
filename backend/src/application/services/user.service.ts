@@ -58,11 +58,9 @@ export class UserService {
         // Study Credits (allow numeric input in string or number form)
         if (profileData.studyCredits !== undefined && profileData.studyCredits !== null) {
             const raw = String(profileData.studyCredits).trim();
-
             if (raw.length === 0) {
                 throw new BadRequestException('studyCredits cannot be empty');
             }
-
             const creditsNum = Number(raw);
             if (!Number.isFinite(creditsNum) || Number.isNaN(creditsNum)) {
                 throw new BadRequestException('studyCredits must be a number');
@@ -70,22 +68,22 @@ export class UserService {
             if (creditsNum < 0 || creditsNum > 1000) {
                 throw new BadRequestException('studyCredits out of range');
             }
-            sanitized.studyCredits = String(creditsNum);
+            sanitized.studyCredits = creditsNum;
         }
 
-        // Year of Study
+        // Year of Study needs to be an integer between 1 and 10
         if (profileData.yearOfStudy !== undefined && profileData.yearOfStudy !== null) {
-            const yearRaw = profileData.yearOfStudy as unknown;
-            const yearNum = typeof yearRaw === 'number' ? yearRaw : Number(yearRaw);
-
-            if (!Number.isInteger(yearNum) || Number.isNaN(yearNum)) {
+            const raw = String(profileData.yearOfStudy).trim();
+            if (raw.length === 0) {
+                throw new BadRequestException('yearOfStudy cannot be empty');
+            }
+            const yearNum = Number(raw);
+            if (!Number.isInteger(yearNum)) {
                 throw new BadRequestException('yearOfStudy must be an integer');
             }
-
             if (yearNum < 1 || yearNum > 10) {
-                throw new BadRequestException('yearOfStudy must be between 1 and 10');
+                throw new BadRequestException('yearOfStudy out of range');
             }
-
             sanitized.yearOfStudy = yearNum;
         }
 

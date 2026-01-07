@@ -39,7 +39,7 @@ export class AuthService {
             '', // studyProgram
             0, // yearOfStudy
             '', // studyLocation
-            '', // studyCredits
+            0, // studyCredits
             '', // twoFactorSecret
             '', // refreshToken
         );

@@ -66,7 +66,7 @@ export default function PersonalInfo() {
                 Leerjaar
                 </label>
                 <input
-                type="text"
+                type="number"
                 id="leerjaar"
                 value={leerjaar}
                 onChange={(e) => setLeerjaar(e.target.value)}

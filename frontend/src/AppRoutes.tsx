@@ -5,7 +5,7 @@ import DashboardPage from './features/auth/pages/dashboard';
 import ProtectedRoute from './shared/components/ProtectedRoute';
 import KeuzemodulesPage from './features/modules/pages/keuzemodules';
 import PersonalInfo from './features/profile/pages/personalInfo';
-import SkillsAndIntrests from './pages/profile/skillsAndIntrests';
+import SkillsAndIntrests from './features/profile/pages/skillsAndIntrests';
 
 function LogoutRedirect() {
     localStorage.removeItem('token');

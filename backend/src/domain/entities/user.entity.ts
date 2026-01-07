@@ -14,7 +14,7 @@ export class User {
         public readonly studyProgram?: string,
         public readonly yearOfStudy?: number,
         public readonly studyLocation?: string,
-        public readonly studyCredits?: string,
+        public readonly studyCredits?: number,
         public readonly twoFactorSecret?: string,
         public readonly refreshToken?: string,
     ) {}

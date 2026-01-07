@@ -6,7 +6,7 @@ export class UpdateUserDto {
     @IsString()
     studyLocation: string;
     @IsString()
-    studyCredits: string;
+    studyCredits: number;
     @IsString()
     yearOfStudy: number;
     @IsArray()
