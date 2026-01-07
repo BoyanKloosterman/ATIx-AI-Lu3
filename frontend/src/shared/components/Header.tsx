@@ -126,7 +126,11 @@ export default function Header() {
                                     />
                                 ))}
                                 <div className="pt-4 border-t border-gray-600 space-y-3">
-                                    <UserInfo user={user} />
+                                    {user && (
+                                        <div className="px-4 py-3 bg-[#3a3a3a] rounded-lg text-center">
+                                            <div className="text-white font-medium">{user.firstName} {user.lastName}</div>
+                                        </div>
+                                    )}
                                     <LogoutButton
                                         onClick={() => {
                                             handleLogout();
