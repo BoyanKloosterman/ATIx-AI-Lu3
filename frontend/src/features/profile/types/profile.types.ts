@@ -7,6 +7,16 @@ export interface CreateProfileDto {
     interests: string[];
 }
 
+export interface ProfileApi{
+    studyProgram: string;
+    studyLocation: string;
+    studyCredits: string;
+    yearOfStudy: number;
+    skills: string[];
+    interests: string[];
+}
+
+
 export interface UpdateProfileResponse {
   access_token: string;
   user: {
@@ -29,6 +39,8 @@ export interface ProfileContextType{
   // user: User | null;
   // token: string | null;
   createProfile: (createProfileData: CreateProfileDto) => Promise<UpdateProfileResponse>;
+  draft: Partial<CreateProfileDto> | null;
+  setDraft: (draft: Partial<CreateProfileDto> | null) => void;
   // login: (email: string, password: string) => Promise<void>;
   // register: (firstName: string, lastName: string, email: string, password: string) => Promise<void>;
   // logout: () => Promise<void>;

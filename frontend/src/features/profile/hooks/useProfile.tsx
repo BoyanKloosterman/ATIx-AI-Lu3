@@ -12,12 +12,15 @@ const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 export function ProfileProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [draft, setDraft] = useState<Partial<CreateProfileDto> | null>(null);
 
     async function createProfile(createProfileData: CreateProfileDto): Promise<UpdateProfileResponse> {
         setIsLoading(true);
         setError(null);
         try {
             const res = await profileService.createProfile(createProfileData);
+            // clear draft after successful creation
+            setDraft(null);
             return res;
         } catch (err: any) {
             setError(err?.message ?? 'Unknown error');
@@ -27,7 +30,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
         }
     }
 
-    const value = useMemo<ProfileContextType>(() => ({ createProfile }), []);
+    const value = useMemo<ProfileContextType>(() => ({ createProfile, draft, setDraft }), [createProfile, draft]);
 
     return <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>;
 }
@@ -37,8 +40,6 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
 export function useProfile(): ProfileContextType {
     const context = useContext(ProfileContext);
     const navigate = useNavigate();
-            console.log(context);
-
     useEffect(() => {
         if (context === undefined) {
             // If the profile context is missing, send the user to the profile creation page
@@ -54,6 +55,10 @@ export function useProfile(): ProfileContextType {
         return {
             createProfile: async () => {
                 return Promise.reject(new Error('ProfileProvider missing: ensure the app is wrapped with <ProfileProvider>'));
+            },
+            draft: null,
+            setDraft: () => {
+                /* no-op fallback */
             },
         };
     }

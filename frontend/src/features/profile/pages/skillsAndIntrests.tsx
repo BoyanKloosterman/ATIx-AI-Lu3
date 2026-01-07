@@ -51,10 +51,19 @@ export default function SkillsAndIntrests(): JSX.Element {
     };
 
     const location = useLocation();
-    const { createProfile} = useProfile();
-    
+    const { createProfile, draft } = useProfile();
 
-    const personalInfo = (location.state as PersonalInfo | undefined) ?? null;
+    // Prefer draft from context (set on previous step). If not available (fallback), use navigation state.
+    const personalInfo = (draft as PersonalInfo | null) ?? (location.state as PersonalInfo | undefined) ?? null;
+
+    // Debugging: log mount and changes to draft or location
+    React.useEffect(() => {
+        console.log('SkillsAndIntrests mounted/updated', {
+            pathname: location.pathname,
+            draft,
+            state: location.state,
+        });
+    }, [draft, location.pathname, location.state]);
 
     const handleSave = async (e: React.FormEvent) =>  {
         e.preventDefault();

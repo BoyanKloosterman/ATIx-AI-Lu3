@@ -1,7 +1,7 @@
 // PersonalInfo.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLocation } from "react-router-dom";
+import { useProfile } from '../hooks/useProfile';
 // import { CreateProfileDto } from '../types/profile.types';
 
 export default function PersonalInfo() {
@@ -10,6 +10,7 @@ export default function PersonalInfo() {
     const [studielocatie, setStudielocatie] = useState('');
     const [studiepunten, setStudiepunten] = useState('');
     const navigate = useNavigate();
+    const { setDraft } = useProfile();
 
     function handleNext() {
         if(!opleiding || !leerjaar || !studielocatie || !studiepunten) {
@@ -17,8 +18,17 @@ export default function PersonalInfo() {
             return;
         }
         const form = { opleiding, leerjaar, studielocatie, studiepunten };
-        console.log(form);
-        navigate('/profile/skillsAndIntrests', { state: form });
+        console.log('handleNext - form:', form);
+
+        // save partial form in profile context so it persists across navigation and refresh
+        setDraft(form);
+        console.log('handleNext - draft set');
+
+        // navigate to next step
+        console.log('handleNext - location before navigate', window.location.pathname);
+        navigate('/profile/skillsAndIntrests');
+        console.log('handleNext - navigate called');
+        console.log('handleNext - location after navigate', window.location.pathname);
     }
 
     
@@ -92,6 +102,7 @@ export default function PersonalInfo() {
 
 
             <button 
+                type="button"
                 onClick={handleNext}
                 style={{ backgroundColor: '#c4b5fd' }}
                 className="w-full hover:bg-violet-400 text-black font-medium rounded-lg px-4 py-3 mt-4 transition-colors"

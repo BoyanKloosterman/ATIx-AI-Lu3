@@ -1,23 +1,30 @@
-import {
-    Controller,
-    Post,
-    Body,
-    HttpStatus,
-    HttpException
-} from '@nestjs/common';
-import { AuthService } from '../../application/services/auth.service';
+import { Controller, Post, Body, HttpStatus, HttpException, UseGuards } from '@nestjs/common';
+import { UserService } from '../../application/services/user.service';
+import { UpdateUserDto } from '../presenters/user.dto';
+import { CURRENTUSER } from '../decorators/current.user.decorator';
+import { User } from 'src/domain/entities/user.entity';
+import { JwtAuthGuard } from 'src/infrastructure/auth/jwt.auth.guard';
 
 @Controller('api/user')
-export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+export class UserController {
+    constructor(private readonly userService: UserService) {}
+    // @Post('test')
+    // testEndpoint(@Body() body: any): Promise<{ message: string }> {
+    //     return { message: 'Test endpoint is working!' };
+    // }
 
-  @Post('updateProfile')
-  async updateProfile(@Body() profileData: any): Promise<{ message: string }> {
-    try {
-      await this.authService.updateProfile(profileData);
-      return { message: 'Profile updated successfully' };
-    } catch (error) {
-      throw new HttpException('Profile update failed', HttpStatus.INTERNAL_SERVER_ERROR);
+    @UseGuards(JwtAuthGuard)
+    @Post('updateProfile')
+    async updateProfile(
+        @CURRENTUSER() user: User,
+        @Body() profileData: UpdateUserDto,
+    ): Promise<{ message: string }> {
+        try {
+            await this.userService.updateProfile(user, profileData);
+            return { message: 'Profile updated successfully' };
+        } catch (error: unknown) {
+            // console.error('Profile update error:', error);
+            throw new HttpException(error as string, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-  }
 }

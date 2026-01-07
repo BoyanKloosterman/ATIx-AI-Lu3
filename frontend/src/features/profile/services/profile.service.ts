@@ -1,14 +1,23 @@
 import { environment } from '../../../shared/environments/environment';
-import type { UpdateProfileResponse, CreateProfileDto } from '../types/profile.types';
+import type { UpdateProfileResponse, CreateProfileDto, ProfileApi } from '../types/profile.types';
 
 export class ProfileService {
     async createProfile(createProfileData: CreateProfileDto): Promise<UpdateProfileResponse> {
-        const response = await fetch(`${environment.apiUrl}/auth/createProfile`, {
+        const newUser : ProfileApi = {
+            studyProgram: createProfileData.opleiding,
+            studyLocation: createProfileData.studielocatie,
+            studyCredits: createProfileData.studiepunten,
+            yearOfStudy: Number(createProfileData.leerjaar),
+            skills: createProfileData.skills,
+            interests: createProfileData.interests,
+        }
+        console.log("Creating profile with data:", newUser);
+        const response = await fetch(`${environment.apiUrl}/user/updateProfile`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(createProfileData),
+            body: JSON.stringify(newUser),
         });
 
         if (!response.ok) {
