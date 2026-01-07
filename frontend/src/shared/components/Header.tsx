@@ -86,8 +86,10 @@ export default function Header() {
             )}
             
             <header className="text-white py-2 px-4 md:px-6 relative z-50">
-                <div className="hidden md:flex items-center justify-between px-6 py-3">
-                    <Logo />
+                <div className="hidden md:flex items-center px-6 py-3">
+                    <div className="flex-1">
+                        <Logo />
+                    </div>
 
                     <nav className="flex items-center gap-1 bg-[#2a2a2a] rounded-full p-1 shadow-lg">
                         {NAV_LINKS.map((link) => (
@@ -95,7 +97,7 @@ export default function Header() {
                         ))}
                     </nav>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex-1 flex items-center justify-end gap-3">
                         <UserInfo user={user} />
                         <LogoutButton onClick={handleLogout} className="text-sm" />
                     </div>
