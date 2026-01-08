@@ -150,13 +150,16 @@ export default function PersonalInfo() {
                 <label htmlFor="studiepunten" className="block text-white text-sm mb-2">
                 Studiepunten
                 </label>
-                <input
-                type="number"
-                id="studiepunten"
-                value={studiepunten}
-                onChange={(e) => setStudiepunten(e.target.value)}
-                className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
-                />
+                <select
+                    id="studiepunten"
+                    value={studiepunten}
+                    onChange={(e) => setStudiepunten(e.target.value)}
+                    className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                >
+                    <option value="0">Selecteer studiepunten</option>
+                    <option value="15">15</option>
+                    <option value="30">30</option>
+                </select>
             </div>
 
 
