@@ -191,6 +191,22 @@ export default function Keuzemodules() {
         setCurrentPage(1);
     }, [searchFilteredModules]);
 
+    const sortedModules = useMemo(() => {
+        return [...searchFilteredModules].sort((a, b) => {
+            const aIsFavorite = favorites.has(a.id);
+            const bIsFavorite = favorites.has(b.id);
+
+            if (aIsFavorite && !bIsFavorite) return -1;
+            if (!aIsFavorite && bIsFavorite) return 1;
+            return 0;
+        });
+    }, [searchFilteredModules, favorites]);
+
+    useEffect(() => {
+        setModules(sortedModules);
+        setCurrentPage(1);
+    }, [sortedModules]);
+
     const toggleFilter = (filterType: keyof FilterState, value: number | string) => {
         setFilters((prev) => {
             const newFilters = { ...prev };
@@ -248,7 +264,7 @@ export default function Keuzemodules() {
 
     const toggleFavorite = async (moduleId: string) => {
         const isFavorite = favorites.has(moduleId);
-        
+
         // Optimistic update
         setFavorites((prev) => {
             const newFavorites = new Set(prev);
