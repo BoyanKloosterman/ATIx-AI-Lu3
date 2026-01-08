@@ -5,6 +5,7 @@ import DashboardPage from './features/auth/pages/dashboard';
 import ProtectedRoute from './shared/components/ProtectedRoute';
 import KeuzemodulesPage from './features/modules/pages/keuzemodules';
 import ModuleDetailPage from './features/modules/pages/moduledetail';
+import SettingsPage from './features/settings/pages/Settings';
 import Layout from './shared/components/Layout';
 
 function LogoutRedirect() {
@@ -31,6 +32,7 @@ export default function AppRoutes() {
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="/keuzemodules" element={<KeuzemodulesPage />} />
                     <Route path="/keuzemodules/:id" element={<ModuleDetailPage />} />
+                    <Route path="/settings" element={<SettingsPage />} />
                 </Route>
 
                 <Route path="/logout" element={<LogoutRedirect />} />

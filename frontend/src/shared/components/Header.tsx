@@ -6,7 +6,7 @@ const NAV_LINKS = [
     { label: 'Dashboard', path: '/dashboard' },
     { label: 'Keuzemodules', path: '/keuzemodules' },
     { label: 'AI Keuzemodules', path: '/aikeuzemodules' },
-    { label: 'Instellingen', path: '/instellingen' },
+    { label: 'Instellingen', path: '/settings' },
 ];
 
 const Logo = () => (
