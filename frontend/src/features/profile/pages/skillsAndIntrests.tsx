@@ -1,18 +1,25 @@
-import React, { useState, type Dispatch, type SetStateAction, type KeyboardEvent, type JSX } from "react";
+import React, { useState, useRef, type Dispatch, type SetStateAction, type KeyboardEvent, type JSX } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { PersonalInfo, CreateProfileDto } from "../types/profile.types";
-import { useProfile } from '../hooks/useProfile';
+import { useProfile, useGetAllTags } from '../hooks/useProfile';
 
 
 export default function SkillsAndIntrests(): JSX.Element {
     const [skills, setSkills] = useState<string[]>([]);
     const [interests, setInterests] = useState<string[]>([]);
 
-    const [skillInput, setSkillInput] = useState<string>("");
-    const [interestInput, setInterestInput] = useState<string>("");
+    const [skillSearchInput, setSkillSearchInput] = useState<string>("");
+    const [isSkillDropdownOpen, setIsSkillDropdownOpen] = useState(false);
+    const [interestSearchInput, setInterestSearchInput] = useState<string>("");
+    const [isInterestDropdownOpen, setIsInterestDropdownOpen] = useState(false);
+
+    const { tags: availableTags, isLoading: tagsLoading } = useGetAllTags();
 
     const MAX_TAGS: number = 5;
     const navigate = useNavigate();
+    
+    // Use refs to track if we've done initial prefill
+    const prefillDoneRef = useRef(false);
 
     const addTag = (
         value: string,
@@ -28,17 +35,23 @@ export default function SkillsAndIntrests(): JSX.Element {
         }
     };
 
-    const handleKey = (e: KeyboardEvent<HTMLInputElement>, type: "skills" | "interests"): void => {
-        if (e.key === "Enter") {
-            e.preventDefault();
+    const addSkillTag = (value: string): void => {
+        if (!value.trim()) return;
+        if (skills.length >= MAX_TAGS) return;
+        if (!skills.includes(value.trim())) {
+            setSkills([...skills, value.trim()]);
+            setSkillSearchInput("");
+            setIsSkillDropdownOpen(false);
+        }
+    };
 
-            if (type === "skills") {
-                addTag(skillInput, setSkills, skills);
-                setSkillInput("");
-            } else {
-                addTag(interestInput, setInterests, interests);
-                setInterestInput("");
-            }
+    const addInterestTag = (value: string): void => {
+        if (!value.trim()) return;
+        if (interests.length >= MAX_TAGS) return;
+        if (!interests.includes(value.trim())) {
+            setInterests([...interests, value.trim()]);
+            setInterestSearchInput("");
+            setIsInterestDropdownOpen(false);
         }
     };
 
@@ -53,8 +66,8 @@ export default function SkillsAndIntrests(): JSX.Element {
     const location = useLocation();
     const { createProfile, draft, userProfile, fetchUserProfile } = useProfile();
 
-    // if we have a profile from the backend, prefill skills/interests, but only
-    // when the local inputs are still empty so we don't overwrite user edits
+    // if we have a profile from the backend, prefill skills/interests, but only once
+    // when the page first loads, not every time the user clears the arrays
     React.useEffect(() => {
         // fetch if not present yet
         if (!userProfile) {
@@ -62,14 +75,17 @@ export default function SkillsAndIntrests(): JSX.Element {
             return;
         }
 
-        // Only prefill when the local state is empty (length === 0)
+        // Only prefill once on mount
+        if (prefillDoneRef.current) return;
+        prefillDoneRef.current = true;
+
         if (skills.length === 0 && userProfile?.skills?.length) {
             setSkills(userProfile.skills);
         }
         if (interests.length === 0 && userProfile?.interests?.length) {
             setInterests(userProfile.interests);
         }
-    }, [userProfile, fetchUserProfile, skills.length, interests.length]);
+    }, [userProfile, fetchUserProfile]);
 
     // Prefer draft from context (set on previous step). If not available (fallback), use navigation state.
     const personalInfo = (draft as PersonalInfo | null) ?? (location.state as PersonalInfo | undefined) ?? null;
@@ -131,58 +147,138 @@ return (
             {/* SKILLS */}
             <div>
                 <p className="text-neutral-300 mb-1 text-sm">Vaardigheden</p>
-                <div className="border border-neutral-700 rounded-xl p-3 flex flex-wrap gap-2 bg-neutral-900">
-                {skills.map((tag, i) => (
-                    <span
-                    key={i}
-                    className="bg-violet-400/20 text-violet-300 px-3 py-1 rounded-full text-sm flex items-center"
-                    >
-                    {tag}
-                    <button
-                        onClick={() => removeTag(i, setSkills, skills)}
-                        className="ml-2 hover:text-red-400"
-                    >
-                        &times;
-                    </button>
-                    </span>
-                ))}
+                <div className="relative">
+                    {/* Selected tags */}
+                    <div className="border border-neutral-700 rounded-xl p-3 flex flex-wrap gap-2 bg-neutral-900 cursor-pointer" onClick={() => setIsSkillDropdownOpen(true)}>
+                        {skills.map((tag, i) => (
+                            <span
+                                key={i}
+                                className="bg-violet-400/20 text-violet-300 px-3 py-1 rounded-full text-sm flex items-center"
+                            >
+                                {tag}
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        removeTag(i, setSkills, skills);
+                                    }}
+                                    className="!py-1 !px-2 ml-1 text-xs leading-none hover:text-red-400"
+                                >
+                                    ×
+                                </button>
+                            </span>
+                        ))}
 
-                <input
-                    value={skillInput}
-                    onChange={(e) => setSkillInput(e.target.value)}
-                    onKeyDown={(e) => handleKey(e, "skills")}
-                    placeholder="Typ een vaardigheid..."
-                    className="flex-1 bg-transparent outline-none text-white placeholder:text-neutral-500 min-w-[120px]"
-                />
+                        <input
+                            type="text"
+                            value={skillSearchInput}
+                            onChange={(e) => {
+                                setSkillSearchInput(e.target.value);
+                                setIsSkillDropdownOpen(true);
+                            }}
+                            onFocus={() => setIsSkillDropdownOpen(true)}
+                            onBlur={() => setTimeout(() => setIsSkillDropdownOpen(false), 200)}
+                            placeholder={skills.length === 0 ? "Zoek een vaardigheid..." : ""}
+                            className="flex-1 bg-transparent outline-none text-white placeholder:text-neutral-500 min-w-[120px]"
+                        />
+                    </div>
+
+                    {/* Dropdown menu */}
+                    {isSkillDropdownOpen && (
+                        <div className="absolute z-10 w-full mt-2 bg-neutral-800 border border-neutral-700 rounded-xl max-h-48 overflow-y-auto">
+                            {tagsLoading ? (
+                                <div className="p-3 text-neutral-400 text-center">Laden...</div>
+                            ) : availableTags
+                                .filter((tag) =>
+                                    tag.toLowerCase().includes(skillSearchInput.toLowerCase()) &&
+                                    !skills.includes(tag)
+                                )
+                                .map((tag) => (
+                                    <div
+                                        key={tag}
+                                        onClick={() => addSkillTag(tag)}
+                                        className="p-3 text-neutral-300 hover:bg-neutral-700 cursor-pointer transition-colors"
+                                    >
+                                        {tag}
+                                    </div>
+                                ))}
+                            {!tagsLoading &&
+                                availableTags.filter((tag) =>
+                                    tag.toLowerCase().includes(skillSearchInput.toLowerCase()) &&
+                                    !skills.includes(tag)
+                                ).length === 0 && (
+                                    <div className="p-3 text-neutral-500 text-center text-sm">Geen vaardigheden gevonden</div>
+                                )}
+                        </div>
+                    )}
                 </div>
             </div>
 
             {/* INTERESTS */}
             <div>
                 <p className="text-neutral-300 mb-1 text-sm">Intresses</p>
-                <div className="border border-neutral-700 rounded-xl p-3 flex flex-wrap gap-2 bg-neutral-900">
-                {interests.map((tag, i) => (
-                    <span
-                    key={i}
-                    className="bg-violet-400/20 text-violet-300 px-3 py-1 rounded-full text-sm flex items-center"
-                    >
-                    {tag}
-                    <button
-                        onClick={() => removeTag(i, setInterests, interests)}
-                        className="ml-2 hover:text-red-400"
-                    >
-                        &times;
-                    </button>
-                    </span>
-                ))}
+                <div className="relative">
+                    {/* Selected tags */}
+                    <div className="border border-neutral-700 rounded-xl p-3 flex flex-wrap gap-2 bg-neutral-900 cursor-pointer" onClick={() => setIsInterestDropdownOpen(true)}>
+                        {interests.map((tag, i) => (
+                            <span
+                                key={i}
+                                className="bg-violet-400/20 text-violet-300 px-3 py-1 rounded-full text-sm flex items-center"
+                            >
+                                {tag}
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        removeTag(i, setInterests, interests);
+                                    }}
+                                    className="!py-1 !px-2 ml-1 text-xs leading-none hover:text-red-400"
+                                >
+                                    ×
+                                </button>
+                            </span>
+                        ))}
 
-                <input
-                    value={interestInput}
-                    onChange={(e) => setInterestInput(e.target.value)}
-                    onKeyDown={(e) => handleKey(e, "interests")}
-                    placeholder="Typ een interesse..."
-                    className="flex-1 bg-transparent outline-none text-white placeholder:text-neutral-500 min-w-[120px]"
-                />
+                        <input
+                            type="text"
+                            value={interestSearchInput}
+                            onChange={(e) => {
+                                setInterestSearchInput(e.target.value);
+                                setIsInterestDropdownOpen(true);
+                            }}
+                            onFocus={() => setIsInterestDropdownOpen(true)}
+                            onBlur={() => setTimeout(() => setIsInterestDropdownOpen(false), 200)}
+                            placeholder={interests.length === 0 ? "Zoek een interesse..." : ""}
+                            className="flex-1 bg-transparent outline-none text-white placeholder:text-neutral-500 min-w-[120px]"
+                        />
+                    </div>
+
+                    {/* Dropdown menu */}
+                    {isInterestDropdownOpen && (
+                        <div className="absolute z-10 w-full mt-2 bg-neutral-800 border border-neutral-700 rounded-xl max-h-48 overflow-y-auto">
+                            {tagsLoading ? (
+                                <div className="p-3 text-neutral-400 text-center">Laden...</div>
+                            ) : availableTags
+                                .filter((tag) =>
+                                    tag.toLowerCase().includes(interestSearchInput.toLowerCase()) &&
+                                    !interests.includes(tag)
+                                )
+                                .map((tag) => (
+                                    <div
+                                        key={tag}
+                                        onClick={() => addInterestTag(tag)}
+                                        className="p-3 text-neutral-300 hover:bg-neutral-700 cursor-pointer transition-colors"
+                                    >
+                                        {tag}
+                                    </div>
+                                ))}
+                            {!tagsLoading &&
+                                availableTags.filter((tag) =>
+                                    tag.toLowerCase().includes(interestSearchInput.toLowerCase()) &&
+                                    !interests.includes(tag)
+                                ).length === 0 && (
+                                    <div className="p-3 text-neutral-500 text-center text-sm">Geen tags gevonden</div>
+                                )}
+                        </div>
+                    )}
                 </div>
             </div>
 

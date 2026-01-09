@@ -1,5 +1,5 @@
 // PersonalInfo.tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '../hooks/useProfile';
 
@@ -12,31 +12,22 @@ export default function PersonalInfo() {
     const [studielocatie, setStudielocatie] = useState('');
     const [studiepunten, setStudiepunten] = useState('');
     const navigate = useNavigate();
-    const { setDraft, userProfile, fetchUserProfile } = useProfile();
+    const { setDraft, userProfile } = useProfile();
+    
+    // Track if we've done the initial prefill
+    const prefillDoneRef = useRef(false);
 
-    // fetch profile on mount (if not already fetched) and populate fields when available
+    // Only prefill once when userProfile becomes available
     useEffect(() => {
-        fetchUserProfile().catch(() => {});
-    }, [fetchUserProfile]);
-
-    useEffect(() => {
-        if (!userProfile) return;
-
-        // Only set values if the inputs are still empty so we don't overwrite
-        // any edits the user may have started typing.
-        if (opleiding === '') {
-            setOpleiding(userProfile.studyProgram ?? '');
-        }
-        if (leerjaar === '') {
-            setLeerjaar(String(userProfile.yearOfStudy ?? ''));
-        }
-        if (studiepunten === '') {
-            setStudiepunten(String(userProfile.studyCredits ?? ''));
-        }
-        if (studielocatie === '') {
-            setStudielocatie(userProfile.studyLocation ?? '');
-        }
-    }, [userProfile, opleiding, leerjaar, studiepunten, studielocatie]);
+        if (!userProfile || prefillDoneRef.current) return;
+        
+        prefillDoneRef.current = true;
+        
+        setOpleiding(userProfile.studyProgram ?? '');
+        setLeerjaar(String(userProfile.yearOfStudy ?? ''));
+        setStudiepunten(String(userProfile.studyCredits ?? ''));
+        setStudielocatie(userProfile.studyLocation ?? '');
+    }, [userProfile]);
 
     function handleNext() {
         if(!opleiding || !leerjaar || !studiepunten) {

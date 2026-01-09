@@ -17,5 +17,9 @@ export class ModuleService {
   async search(query: string): Promise<Module[]> {
     return await this.moduleRepository.search(query);
   }
+
+  async getAllTags(): Promise<string[]> {
+    return await this.moduleRepository.getAllTags();
+  }
 }
 

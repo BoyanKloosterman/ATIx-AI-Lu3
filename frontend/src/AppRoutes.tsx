@@ -19,8 +19,8 @@ export default function AppRoutes() {
     return (
         <Router>
             <Routes>
-                <Route path="profile/createProfile" element={<PersonalInfo />} />
-                <Route path="profile/skillsAndIntrests" element={<SkillsAndIntrests />} />
+                <Route path="/profile/createProfile" element={<PersonalInfo />} />
+                <Route path="/profile/skillsAndIntrests" element={<SkillsAndIntrests />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
 

@@ -7,6 +7,7 @@ export interface IModuleRepository {
   search(query: string): Promise<Module[]>;
   count(): Promise<number>;
   deleteAll(): Promise<void>;
+    getAllTags(): Promise<string[]>;
 }
 
 export const MODULE_REPOSITORY = Symbol('IModuleRepository');

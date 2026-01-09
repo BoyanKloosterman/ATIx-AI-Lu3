@@ -96,3 +96,29 @@ export function useProfile(): ProfileContextType {
 
     return context;
 }
+
+export function useGetAllTags() {
+    const [tags, setTags] = useState<string[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchTags = async () => {
+            setIsLoading(true);
+            setError(null);
+            try {
+                const data = await profileService.getAllTags();
+                setTags(data);
+            } catch (err: any) {
+                setError(err?.message ?? 'Unknown error');
+                setTags([]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchTags();
+    }, []);
+
+    return { tags, isLoading, error };
+}
