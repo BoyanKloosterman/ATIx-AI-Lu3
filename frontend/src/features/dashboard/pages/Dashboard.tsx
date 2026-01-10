@@ -79,7 +79,9 @@ export default function Dashboard({
     return (
         <div className="min-h-screen bg-neutral-950 w-full overflow-x-hidden">
             <div className="max-w-6xl mx-auto px-4 py-8">
-                <h1 className="text-4xl font-bold text-white mb-8 text-center">{t.dashboard.title}</h1>
+                <h1 className="text-4xl font-bold text-white mb-8 text-center">
+                    {t.dashboard.title}
+                </h1>
 
                 <div className="bg-gray-800 rounded-lg p-6">
                     <h2 className="text-2xl font-bold text-white mb-6 text-center">
@@ -96,7 +98,9 @@ export default function Dashboard({
                     {/* Error state */}
                     {!isLoading && error && (
                         <div className="text-center text-red-400 py-8">
-                            <p>{t.dashboard.error} {error}</p>
+                            <p>
+                                {t.dashboard.error} {error}
+                            </p>
                         </div>
                     )}
 
