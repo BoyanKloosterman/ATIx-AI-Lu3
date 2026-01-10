@@ -313,7 +313,9 @@ export default function Keuzemodules() {
         <div className="min-h-screen bg-neutral-950 w-full overflow-x-hidden">
             {/* Main Content */}
             <div className="max-w-6xl mx-auto px-4 py-8">
-                <h1 className="text-4xl font-bold text-white mb-4 text-center">{t.modules.title}</h1>
+                <h1 className="text-4xl font-bold text-white mb-4 text-center">
+                    {t.modules.title}
+                </h1>
 
                 <p className="text-gray-300 mb-6 text-center max-w-3xl mx-auto">
                     {t.modules.description}
@@ -421,7 +423,9 @@ export default function Keuzemodules() {
 
                                 {/* Locatie Filter */}
                                 <div>
-                                    <h3 className="text-xl font-bold text-white mb-4">{t.modules.location}</h3>
+                                    <h3 className="text-xl font-bold text-white mb-4">
+                                        {t.modules.location}
+                                    </h3>
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                         {availableLocations.map((location) => (
                                             <label
@@ -470,7 +474,9 @@ export default function Keuzemodules() {
                                 {/* Thema Filter */}
                                 {availableThemes.length > 0 && (
                                     <div>
-                                        <h3 className="text-xl font-bold text-white mb-4">{t.modules.theme}</h3>
+                                        <h3 className="text-xl font-bold text-white mb-4">
+                                            {t.modules.theme}
+                                        </h3>
                                         <div className="flex flex-wrap gap-4">
                                             {availableThemes.map((theme) => (
                                                 <label
@@ -692,7 +698,10 @@ export default function Keuzemodules() {
                         )}
 
                         <div className="text-center text-gray-300 text-sm mt-4">
-                            {t.modules.pageOf.replace('{current}', String(currentPage)).replace('{total}', String(totalPages)).replace('{count}', String(modules.length))}
+                            {t.modules.pageOf
+                                .replace('{current}', String(currentPage))
+                                .replace('{total}', String(totalPages))
+                                .replace('{count}', String(modules.length))}
                         </div>
                     </>
                 )}
