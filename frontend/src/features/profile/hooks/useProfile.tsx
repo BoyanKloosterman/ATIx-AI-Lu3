@@ -59,7 +59,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
         fetchUserProfile().catch(() => {});
     }, []);
 
-    const value = useMemo<ProfileContextType>(() => ({ createProfile, draft, setDraft, userProfile, fetchUserProfile }), [createProfile, draft, userProfile]);
+    const value = useMemo<ProfileContextType>(() => ({ createProfile, draft, setDraft, userProfile, fetchUserProfile, isLoading, error }), [createProfile, draft, userProfile, isLoading, error]);
 
     return <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>;
 }
@@ -91,6 +91,8 @@ export function useProfile(): ProfileContextType {
             },
             userProfile: null,
             fetchUserProfile: async () => null,
+            isLoading: false,
+            error: null,
         };
     }
 

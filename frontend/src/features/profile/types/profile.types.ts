@@ -43,4 +43,8 @@ export interface ProfileContextType {
     userProfile: ProfileApi | null;
     /** Fetches the profile from the API and stores it in context (returns null on error) */
     fetchUserProfile: () => Promise<ProfileApi | null>;
-}
+
+    /** Loading and error state for profile operations */
+    isLoading: boolean;
+    error: string | null;
+} 

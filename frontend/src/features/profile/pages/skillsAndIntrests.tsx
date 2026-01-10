@@ -13,6 +13,10 @@ export default function SkillsAndIntrests(): JSX.Element {
     const [interestSearchInput, setInterestSearchInput] = useState<string>("");
     const [isInterestDropdownOpen, setIsInterestDropdownOpen] = useState(false);
 
+    // Local error state (validation + provider errors)
+    const [showError, setShowError] = useState(false);
+    const [localError, setLocalError] = useState<string | null>(null);
+
     const { tags: availableTags, isLoading: tagsLoading } = useGetAllTags();
 
     const MAX_TAGS: number = 5;
@@ -42,6 +46,9 @@ export default function SkillsAndIntrests(): JSX.Element {
             setSkills([...skills, value.trim()]);
             setSkillSearchInput("");
             setIsSkillDropdownOpen(false);
+            // clear any previous errors
+            setShowError(false);
+            setLocalError(null);
         }
     };
 
@@ -52,6 +59,9 @@ export default function SkillsAndIntrests(): JSX.Element {
             setInterests([...interests, value.trim()]);
             setInterestSearchInput("");
             setIsInterestDropdownOpen(false);
+            // clear any previous errors
+            setShowError(false);
+            setLocalError(null);
         }
     };
 
@@ -61,10 +71,12 @@ export default function SkillsAndIntrests(): JSX.Element {
         tags: string[]
     ): void => {
         setter(tags.filter((_, i) => i !== index));
+        setShowError(false);
+        setLocalError(null);
     };
 
     const location = useLocation();
-    const { createProfile, draft, userProfile, fetchUserProfile } = useProfile();
+    const { createProfile, draft, userProfile, fetchUserProfile, error } = useProfile();
 
     // if we have a profile from the backend, prefill skills/interests, but only once
     // when the page first loads, not every time the user clears the arrays
@@ -87,6 +99,14 @@ export default function SkillsAndIntrests(): JSX.Element {
         }
     }, [userProfile, fetchUserProfile]);
 
+    // If the provider reports an error (server-side), show it
+    React.useEffect(() => {
+        if (error) {
+            setLocalError(null);
+            setShowError(true);
+        }
+    }, [error]);
+
     // Prefer draft from context (set on previous step). If not available (fallback), use navigation state.
     const personalInfo = (draft as PersonalInfo | null) ?? (location.state as PersonalInfo | undefined) ?? null;
 
@@ -104,7 +124,8 @@ export default function SkillsAndIntrests(): JSX.Element {
 
         // Build a CreateProfileDto ensuring correct types and defaults
         if(skills.length === 0 || interests.length === 0) {
-            alert("Voeg ten minste één vaardigheid en één interesse toe.");
+            setLocalError("Voeg ten minste één vaardigheid en één interesse toe.");
+            setShowError(true);
             return;
         }
         const createProfileData: CreateProfileDto = {
@@ -121,8 +142,10 @@ export default function SkillsAndIntrests(): JSX.Element {
 
             await createProfile(createProfileData);
             navigate('/dashboard'); // Redirect after successful creation
-        } catch (err) {
+        } catch (err: any) {
             console.error('Error creating profile:', err);
+            setLocalError(err?.message ?? 'Er is iets misgegaan bij het aanmaken van het profiel.');
+            setShowError(true);
         }
     }
 
@@ -132,9 +155,23 @@ return (
             <h1 className="text-white text-4xl text-center mb-8">Profiel aanmaken</h1>
 
             <div className="bg-neutral-800 rounded-3xl p-6 space-y-4">
-            <h2 className="text-white text-2xl text-center">
-                Vaardigheden & Intresses
-            </h2>
+            <div className="flex items-center justify-between">
+                <button
+                    type="button"
+                    onClick={() => { setShowError(false); setLocalError(null); navigate('/profile/createProfile'); }}
+                    className="text-sm bg-neutral-700 hover:bg-neutral-600 text-white rounded px-3 py-1 mr-2 transition"
+                >
+                    Terug
+                </button>
+                <h2 className="text-white text-2xl text-center flex-1">
+                    Vaardigheden & Intresses
+                </h2>
+            </div>
+            {showError && (localError || error) && (
+                <div className="bg-red-500/20 border border-red-500 rounded-lg p-3 mb-4">
+                    <p className="text-red-300 text-sm">{localError ?? error}</p>
+                </div>
+            )}
 
             <div className="relative flex items-center w-full max-w-md">
                 {/* Connecting line */}
@@ -174,6 +211,8 @@ return (
                             onChange={(e) => {
                                 setSkillSearchInput(e.target.value);
                                 setIsSkillDropdownOpen(true);
+                                setShowError(false);
+                                setLocalError(null);
                             }}
                             onFocus={() => setIsSkillDropdownOpen(true)}
                             onBlur={() => setTimeout(() => setIsSkillDropdownOpen(false), 200)}
@@ -243,6 +282,8 @@ return (
                             onChange={(e) => {
                                 setInterestSearchInput(e.target.value);
                                 setIsInterestDropdownOpen(true);
+                                setShowError(false);
+                                setLocalError(null);
                             }}
                             onFocus={() => setIsInterestDropdownOpen(true)}
                             onBlur={() => setTimeout(() => setIsInterestDropdownOpen(false), 200)}

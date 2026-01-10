@@ -12,7 +12,9 @@ export default function PersonalInfo() {
     const [studielocatie, setStudielocatie] = useState('');
     const [studiepunten, setStudiepunten] = useState('');
     const navigate = useNavigate();
-    const { setDraft, userProfile } = useProfile();
+    const { setDraft, userProfile, error } = useProfile();
+    const [showError, setShowError] = useState(false);
+    const [localError, setLocalError] = useState<string | null>(null);
     
     // Track if we've done the initial prefill
     const prefillDoneRef = useRef(false);
@@ -29,9 +31,18 @@ export default function PersonalInfo() {
         setStudielocatie(userProfile.studyLocation ?? '');
     }, [userProfile]);
 
+    // If the provider reports an error (server-side), show it
+    useEffect(() => {
+        if (error) {
+            setLocalError(null);
+            setShowError(true);
+        }
+    }, [error]);
+
     function handleNext() {
         if(!opleiding || !leerjaar || !studiepunten) {
-            alert("Vul alle velden in.");
+            setLocalError('Vul alle velden in.');
+            setShowError(true);
             return;
         }
         const form = { opleiding, leerjaar, studielocatie, studiepunten };
@@ -68,15 +79,20 @@ export default function PersonalInfo() {
             <div>
                 <p> Vul hieronder je persoonlijke gegevens in om je profiel aan te maken die de Ai recommender zal gebruiken om modules voor jou te vinden.</p>
             </div>
+            {showError && (localError || error) && (
+                        <div className="bg-red-500/20 border border-red-500 rounded-lg p-3 mb-4">
+                            <p className="text-red-300 text-sm">{localError ?? error}</p>
+                        </div>
+                    )}
             <div>
-                <label htmlFor="email" className="block text-white text-sm mb-2">
+                <label htmlFor="opleiding" className="block text-white text-sm mb-2">
                 Opleiding
                 </label>
                 <input
-                type="email"
-                id="email"
+                type="text"
+                id="opleiding"
                 value={opleiding}
-                onChange={(e) => setOpleiding(e.target.value)}
+                onChange={(e) => { setOpleiding(e.target.value); setShowError(false); setLocalError(null); }}
                 className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
                 />
             </div>
@@ -89,7 +105,7 @@ export default function PersonalInfo() {
                 type="number"
                 id="leerjaar"
                 value={leerjaar}
-                onChange={(e) => setLeerjaar(e.target.value)}
+                onChange={(e) => { setLeerjaar(e.target.value); setShowError(false); setLocalError(null); }}
                 className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
                 />
             </div>
@@ -132,7 +148,7 @@ export default function PersonalInfo() {
                     type="text"
                     id="studielocatie"
                     value={studielocatie}
-                    onChange={(e) => setStudielocatie(e.target.value)}
+                    onChange={(e) => { setStudielocatie(e.target.value); setShowError(false); setLocalError(null); }}
                     className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
                 />
             </div>
@@ -144,7 +160,7 @@ export default function PersonalInfo() {
                 <select
                     id="studiepunten"
                     value={studiepunten}
-                    onChange={(e) => setStudiepunten(e.target.value)}
+                    onChange={(e) => { setStudiepunten(e.target.value); setShowError(false); setLocalError(null); }}
                     className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
                 >
                     <option value="0">Selecteer studiepunten</option>
