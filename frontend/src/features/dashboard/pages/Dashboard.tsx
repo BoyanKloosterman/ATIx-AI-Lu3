@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import type { Module } from '../../../shared/types/index';
 import authService from '../../auth/services/auth.service';
 import { useLanguage } from '../../../shared/contexts/useLanguage';
+import { useProfile } from '../../profile/hooks/useProfile';
 
 interface DashboardProps {
     favoriteModules?: Module[];
@@ -22,6 +23,7 @@ export default function Dashboard({
     const [favoriteModules, setFavoriteModules] = useState<Module[]>(propFavoriteModules || []);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const { userProfile, fetchUserProfile } = useProfile();
 
     // Data ophalen bij mount
     useEffect(() => {
@@ -47,6 +49,12 @@ export default function Dashboard({
             setIsLoading(false);
         }
     }, [propFavoriteModules]);
+
+    useEffect(() => {
+        if (!userProfile) {
+            fetchUserProfile();
+        }
+    }, [userProfile]);
 
     // Handlers blijven hetzelfde
     const handleModuleClick = (moduleId: string) => {
@@ -85,30 +93,49 @@ export default function Dashboard({
                     <h2 className="text-2xl font-bold text-white mb-2 text-center">
                         Mijn Profiel
                     </h2>
-                    
-                    <h3 className="text-xl text-white">Naam</h3>
-                    <p className='mb-2'>PLuk</p>
-                    <h3 className="text-xl text-white">Opleiding</h3>
-                    <p className='mb-2'>Informatica</p>
-                    <h3 className="text-xl text-white">Leerjaar</h3>
-                    <p className='mb-2'>2</p>
-                    <h3 className="text-xl text-white">Vaardighede</h3>
-                    <div className='mb-2'>
-                        <span className="inline-block bg-pink-300 text-black px-3 py-1 rounded-full text-sm font-medium mr-2 mb-2">Python</span>
-                        <span className="inline-block bg-pink-300 text-black px-3 py-1 rounded-full text-sm font-medium mr-2 mb-2">C#</span>
-                    </div>
-                    <h3 className="text-xl text-white">Intresses</h3>
-                    <div className='mb-4'>
-                        <span className="inline-block bg-blue-300 text-black px-3 py-1 rounded-full text-sm font-medium mr-2 mb-2">AI</span>
-                        <span className="inline-block bg-blue-300 text-black px-3 py-1 rounded-full text-sm font-medium mr-2 mb-2">Web Development</span>
-                    </div>
-                    <button
-                        type="button"
-                        onClick={() => navigate('/profile/createProfile')}
-                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                    >
-                        Aanpassen
-                    </button>
+
+                    {!userProfile ? (
+                        <p className="text-gray-400 text-center">Profiel laden...</p>
+                    ) : (
+                        <>
+                        <h3 className="text-xl text-white">Opleiding</h3>
+                        <p className="mb-2">{userProfile.studyProgram}</p>
+
+                        <h3 className="text-xl text-white">Leerjaar</h3>
+                        <p className="mb-2">{userProfile.yearOfStudy}</p>
+
+                        <h3 className="text-xl text-white">Studielocatie</h3>
+                        <p className="mb-2">{userProfile.studyLocation || '—'}</p>
+
+                        <h3 className="text-xl text-white">Studiepunten</h3>
+                        <p className="mb-2">{userProfile.studyCredits}</p>
+
+                        <h3 className="text-xl text-white">Vaardigheden</h3>
+                        <div className="mb-2">
+                            {userProfile.skills?.map(s => (
+                            <span key={s} className="inline-block bg-pink-300 text-black px-3 py-1 rounded-full text-sm font-medium mr-2 mb-2">
+                                {s}
+                            </span>
+                            ))}
+                        </div>
+
+                        <h3 className="text-xl text-white">Intresses</h3>
+                        <div className="mb-4">
+                            {userProfile.interests?.map(i => (
+                            <span key={i} className="inline-block bg-blue-300 text-black px-3 py-1 rounded-full text-sm font-medium mr-2 mb-2">
+                                {i}
+                            </span>
+                            ))}
+                        </div>
+
+                        <button
+                            onClick={() => navigate('/profile/createProfile')}
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                        >
+                            Aanpassen
+                        </button>
+                        </>
+                    )}
                 </div>
                 <div className="bg-gray-800 rounded-lg p-6">
                     <h2 className="text-2xl font-bold text-white mb-6 text-center">
