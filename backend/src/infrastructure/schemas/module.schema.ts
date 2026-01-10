@@ -36,8 +36,8 @@ export class ModuleModel {
     @Prop({ trim: true, name: 'learningoutcomes' })
     learningOutcomes!: string;
 
-    @Prop({ type: [String], default: [], name: 'module_tags' })
-    tags!: string[];
+    @Prop({ name: 'module_tags' })
+    moduleTags!: string;
 
     @Prop({ name: 'interests_match_score' })
     interestsMatchScore?: number;

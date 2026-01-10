@@ -4,6 +4,8 @@ import RegisterPage from './features/auth/pages/register';
 import DashboardPage from './features/dashboard/pages/dashboard';
 import ProtectedRoute from './shared/components/ProtectedRoute';
 import KeuzemodulesPage from './features/modules/pages/keuzemodules';
+import PersonalInfo from './features/profile/pages/personalInfo';
+import SkillsAndIntrests from './features/profile/pages/skillsAndIntrests';
 import ModuleDetailPage from './features/modules/pages/moduledetail';
 import SettingsPage from './features/settings/pages/Settings';
 import Layout from './shared/components/Layout';
@@ -18,6 +20,8 @@ export default function AppRoutes() {
     return (
         <Router>
             <Routes>
+                <Route path="/profile/createProfile" element={<PersonalInfo />} />
+                <Route path="/profile/skillsAndIntrests" element={<SkillsAndIntrests />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
 

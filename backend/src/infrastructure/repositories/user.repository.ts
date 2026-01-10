@@ -4,6 +4,7 @@ import { Model, Types } from 'mongoose';
 import { User, UserFavorite } from '../../domain/entities/user.entity';
 import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
 import { UserDocument } from '../schemas/user.schema';
+import { UpdateUserDto } from 'src/interfaces/presenters/user.dto';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -23,7 +24,9 @@ export class UserRepository implements IUserRepository {
         if (!email || typeof email !== 'string') {
             return null;
         }
-        const userDoc = await this.userModel.findOne({ email: { $eq: email.toString() } });
+        const userDoc = await this.userModel.findOne({
+            email: { $eq: email.toString() },
+        });
         return userDoc ? this.mapToEntity(userDoc) : null;
     }
 
@@ -74,9 +77,22 @@ export class UserRepository implements IUserRepository {
         return this.mapToEntity(savedDoc);
     }
 
-    update(id: string, userData: Partial<User>): Promise<User | null> {
-        throw new Error('Method not implemented.');
+    async update(id: string, userData: Partial<UpdateUserDto>): Promise<User | null> {
+        const user = await this.userModel.findById(new Types.ObjectId(id));
+        if (!user) {
+            throw new Error(`User with ID ${id} not found`);
+        }
+        user.studyProgram = userData.studyProgram;
+        user.studyLocation = userData.studyLocation;
+        user.studyCredits = userData.studyCredits;
+        user.studyYear = userData.yearOfStudy;
+        user.skills = userData.skills ? userData.skills : [];
+        user.interests = userData.interests ? userData.interests : [];
+
+        const updatedUser = await user.save();
+        return this.mapToEntity(updatedUser);
     }
+
 
     async delete(id: string): Promise<boolean> {
         // Validate and sanitize ID to prevent NoSQL injection

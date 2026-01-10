@@ -16,7 +16,11 @@ export class ModuleService {
         return await this.moduleRepository.findById(id);
     }
 
-    async search(query: string): Promise<Module[]> {
-        return await this.moduleRepository.search(query);
-    }
+  async search(query: string): Promise<Module[]> {
+    return await this.moduleRepository.search(query);
+  }
+
+  async getAllTags(): Promise<string[]> {
+    return await this.moduleRepository.getAllTags();
+  }
 }
