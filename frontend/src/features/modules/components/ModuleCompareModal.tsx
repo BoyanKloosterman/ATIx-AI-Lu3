@@ -116,7 +116,7 @@ export default function ModuleCompareModal({ modules, onClose }: ModuleCompareMo
             aria-modal="true"
             aria-labelledby="compare-modal-title"
         >
-            <div className="bg-neutral-900 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-800">
+            <div className="theme-card rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-2xl theme-border">
                 {/* Header - sticky */}
                 <div className="sticky top-0 bg-gradient-to-r from-violet-900 to-purple-900 border-b border-violet-700 p-4 md:p-6 z-10 rounded-t-xl">
                     <div className="flex justify-between items-center">
@@ -205,9 +205,9 @@ export default function ModuleCompareModal({ modules, onClose }: ModuleCompareMo
                             {modules.map((module) => (
                                 <div
                                     key={module.id}
-                                    className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-5 border border-gray-700 shadow-lg hover:border-violet-500 transition-colors"
+                                    className="theme-card-alt rounded-xl p-5 theme-border shadow-lg hover:border-violet-500 transition-colors"
                                 >
-                                    <h4 className="text-lg font-bold text-white mb-4 pb-3 border-b border-gray-700 flex items-center gap-2">
+                                    <h4 className="text-lg font-bold theme-text-primary mb-4 pb-3 theme-border border-b flex items-center gap-2">
                                         <span className="bg-violet-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">
                                             {modules.indexOf(module) + 1}
                                         </span>
@@ -219,7 +219,7 @@ export default function ModuleCompareModal({ modules, onClose }: ModuleCompareMo
                                                 <div className="text-sm text-violet-300 font-semibold">
                                                     {field.label}
                                                 </div>
-                                                <div className="text-white bg-gray-800 bg-opacity-50 p-3 rounded-lg">
+                                                <div className="theme-text-primary theme-card p-3 rounded-lg">
                                                     {getFieldValue(module, field.key)}
                                                 </div>
                                             </div>
@@ -260,17 +260,18 @@ export default function ModuleCompareModal({ modules, onClose }: ModuleCompareMo
                                     {compareFields.map((field, fieldIndex) => (
                                         <tr
                                             key={field.key}
-                                            className={`border-b border-gray-800 transition-colors hover:bg-gray-800 ${
-                                                fieldIndex % 2 === 0
-                                                    ? 'bg-gray-900 bg-opacity-50'
-                                                    : ''
+                                            className={`theme-border border-b transition-colors hover:theme-card-alt ${
+                                                fieldIndex % 2 === 0 ? 'theme-card-alt' : ''
                                             }`}
                                         >
                                             <td className="p-4 text-violet-300 font-semibold">
                                                 {field.label}
                                             </td>
                                             {modules.map((module) => (
-                                                <td key={module.id} className="p-4 text-white">
+                                                <td
+                                                    key={module.id}
+                                                    className="p-4 theme-text-primary"
+                                                >
                                                     <div className="max-w-xs break-words">
                                                         {getFieldValue(module, field.key)}
                                                     </div>
@@ -288,8 +289,8 @@ export default function ModuleCompareModal({ modules, onClose }: ModuleCompareMo
                 <div className="sticky bottom-0 bg-gradient-to-r from-violet-900 to-purple-900 border-t border-violet-700 p-4 md:p-6 rounded-b-xl">
                     <button
                         onClick={onClose}
-                        style={{ backgroundColor: '#c4b5fd' }}
-                        className="w-full md:w-auto px-8 py-3 rounded-lg font-semibold text-black hover:bg-violet-400 transition-all hover:shadow-lg transform hover:scale-105"
+                        style={{ backgroundColor: 'var(--accent)' }}
+                        className="w-full md:w-auto px-8 py-3 rounded-lg font-semibold text-black hover:opacity-80 transition-all hover:shadow-lg transform hover:scale-105"
                     >
                         {t.modules.compare.close}
                     </button>

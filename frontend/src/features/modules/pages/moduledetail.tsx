@@ -46,9 +46,9 @@ export default function ModuleDetail() {
 
     if (isLoading) {
         return (
-            <div className="bg-neutral-950 w-full overflow-x-hidden">
+            <div className="theme-page w-full overflow-x-hidden">
                 <div className="max-w-4xl mx-auto px-4 py-8">
-                    <div className="text-center py-12 text-gray-300">{t.modules.loading}</div>
+                    <div className="text-center py-12 theme-text-secondary">{t.modules.loading}</div>
                 </div>
             </div>
         );
@@ -56,15 +56,15 @@ export default function ModuleDetail() {
 
     if (error || !module) {
         return (
-            <div className="bg-neutral-950 w-full overflow-x-hidden">
+            <div className="theme-page w-full overflow-x-hidden">
                 <div className="max-w-4xl mx-auto px-4 py-8">
                     <div className="bg-red-900 border border-red-700 text-red-200 px-4 py-3 rounded mb-4">
                         <p className="font-bold">{t.modules.error}</p>
                         <p>{error || t.moduleDetail.moduleNotFound}</p>
                         <button
                             onClick={handleBack}
-                            style={{ backgroundColor: '#c4b5fd' }}
-                            className="mt-2 text-black px-4 py-2 rounded-lg font-medium hover:bg-violet-400 transition-colors"
+                            style={{ backgroundColor: 'var(--accent)' }}
+                            className="mt-2 text-black px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-colors"
                         >
                             {t.moduleDetail.backToOverview}
                         </button>
@@ -75,12 +75,12 @@ export default function ModuleDetail() {
     }
 
     return (
-        <div className="bg-neutral-950 w-full overflow-x-hidden">
+        <div className="theme-page w-full overflow-x-hidden">
             <div className="max-w-4xl mx-auto px-4 py-8">
                 {/* Back Button */}
                 <button
                     onClick={handleBack}
-                    className="mb-6 flex items-center gap-2 text-gray-300 hover:text-violet-400 transition-colors"
+                    className="mb-6 flex items-center gap-2 theme-text-secondary hover:theme-text-accent transition-colors"
                 >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
@@ -94,7 +94,7 @@ export default function ModuleDetail() {
                 </button>
 
                 {/* Module Content */}
-                <div className="bg-gray-800 rounded-lg p-6 md:p-8">
+                <div className="theme-card rounded-lg p-6 md:p-8">
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2 mb-4">
                         <span className="bg-green-700 text-white px-3 py-1 rounded text-sm font-medium">
@@ -109,12 +109,12 @@ export default function ModuleDetail() {
                     </div>
 
                     {/* Title */}
-                    <h1 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                    <h1 className="text-3xl md:text-4xl font-bold theme-text-primary mb-6">
                         {module.name}
                     </h1>
 
                     {/* Description */}
-                    <div className="text-gray-300 mb-8 space-y-4">
+                    <div className="theme-text-secondary mb-8 space-y-4">
                         {module.shortdescription && (
                             <p className="text-lg font-medium">{module.shortdescription}</p>
                         )}
@@ -126,8 +126,8 @@ export default function ModuleDetail() {
                     {/* Action Buttons */}
                     <div className="flex justify-center">
                         <button
-                            style={{ backgroundColor: '#c4b5fd' }}
-                            className="w-full sm:w-auto text-black px-8 py-3 rounded-lg font-medium hover:bg-violet-400 transition-colors"
+                            style={{ backgroundColor: 'var(--accent)' }}
+                            className="w-full sm:w-auto text-black px-8 py-3 rounded-lg font-medium hover:opacity-80 transition-colors"
                         >
                             {t.moduleDetail.enroll}
                         </button>

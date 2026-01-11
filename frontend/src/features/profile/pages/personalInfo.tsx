@@ -61,23 +61,23 @@ export default function PersonalInfo() {
 
     
     return (
-    <div className="min-h-screen bg-neutral-950 flex items-center justify-center px-6 py-4">
+    <div className="min-h-screen theme-page flex items-center justify-center px-6 py-4">
         <div className="w-full max-w-sm">
-            <h1 className="text-white text-4xl font-normal text-center mb-8">Profiel aanmaken</h1>
+            <h1 className="theme-text-primary text-4xl font-normal text-center mb-8">Profiel aanmaken</h1>
             
-            <div className="bg-neutral-800 rounded-3xl p-6 space-y-4">
+            <div className="theme-card rounded-3xl p-6 space-y-4">
             
-            <h2 className="text-white text-2xl font-normal text-center mb-4">Persoonlijke gegevens</h2>
+            <h2 className="theme-text-primary text-2xl font-normal text-center mb-4">Persoonlijke gegevens</h2>
             <div className="relative flex items-center w-full max-w-md">
                 {/* Connecting line */}
-                <div className="absolute left-0 right-0 top-1/2 h-[2px] -translate-y-1/2 bg-gray-600" />
+                <div className="absolute left-0 right-0 top-1/2 h-[2px] -translate-y-1/2 theme-button-secondary" />
                 {/* Step 1 */}
                 <p className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-black">1</p>
                 {/* Step 2 */}
-                <p className="relative z-10 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-gray-600 text-sm font-medium text-white">2</p>
+                <p className="relative z-10 ml-auto flex h-8 w-8 items-center justify-center rounded-full theme-button-secondary text-sm font-medium theme-text-primary">2</p>
             </div>
             <div>
-                <p> Vul hieronder je persoonlijke gegevens in om je profiel aan te maken die de Ai recommender zal gebruiken om modules voor jou te vinden.</p>
+                <p className="theme-text-secondary"> Vul hieronder je persoonlijke gegevens in om je profiel aan te maken die de Ai recommender zal gebruiken om modules voor jou te vinden.</p>
             </div>
             {showError && (localError || error) && (
                         <div className="bg-red-500/20 border border-red-500 rounded-lg p-3 mb-4">
@@ -85,7 +85,7 @@ export default function PersonalInfo() {
                         </div>
                     )}
             <div>
-                <label htmlFor="opleiding" className="block text-white text-sm mb-2">
+                <label htmlFor="opleiding" className="block theme-text-primary text-sm mb-2">
                 Opleiding
                 </label>
                 <input
@@ -93,12 +93,12 @@ export default function PersonalInfo() {
                 id="opleiding"
                 value={opleiding}
                 onChange={(e) => { setOpleiding(e.target.value); setShowError(false); setLocalError(null); }}
-                className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 />
             </div>
 
             <div>
-                <label htmlFor="leerjaar" className="block text-white text-sm mb-2">
+                <label htmlFor="leerjaar" className="block theme-text-primary text-sm mb-2">
                 Leerjaar
                 </label>
                 <input
@@ -106,23 +106,24 @@ export default function PersonalInfo() {
                 id="leerjaar"
                 value={leerjaar}
                 onChange={(e) => { setLeerjaar(e.target.value); setShowError(false); setLocalError(null); }}
-                className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 />
             </div>
             {showStudielocatieInfo && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
-                <div className="bg-neutral-900 rounded-2xl p-6 w-full max-w-sm text-white relative">
+                <div className="theme-card-alt rounded-2xl p-6 w-full max-w-sm theme-text-primary relative">
 
                 <h3 className="text-lg font-medium mb-2">Studielocatie</h3>
 
-                <p className="text-sm text-gray-300 leading-relaxed">
+                <p className="text-sm theme-text-secondary leading-relaxed">
                     Vul hier een locatie in waar je zou willen studeren.
                     Dit veld is NIET verplicht om in te vullen!
                 </p>
 
                 <button
                     onClick={() => setShowStudielocatieInfo(false)}
-                    className="mt-6 w-full rounded-lg bg-violet-400 hover:bg-violet-300 text-white font-medium py-2 transition"
+                    style={{ backgroundColor: 'var(--accent)' }}
+                    className="mt-6 w-full rounded-lg hover:opacity-80 text-black font-medium py-2 transition"
                 >
                     Sluiten
                 </button>
@@ -130,14 +131,14 @@ export default function PersonalInfo() {
             </div>
             )}
             <div>
-                <label htmlFor="studielocatie" className="flex items-center gap-2 text-white text-sm mb-2">
+                <label htmlFor="studielocatie" className="flex items-center gap-2 theme-text-primary text-sm mb-2">
                     Studielocatie
 
                     {/* Info icon */}
                     <button
                     type="button"
                     onClick={() => setShowStudielocatieInfo(true)}
-                    className="flex h-5 w-5 items-center justify-center rounded-full bg-neutral-700 text-xs font-bold text-white hover:bg-neutral-500 transition"
+                    className="flex h-5 w-5 items-center justify-center rounded-full theme-button-secondary text-xs font-bold theme-text-primary hover:opacity-80 transition"
                     aria-label="Studielocatie informatie"
                     >
                     i
@@ -149,19 +150,19 @@ export default function PersonalInfo() {
                     id="studielocatie"
                     value={studielocatie}
                     onChange={(e) => { setStudielocatie(e.target.value); setShowError(false); setLocalError(null); }}
-                    className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                    className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 />
             </div>
 
             <div>
-                <label htmlFor="studiepunten" className="block text-white text-sm mb-2">
+                <label htmlFor="studiepunten" className="block theme-text-primary text-sm mb-2">
                 Studiepunten
                 </label>
                 <select
                     id="studiepunten"
                     value={studiepunten}
                     onChange={(e) => { setStudiepunten(e.target.value); setShowError(false); setLocalError(null); }}
-                    className="w-full bg-neutral-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                    className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 >
                     <option value="0">Selecteer studiepunten</option>
                     <option value="15">15</option>
@@ -173,8 +174,8 @@ export default function PersonalInfo() {
             <button 
                 type="button"
                 onClick={handleNext}
-                style={{ backgroundColor: '#c4b5fd' }}
-                className="w-full hover:bg-violet-400 text-black font-medium rounded-lg px-4 py-3 mt-4 transition-colors"
+                style={{ backgroundColor: 'var(--accent)' }}
+                className="w-full hover:opacity-80 text-black font-medium rounded-lg px-4 py-3 mt-4 transition-colors"
             >
                 Volgende
             </button>

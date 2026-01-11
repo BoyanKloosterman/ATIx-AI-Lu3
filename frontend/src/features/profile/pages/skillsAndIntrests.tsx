@@ -1,16 +1,22 @@
-import React, { useState, useRef, type Dispatch, type SetStateAction, type KeyboardEvent, type JSX } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import type { PersonalInfo, CreateProfileDto } from "../types/profile.types";
+import React, {
+    useState,
+    useRef,
+    type Dispatch,
+    type SetStateAction,
+    type KeyboardEvent,
+    type JSX,
+} from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import type { PersonalInfo, CreateProfileDto } from '../types/profile.types';
 import { useProfile, useGetAllTags } from '../hooks/useProfile';
-
 
 export default function SkillsAndIntrests(): JSX.Element {
     const [skills, setSkills] = useState<string[]>([]);
     const [interests, setInterests] = useState<string[]>([]);
 
-    const [skillSearchInput, setSkillSearchInput] = useState<string>("");
+    const [skillSearchInput, setSkillSearchInput] = useState<string>('');
     const [isSkillDropdownOpen, setIsSkillDropdownOpen] = useState(false);
-    const [interestSearchInput, setInterestSearchInput] = useState<string>("");
+    const [interestSearchInput, setInterestSearchInput] = useState<string>('');
     const [isInterestDropdownOpen, setIsInterestDropdownOpen] = useState(false);
 
     // Local error state (validation + provider errors)
@@ -21,14 +27,14 @@ export default function SkillsAndIntrests(): JSX.Element {
 
     const MAX_TAGS: number = 5;
     const navigate = useNavigate();
-    
+
     // Use refs to track if we've done initial prefill
     const prefillDoneRef = useRef(false);
 
     const addTag = (
         value: string,
         setter: Dispatch<SetStateAction<string[]>>,
-        tags: string[]
+        tags: string[],
     ): void => {
         if (!value.trim()) return;
 
@@ -44,7 +50,7 @@ export default function SkillsAndIntrests(): JSX.Element {
         if (skills.length >= MAX_TAGS) return;
         if (!skills.includes(value.trim())) {
             setSkills([...skills, value.trim()]);
-            setSkillSearchInput("");
+            setSkillSearchInput('');
             setIsSkillDropdownOpen(false);
             // clear any previous errors
             setShowError(false);
@@ -57,7 +63,7 @@ export default function SkillsAndIntrests(): JSX.Element {
         if (interests.length >= MAX_TAGS) return;
         if (!interests.includes(value.trim())) {
             setInterests([...interests, value.trim()]);
-            setInterestSearchInput("");
+            setInterestSearchInput('');
             setIsInterestDropdownOpen(false);
             // clear any previous errors
             setShowError(false);
@@ -68,7 +74,7 @@ export default function SkillsAndIntrests(): JSX.Element {
     const removeTag = (
         index: number,
         setter: Dispatch<SetStateAction<string[]>>,
-        tags: string[]
+        tags: string[],
     ): void => {
         setter(tags.filter((_, i) => i !== index));
         setShowError(false);
@@ -108,7 +114,8 @@ export default function SkillsAndIntrests(): JSX.Element {
     }, [error]);
 
     // Prefer draft from context (set on previous step). If not available (fallback), use navigation state.
-    const personalInfo = (draft as PersonalInfo | null) ?? (location.state as PersonalInfo | undefined) ?? null;
+    const personalInfo =
+        (draft as PersonalInfo | null) ?? (location.state as PersonalInfo | undefined) ?? null;
 
     // Debugging: log mount and changes to draft or location
     React.useEffect(() => {
@@ -119,12 +126,12 @@ export default function SkillsAndIntrests(): JSX.Element {
         });
     }, [draft, location.pathname, location.state]);
 
-    const handleSave = async (e: React.FormEvent) =>  {
+    const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
 
         // Build a CreateProfileDto ensuring correct types and defaults
-        if(skills.length === 0 || interests.length === 0) {
-            setLocalError("Voeg ten minste één vaardigheid en één interesse toe.");
+        if (skills.length === 0 || interests.length === 0) {
+            setLocalError('Voeg ten minste één vaardigheid en één interesse toe.');
             setShowError(true);
             return;
         }
@@ -136,9 +143,9 @@ export default function SkillsAndIntrests(): JSX.Element {
             skills,
             interests,
         };
-        
+
         try {
-            console.log("test calling api call");
+            console.log('test calling api call');
 
             await createProfile(createProfileData);
             navigate('/dashboard'); // Redirect after successful creation
@@ -147,193 +154,240 @@ export default function SkillsAndIntrests(): JSX.Element {
             setLocalError(err?.message ?? 'Er is iets misgegaan bij het aanmaken van het profiel.');
             setShowError(true);
         }
-    }
+    };
 
-return (
-    <div className="min-h-screen bg-neutral-950 flex items-center justify-center px-6 py-4">
-        <div className="w-full max-w-sm">
-            <h1 className="text-white text-4xl text-center mb-8">Profiel aanmaken</h1>
+    return (
+        <div className="min-h-screen theme-page flex items-center justify-center px-6 py-4">
+            <div className="w-full max-w-sm">
+                <h1 className="theme-text-primary text-4xl text-center mb-8">Profiel aanmaken</h1>
 
-            <div className="bg-neutral-800 rounded-3xl p-6 space-y-4">
-            <div className="flex items-center justify-between">
-                <button
-                    type="button"
-                    onClick={() => { setShowError(false); setLocalError(null); navigate('/profile/createProfile'); }}
-                    className="text-sm bg-neutral-700 hover:bg-neutral-600 text-white rounded px-3 py-1 mr-2 transition"
-                >
-                    Terug
-                </button>
-                <h2 className="text-white text-2xl text-center flex-1">
-                    Vaardigheden & Intresses
-                </h2>
-            </div>
-            {showError && (localError || error) && (
-                <div className="bg-red-500/20 border border-red-500 rounded-lg p-3 mb-4">
-                    <p className="text-red-300 text-sm">{localError ?? error}</p>
-                </div>
-            )}
-
-            <div className="relative flex items-center w-full max-w-md">
-                {/* Connecting line */}
-                <div className="absolute left-0 right-0 top-1/2 h-[2px] -translate-y-1/2 bg-gray-200" />
-                {/* Step 1 */}
-                <p className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-gray-600 text-sm font-medium text-white">1</p>
-                {/* Step 2 */}
-                <p className="relative z-10 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-black">2</p>
-            </div>
-            {/* SKILLS */}
-            <div>
-                <p className="text-neutral-300 mb-1 text-sm">Vaardigheden</p>
-                <div className="relative">
-                    {/* Selected tags */}
-                    <div className="border border-neutral-700 rounded-xl p-3 flex flex-wrap gap-2 bg-neutral-900 cursor-pointer" onClick={() => setIsSkillDropdownOpen(true)}>
-                        {skills.map((tag, i) => (
-                            <span
-                                key={i}
-                                className="bg-violet-400/20 text-violet-300 px-3 py-1 rounded-full text-sm flex items-center"
-                            >
-                                {tag}
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        removeTag(i, setSkills, skills);
-                                    }}
-                                    className="!py-1 !px-2 ml-1 text-xs leading-none hover:text-red-400"
-                                >
-                                    ×
-                                </button>
-                            </span>
-                        ))}
-
-                        <input
-                            type="text"
-                            value={skillSearchInput}
-                            onChange={(e) => {
-                                setSkillSearchInput(e.target.value);
-                                setIsSkillDropdownOpen(true);
+                <div className="theme-card rounded-3xl p-6 space-y-4">
+                    <div className="flex items-center justify-between">
+                        <button
+                            type="button"
+                            onClick={() => {
                                 setShowError(false);
                                 setLocalError(null);
+                                navigate('/profile/createProfile');
                             }}
-                            onFocus={() => setIsSkillDropdownOpen(true)}
-                            onBlur={() => setTimeout(() => setIsSkillDropdownOpen(false), 200)}
-                            placeholder={skills.length === 0 ? "Zoek een vaardigheid..." : ""}
-                            className="flex-1 bg-transparent outline-none text-white placeholder:text-neutral-500 min-w-[120px]"
-                        />
+                            className="text-sm theme-button-secondary theme-text-primary rounded px-3 py-1 mr-2 transition"
+                        >
+                            Terug
+                        </button>
+                        <h2 className="theme-text-primary text-2xl text-center flex-1">
+                            Vaardigheden & Intresses
+                        </h2>
                     </div>
-
-                    {/* Dropdown menu */}
-                    {isSkillDropdownOpen && (
-                        <div className="absolute z-10 w-full mt-2 bg-neutral-800 border border-neutral-700 rounded-xl max-h-48 overflow-y-auto">
-                            {tagsLoading ? (
-                                <div className="p-3 text-neutral-400 text-center">Laden...</div>
-                            ) : availableTags
-                                .filter((tag) =>
-                                    tag.toLowerCase().includes(skillSearchInput.toLowerCase()) &&
-                                    !skills.includes(tag)
-                                )
-                                .map((tag) => (
-                                    <div
-                                        key={tag}
-                                        onClick={() => addSkillTag(tag)}
-                                        className="p-3 text-neutral-300 hover:bg-neutral-700 cursor-pointer transition-colors"
-                                    >
-                                        {tag}
-                                    </div>
-                                ))}
-                            {!tagsLoading &&
-                                availableTags.filter((tag) =>
-                                    tag.toLowerCase().includes(skillSearchInput.toLowerCase()) &&
-                                    !skills.includes(tag)
-                                ).length === 0 && (
-                                    <div className="p-3 text-neutral-500 text-center text-sm">Geen vaardigheden gevonden</div>
-                                )}
+                    {showError && (localError || error) && (
+                        <div className="bg-red-500/20 border border-red-500 rounded-lg p-3 mb-4">
+                            <p className="text-red-300 text-sm">{localError ?? error}</p>
                         </div>
                     )}
-                </div>
-            </div>
 
-            {/* INTERESTS */}
-            <div>
-                <p className="text-neutral-300 mb-1 text-sm">Intresses</p>
-                <div className="relative">
-                    {/* Selected tags */}
-                    <div className="border border-neutral-700 rounded-xl p-3 flex flex-wrap gap-2 bg-neutral-900 cursor-pointer" onClick={() => setIsInterestDropdownOpen(true)}>
-                        {interests.map((tag, i) => (
-                            <span
-                                key={i}
-                                className="bg-violet-400/20 text-violet-300 px-3 py-1 rounded-full text-sm flex items-center"
+                    <div className="relative flex items-center w-full max-w-md">
+                        {/* Connecting line */}
+                        <div className="absolute left-0 right-0 top-1/2 h-[2px] -translate-y-1/2 bg-gray-200" />
+                        {/* Step 1 */}
+                        <p className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full theme-button-secondary text-sm font-medium theme-text-primary">
+                            1
+                        </p>
+                        {/* Step 2 */}
+                        <p className="relative z-10 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-black">
+                            2
+                        </p>
+                    </div>
+                    {/* SKILLS */}
+                    <div>
+                        <p className="theme-text-secondary mb-1 text-sm">Vaardigheden</p>
+                        <div className="relative">
+                            {/* Selected tags */}
+                            <div
+                                className="border theme-border rounded-xl p-3 flex flex-wrap gap-2 theme-card-alt cursor-pointer"
+                                onClick={() => setIsSkillDropdownOpen(true)}
                             >
-                                {tag}
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        removeTag(i, setInterests, interests);
-                                    }}
-                                    className="!py-1 !px-2 ml-1 text-xs leading-none hover:text-red-400"
-                                >
-                                    ×
-                                </button>
-                            </span>
-                        ))}
-
-                        <input
-                            type="text"
-                            value={interestSearchInput}
-                            onChange={(e) => {
-                                setInterestSearchInput(e.target.value);
-                                setIsInterestDropdownOpen(true);
-                                setShowError(false);
-                                setLocalError(null);
-                            }}
-                            onFocus={() => setIsInterestDropdownOpen(true)}
-                            onBlur={() => setTimeout(() => setIsInterestDropdownOpen(false), 200)}
-                            placeholder={interests.length === 0 ? "Zoek een interesse..." : ""}
-                            className="flex-1 bg-transparent outline-none text-white placeholder:text-neutral-500 min-w-[120px]"
-                        />
-                    </div>
-
-                    {/* Dropdown menu */}
-                    {isInterestDropdownOpen && (
-                        <div className="absolute z-10 w-full mt-2 bg-neutral-800 border border-neutral-700 rounded-xl max-h-48 overflow-y-auto">
-                            {tagsLoading ? (
-                                <div className="p-3 text-neutral-400 text-center">Laden...</div>
-                            ) : availableTags
-                                .filter((tag) =>
-                                    tag.toLowerCase().includes(interestSearchInput.toLowerCase()) &&
-                                    !interests.includes(tag)
-                                )
-                                .map((tag) => (
-                                    <div
-                                        key={tag}
-                                        onClick={() => addInterestTag(tag)}
-                                        className="p-3 text-neutral-300 hover:bg-neutral-700 cursor-pointer transition-colors"
+                                {skills.map((tag, i) => (
+                                    <span
+                                        key={i}
+                                        className="bg-violet-400/20 text-violet-300 px-3 py-1 rounded-full text-sm flex items-center"
                                     >
                                         {tag}
-                                    </div>
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                removeTag(i, setSkills, skills);
+                                            }}
+                                            className="!py-1 !px-2 ml-1 text-xs leading-none hover:text-red-400"
+                                        >
+                                            ×
+                                        </button>
+                                    </span>
                                 ))}
-                            {!tagsLoading &&
-                                availableTags.filter((tag) =>
-                                    tag.toLowerCase().includes(interestSearchInput.toLowerCase()) &&
-                                    !interests.includes(tag)
-                                ).length === 0 && (
-                                    <div className="p-3 text-neutral-500 text-center text-sm">Geen tags gevonden</div>
-                                )}
+
+                                <input
+                                    type="text"
+                                    value={skillSearchInput}
+                                    onChange={(e) => {
+                                        setSkillSearchInput(e.target.value);
+                                        setIsSkillDropdownOpen(true);
+                                        setShowError(false);
+                                        setLocalError(null);
+                                    }}
+                                    onFocus={() => setIsSkillDropdownOpen(true)}
+                                    onBlur={() =>
+                                        setTimeout(() => setIsSkillDropdownOpen(false), 200)
+                                    }
+                                    placeholder={
+                                        skills.length === 0 ? 'Zoek een vaardigheid...' : ''
+                                    }
+                                    className="flex-1 bg-transparent outline-none theme-text-primary placeholder:theme-text-muted min-w-[120px]"
+                                />
+                            </div>
+
+                            {/* Dropdown menu */}
+                            {isSkillDropdownOpen && (
+                                <div className="absolute z-10 w-full mt-2 theme-card border theme-border rounded-xl max-h-48 overflow-y-auto">
+                                    {tagsLoading ? (
+                                        <div className="p-3 theme-text-muted text-center">
+                                            Laden...
+                                        </div>
+                                    ) : (
+                                        availableTags
+                                            .filter(
+                                                (tag) =>
+                                                    tag
+                                                        .toLowerCase()
+                                                        .includes(skillSearchInput.toLowerCase()) &&
+                                                    !skills.includes(tag),
+                                            )
+                                            .map((tag) => (
+                                                <div
+                                                    key={tag}
+                                                    onClick={() => addSkillTag(tag)}
+                                                    className="p-3 theme-text-secondary hover:theme-card-alt cursor-pointer transition-colors"
+                                                >
+                                                    {tag}
+                                                </div>
+                                            ))
+                                    )}
+                                    {!tagsLoading &&
+                                        availableTags.filter(
+                                            (tag) =>
+                                                tag
+                                                    .toLowerCase()
+                                                    .includes(skillSearchInput.toLowerCase()) &&
+                                                !skills.includes(tag),
+                                        ).length === 0 && (
+                                            <div className="p-3 theme-text-muted text-center text-sm">
+                                                Geen vaardigheden gevonden
+                                            </div>
+                                        )}
+                                </div>
+                            )}
                         </div>
-                    )}
+                    </div>
+
+                    {/* INTERESTS */}
+                    <div>
+                        <p className="theme-text-secondary mb-1 text-sm">Intresses</p>
+                        <div className="relative">
+                            {/* Selected tags */}
+                            <div
+                                className="border theme-border rounded-xl p-3 flex flex-wrap gap-2 theme-card-alt cursor-pointer"
+                                onClick={() => setIsInterestDropdownOpen(true)}
+                            >
+                                {interests.map((tag, i) => (
+                                    <span
+                                        key={i}
+                                        className="bg-violet-400/20 text-violet-300 px-3 py-1 rounded-full text-sm flex items-center"
+                                    >
+                                        {tag}
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                removeTag(i, setInterests, interests);
+                                            }}
+                                            className="!py-1 !px-2 ml-1 text-xs leading-none hover:text-red-400"
+                                        >
+                                            ×
+                                        </button>
+                                    </span>
+                                ))}
+
+                                <input
+                                    type="text"
+                                    value={interestSearchInput}
+                                    onChange={(e) => {
+                                        setInterestSearchInput(e.target.value);
+                                        setIsInterestDropdownOpen(true);
+                                        setShowError(false);
+                                        setLocalError(null);
+                                    }}
+                                    onFocus={() => setIsInterestDropdownOpen(true)}
+                                    onBlur={() =>
+                                        setTimeout(() => setIsInterestDropdownOpen(false), 200)
+                                    }
+                                    placeholder={
+                                        interests.length === 0 ? 'Zoek een interesse...' : ''
+                                    }
+                                    className="flex-1 bg-transparent outline-none theme-text-primary placeholder:theme-text-muted min-w-[120px]"
+                                />
+                            </div>
+
+                            {/* Dropdown menu */}
+                            {isInterestDropdownOpen && (
+                                <div className="absolute z-10 w-full mt-2 theme-card border theme-border rounded-xl max-h-48 overflow-y-auto">
+                                    {tagsLoading ? (
+                                        <div className="p-3 theme-text-muted text-center">
+                                            Laden...
+                                        </div>
+                                    ) : (
+                                        availableTags
+                                            .filter(
+                                                (tag) =>
+                                                    tag
+                                                        .toLowerCase()
+                                                        .includes(
+                                                            interestSearchInput.toLowerCase(),
+                                                        ) && !interests.includes(tag),
+                                            )
+                                            .map((tag) => (
+                                                <div
+                                                    key={tag}
+                                                    onClick={() => addInterestTag(tag)}
+                                                    className="p-3 theme-text-secondary hover:theme-card-alt cursor-pointer transition-colors"
+                                                >
+                                                    {tag}
+                                                </div>
+                                            ))
+                                    )}
+                                    {!tagsLoading &&
+                                        availableTags.filter(
+                                            (tag) =>
+                                                tag
+                                                    .toLowerCase()
+                                                    .includes(interestSearchInput.toLowerCase()) &&
+                                                !interests.includes(tag),
+                                        ).length === 0 && (
+                                            <div className="p-3 theme-text-muted text-center text-sm">
+                                                Geen tags gevonden
+                                            </div>
+                                        )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    <button
+                        onClick={handleSave}
+                        style={{ backgroundColor: 'var(--accent)' }}
+                        className="w-full hover:opacity-80 text-black font-medium rounded-lg px-4 py-3 mt-4 transition-colors"
+                    >
+                        Opslaan
+                    </button>
                 </div>
             </div>
 
-            <button
-            onClick={handleSave}
-                style={{ backgroundColor: "#c4b5fd" }}
-                className="w-full hover:bg-violet-400 text-black font-medium rounded-lg px-4 py-3 mt-4 transition-colors"
-            >
-                Opslaan
-            </button>
-            </div>
-        </div>
-
-        <div className="fixed bottom-4 left-4 text-red-600 font-bold">Avans</div>
+            <div className="fixed bottom-4 left-4 text-red-600 font-bold">Avans</div>
         </div>
     );
 }

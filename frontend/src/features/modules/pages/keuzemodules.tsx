@@ -336,16 +336,16 @@ export default function Keuzemodules() {
     };
 
     return (
-        <div className="min-h-screen bg-neutral-950 w-full overflow-x-hidden">
+        <div className="min-h-screen theme-page w-full overflow-x-hidden">
             {/* Main Content */}
             <div
                 className={`max-w-6xl mx-auto px-4 py-8 ${selectedForCompare.size > 0 ? 'pb-32 md:pb-8' : ''}`}
             >
-                <h1 className="text-4xl font-bold text-white mb-4 text-center">
+                <h1 className="text-4xl font-bold theme-text-primary mb-4 text-center">
                     {t.modules.title}
                 </h1>
 
-                <p className="text-gray-300 mb-6 text-center max-w-3xl mx-auto">
+                <p className="theme-text-secondary mb-6 text-center max-w-3xl mx-auto">
                     {t.modules.description}
                 </p>
 
@@ -357,10 +357,10 @@ export default function Keuzemodules() {
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder={t.modules.searchPlaceholder}
-                            className="w-full bg-gray-200 rounded-lg pl-10 pr-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            className="w-full theme-card theme-text-primary rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-400"
                         />
                         <svg
-                            className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-600"
+                            className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 theme-text-muted"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -411,17 +411,17 @@ export default function Keuzemodules() {
 
                 {/* Compare Bar - Fixed bottom on mobile */}
                 {selectedForCompare.size > 0 && (
-                    <div className="fixed md:static bottom-0 left-0 right-0 bg-neutral-900 md:bg-violet-900 md:bg-opacity-30 border-t md:border border-violet-700 md:rounded-lg p-4 mb-0 md:mb-8 z-40 shadow-lg md:shadow-none">
+                    <div className="fixed md:static bottom-0 left-0 right-0 theme-card-alt md:bg-violet-900 md:bg-opacity-30 border-t md:border border-violet-700 md:rounded-lg p-4 mb-0 md:mb-8 z-40 shadow-lg md:shadow-none">
                         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                             <div className="flex items-center gap-3 w-full md:w-auto">
-                                <div className="text-white font-medium">
+                                <div className="theme-text-primary font-medium">
                                     {t.modules.compare.selected.replace(
                                         '{count}',
                                         String(selectedForCompare.size),
                                     )}
                                 </div>
                                 {selectedForCompare.size < 2 && (
-                                    <div className="text-sm text-gray-300 hidden md:block">
+                                    <div className="text-sm theme-text-secondary hidden md:block">
                                         ({t.modules.compare.selectMin})
                                     </div>
                                 )}
@@ -434,7 +434,7 @@ export default function Keuzemodules() {
                             <div className="flex gap-3 w-full md:w-auto">
                                 <button
                                     onClick={() => setSelectedForCompare(new Set())}
-                                    className="flex-1 md:flex-initial bg-gray-700 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-600 transition-colors"
+                                    className="flex-1 md:flex-initial theme-button-secondary px-4 py-2 rounded-lg font-medium transition-colors"
                                 >
                                     {t.modules.compare.remove}
                                 </button>
@@ -443,12 +443,12 @@ export default function Keuzemodules() {
                                     disabled={selectedForCompare.size < 2}
                                     style={{
                                         backgroundColor:
-                                            selectedForCompare.size >= 2 ? '#c4b5fd' : '#6b7280',
+                                            selectedForCompare.size >= 2 ? 'var(--accent)' : 'var(--bg-button)',
                                     }}
                                     className={`flex-1 md:flex-initial px-6 py-2 rounded-lg font-medium transition-colors ${
                                         selectedForCompare.size >= 2
-                                            ? 'text-black hover:bg-violet-400 cursor-pointer'
-                                            : 'text-gray-400 cursor-not-allowed'
+                                            ? 'text-black hover:opacity-80 cursor-pointer'
+                                            : 'theme-text-muted cursor-not-allowed'
                                     }`}
                                 >
                                     {t.modules.compare.button}
@@ -465,17 +465,17 @@ export default function Keuzemodules() {
                             {hasActiveFilters && (
                                 <button
                                     onClick={clearFilters}
-                                    className="text-sm text-gray-300 hover:text-violet-400 underline transition-colors"
+                                    className="text-sm theme-text-secondary hover:theme-text-accent underline transition-colors"
                                 >
                                     {t.modules.clearFilters}
                                 </button>
                             )}
                         </div>
-                        <div className="bg-neutral-950 rounded-lg p-6 border border-gray-800">
+                        <div className="theme-page rounded-lg p-6 border theme-border">
                             <div className="space-y-8">
                                 {/* Moeilijkheidsgraad Filter */}
                                 <div>
-                                    <h3 className="text-xl font-bold text-white mb-4">
+                                    <h3 className="text-xl font-bold theme-text-primary mb-4">
                                         {t.modules.difficulty}
                                     </h3>
                                     <div className="flex flex-wrap gap-4">
@@ -490,9 +490,9 @@ export default function Keuzemodules() {
                                                     onChange={() =>
                                                         toggleFilter('difficulties', difficulty)
                                                     }
-                                                    className="w-5 h-5 text-violet-500 bg-neutral-800 border-gray-600 rounded focus:ring-violet-500 focus:ring-2"
+                                                    className="w-5 h-5 text-violet-500 theme-card-alt border-gray-600 rounded focus:ring-violet-500 focus:ring-2"
                                                 />
-                                                <span className="text-white">{difficulty}</span>
+                                                <span className="theme-text-primary">{difficulty}</span>
                                             </label>
                                         ))}
                                     </div>
@@ -500,7 +500,7 @@ export default function Keuzemodules() {
 
                                 {/* Locatie Filter */}
                                 <div>
-                                    <h3 className="text-xl font-bold text-white mb-4">
+                                    <h3 className="text-xl font-bold theme-text-primary mb-4">
                                         {t.modules.location}
                                     </h3>
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -515,9 +515,9 @@ export default function Keuzemodules() {
                                                     onChange={() =>
                                                         toggleFilter('locations', location)
                                                     }
-                                                    className="w-5 h-5 text-violet-500 bg-neutral-800 border-gray-600 rounded focus:ring-violet-500 focus:ring-2"
+                                                    className="w-5 h-5 text-violet-500 theme-card-alt border-gray-600 rounded focus:ring-violet-500 focus:ring-2"
                                                 />
-                                                <span className="text-white">{location}</span>
+                                                <span className="theme-text-primary">{location}</span>
                                             </label>
                                         ))}
                                     </div>
@@ -525,7 +525,7 @@ export default function Keuzemodules() {
 
                                 {/* Studiepunten Filter */}
                                 <div>
-                                    <h3 className="text-xl font-bold text-white mb-4">
+                                    <h3 className="text-xl font-bold theme-text-primary mb-4">
                                         {t.modules.studyCredits}
                                     </h3>
                                     <div className="flex flex-wrap gap-4">
@@ -540,9 +540,9 @@ export default function Keuzemodules() {
                                                     onChange={() =>
                                                         toggleFilter('studyCredits', credits)
                                                     }
-                                                    className="w-5 h-5 text-violet-500 bg-neutral-800 border-gray-600 rounded focus:ring-violet-500 focus:ring-2"
+                                                    className="w-5 h-5 text-violet-500 theme-card-alt border-gray-600 rounded focus:ring-violet-500 focus:ring-2"
                                                 />
-                                                <span className="text-white">{credits} ECTS</span>
+                                                <span className="theme-text-primary">{credits} ECTS</span>
                                             </label>
                                         ))}
                                     </div>
@@ -551,7 +551,7 @@ export default function Keuzemodules() {
                                 {/* Thema Filter */}
                                 {availableThemes.length > 0 && (
                                     <div>
-                                        <h3 className="text-xl font-bold text-white mb-4">
+                                        <h3 className="text-xl font-bold theme-text-primary mb-4">
                                             {t.modules.theme}
                                         </h3>
                                         <div className="flex flex-wrap gap-4">
@@ -566,9 +566,9 @@ export default function Keuzemodules() {
                                                         onChange={() =>
                                                             toggleFilter('themes', theme)
                                                         }
-                                                        className="w-5 h-5 text-violet-500 bg-neutral-800 border-gray-600 rounded focus:ring-violet-500 focus:ring-2"
+                                                        className="w-5 h-5 text-violet-500 theme-card-alt border-gray-600 rounded focus:ring-violet-500 focus:ring-2"
                                                     />
-                                                    <span className="text-white">{theme}</span>
+                                                    <span className="theme-text-primary">{theme}</span>
                                                 </label>
                                             ))}
                                         </div>
@@ -577,7 +577,7 @@ export default function Keuzemodules() {
                             </div>
 
                             {hasActiveFilters && (
-                                <div className="mt-6 text-sm text-gray-300">
+                                <div className="mt-6 text-sm theme-text-secondary">
                                     {filteredModules.length} {t.modules.modulesFound}
                                 </div>
                             )}
@@ -592,8 +592,8 @@ export default function Keuzemodules() {
                         <p>{error}</p>
                         <button
                             onClick={loadModules}
-                            style={{ backgroundColor: '#c4b5fd' }}
-                            className="mt-2 text-black px-4 py-2 rounded-lg font-medium hover:bg-violet-400 transition-colors"
+                            style={{ backgroundColor: 'var(--accent)' }}
+                            className="mt-2 text-black px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-colors"
                         >
                             {t.modules.tryAgain}
                         </button>
@@ -602,20 +602,20 @@ export default function Keuzemodules() {
 
                 {/* Module Cards */}
                 {isLoading ? (
-                    <div className="text-center py-12 text-gray-600">{t.modules.loading}</div>
+                    <div className="text-center py-12 theme-text-muted">{t.modules.loading}</div>
                 ) : error ? (
                     <div className="text-center py-12">
                         <p className="text-red-600 mb-4">{error}</p>
                         <button
                             onClick={loadModules}
-                            style={{ backgroundColor: '#c4b5fd' }}
-                            className="text-black px-6 py-2.5 rounded-lg font-medium hover:bg-violet-400 transition-colors"
+                            style={{ backgroundColor: 'var(--accent)' }}
+                            className="text-black px-6 py-2.5 rounded-lg font-medium hover:opacity-80 transition-colors"
                         >
                             {t.modules.tryAgain}
                         </button>
                     </div>
                 ) : modules.length === 0 ? (
-                    <div className="text-center py-12 text-gray-600">
+                    <div className="text-center py-12 theme-text-muted">
                         <p>{t.modules.noModulesFound}</p>
                         <p className="text-sm mt-2">{t.modules.checkConsole}</p>
                     </div>
@@ -625,7 +625,7 @@ export default function Keuzemodules() {
                             {currentModules.map((module) => (
                                 <div
                                     key={module.id}
-                                    className="bg-gray-800 rounded-lg p-6 relative p"
+                                    className="theme-card rounded-lg p-6 relative p"
                                 >
                                     {/* Compare Checkbox - Fixed position */}
                                     <div className="absolute top-6 right-6 z-10">
@@ -643,7 +643,7 @@ export default function Keuzemodules() {
                                                     }
                                                     className="peer sr-only"
                                                 />
-                                                <div className="w-6 h-6 border-2 border-violet-400 rounded-md bg-gray-900 peer-checked:bg-violet-600 peer-checked:border-violet-600 peer-disabled:opacity-50 peer-disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center">
+                                                <div className="w-6 h-6 border-2 border-violet-400 rounded-md theme-card-alt peer-checked:bg-violet-600 peer-checked:border-violet-600 peer-disabled:opacity-50 peer-disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center">
                                                     <svg
                                                         className={`w-4 h-4 text-white transition-all duration-200 ${
                                                             selectedForCompare.has(module.id)
@@ -663,7 +663,7 @@ export default function Keuzemodules() {
                                                     </svg>
                                                 </div>
                                             </div>
-                                            <span className="text-sm text-gray-300 hidden xl:inline whitespace-nowrap bg-gray-900 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <span className="text-sm theme-text-secondary hidden xl:inline whitespace-nowrap theme-card-alt px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
                                                 {t.modules.compare.button}
                                             </span>
                                         </label>
@@ -685,13 +685,13 @@ export default function Keuzemodules() {
                                         </div>
 
                                         {/* Title */}
-                                        <h2 className="text-xl font-bold text-white mb-2">
+                                        <h2 className="text-xl font-bold theme-text-primary mb-2">
                                             {module.name ||
                                                 'Lorem ipsum dolor sit amet, consectetur'}
                                         </h2>
 
                                         {/* Description */}
-                                        <p className="text-gray-300 mb-4">
+                                        <p className="theme-text-secondary mb-4">
                                             {module.shortdescription ||
                                                 module.description ||
                                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat'}
@@ -703,8 +703,8 @@ export default function Keuzemodules() {
                                                 onClick={() =>
                                                     navigate(`/keuzemodules/${module.id}`)
                                                 }
-                                                style={{ backgroundColor: '#c4b5fd' }}
-                                                className="text-black px-6 py-2.5 rounded-lg font-medium hover:bg-violet-400 transition-colors"
+                                                style={{ backgroundColor: 'var(--accent)' }}
+                                                className="text-black px-6 py-2.5 rounded-lg font-medium hover:opacity-80 transition-colors"
                                             >
                                                 {t.modules.learnMore}
                                             </button>
@@ -714,14 +714,14 @@ export default function Keuzemodules() {
                                             >
                                                 {favorites.has(module.id) ? (
                                                     <svg
-                                                        className="w-6 h-6 text-white fill-current"
+                                                        className="w-6 h-6 theme-text-primary fill-current"
                                                         viewBox="0 0 24 24"
                                                     >
                                                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                                                     </svg>
                                                 ) : (
                                                     <svg
-                                                        className="w-6 h-6 text-white"
+                                                        className="w-6 h-6 theme-text-primary"
                                                         fill="none"
                                                         stroke="currentColor"
                                                         viewBox="0 0 24 24"
@@ -748,12 +748,12 @@ export default function Keuzemodules() {
                                     onClick={() => handlePageChange(currentPage - 1)}
                                     disabled={currentPage === 1}
                                     style={{
-                                        backgroundColor: currentPage === 1 ? '#374151' : '#c4b5fd',
+                                        backgroundColor: currentPage === 1 ? 'var(--bg-button)' : 'var(--accent)',
                                     }}
                                     className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                                         currentPage === 1
-                                            ? 'text-gray-500 cursor-not-allowed'
-                                            : 'text-black hover:bg-violet-400'
+                                            ? 'theme-text-muted cursor-not-allowed'
+                                            : 'text-black hover:opacity-80'
                                     }`}
                                 >
                                     {t.modules.previous}
@@ -774,13 +774,13 @@ export default function Keuzemodules() {
                                                         style={{
                                                             backgroundColor:
                                                                 currentPage === page
-                                                                    ? '#c4b5fd'
-                                                                    : '#a78bfa',
+                                                                    ? 'var(--accent)'
+                                                                    : 'var(--accent-hover)',
                                                         }}
                                                         className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                                                             currentPage === page
-                                                                ? 'text-black hover:bg-violet-400'
-                                                                : 'text-black hover:bg-violet-500'
+                                                                ? 'text-black hover:opacity-80'
+                                                                : 'text-black hover:opacity-80'
                                                         }`}
                                                     >
                                                         {page}
@@ -791,7 +791,7 @@ export default function Keuzemodules() {
                                                 page === currentPage + 2
                                             ) {
                                                 return (
-                                                    <span key={page} className="px-2 text-gray-400">
+                                                    <span key={page} className="px-2 theme-text-muted">
                                                         ...
                                                     </span>
                                                 );
@@ -806,12 +806,12 @@ export default function Keuzemodules() {
                                     disabled={currentPage === totalPages}
                                     style={{
                                         backgroundColor:
-                                            currentPage === totalPages ? '#374151' : '#c4b5fd',
+                                            currentPage === totalPages ? 'var(--bg-button)' : 'var(--accent)',
                                     }}
                                     className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                                         currentPage === totalPages
-                                            ? 'text-gray-500 cursor-not-allowed'
-                                            : 'text-black hover:bg-violet-400'
+                                            ? 'theme-text-muted cursor-not-allowed'
+                                            : 'text-black hover:opacity-80'
                                     }`}
                                 >
                                     {t.modules.next}
@@ -819,7 +819,7 @@ export default function Keuzemodules() {
                             </div>
                         )}
 
-                        <div className="text-center text-gray-300 text-sm mt-4">
+                        <div className="text-center theme-text-secondary text-sm mt-4">
                             {t.modules.pageOf
                                 .replace('{current}', String(currentPage))
                                 .replace('{total}', String(totalPages))
