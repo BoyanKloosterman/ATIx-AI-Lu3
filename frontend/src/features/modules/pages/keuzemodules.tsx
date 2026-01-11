@@ -323,7 +323,7 @@ export default function Keuzemodules() {
         }
     };
 
-    const selectedModules = modules.filter((m) => selectedForCompare.has(m.id));
+    const selectedModules = allModules.filter((m) => selectedForCompare.has(m.id));
 
     const totalPages = Math.ceil(modules.length / MODULES_PER_PAGE);
     const startIndex = (currentPage - 1) * MODULES_PER_PAGE;
