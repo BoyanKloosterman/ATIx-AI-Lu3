@@ -74,35 +74,6 @@ export default function Settings() {
                             </button>
                         </div>
                     </div>
-
-                    {/* LocalStorage Status */}
-                    <div className="theme-card rounded-lg p-6">
-                        <h2 className="text-xl font-bold theme-text-primary mb-4">{t.settings.localStorage.title}</h2>
-
-                        <div className="space-y-3">
-                            <div className="theme-card-alt rounded-lg p-4">
-                                <div className="flex items-center justify-between">
-                                    <span className="theme-text-muted font-medium">{t.settings.localStorage.language}</span>
-                                    <span className="theme-text-accent font-mono font-semibold">
-                                        "{language}"
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div className="theme-card-alt rounded-lg p-4">
-                                <div className="flex items-center justify-between">
-                                    <span className="theme-text-muted font-medium">{t.settings.localStorage.theme}</span>
-                                    <span className="theme-text-accent font-mono font-semibold">
-                                        "{theme}"
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <p className="theme-text-muted text-sm mt-4 text-center">
-                            {t.settings.localStorage.description}
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
