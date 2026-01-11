@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import jsPDF from 'jspdf';
 import type { Module } from '../../../shared/types/index';
 import authService from '../../auth/services/auth.service';
 import { useLanguage } from '../../../shared/contexts/useLanguage';
