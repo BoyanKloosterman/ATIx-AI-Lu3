@@ -47,7 +47,7 @@ export class UserDocument extends Document {
     studyLocation?: string;
 
     @Prop()
-    studyCredits?: string;
+    studyCredits?: number;
 
     @Prop({ default: false })
     twoFactorEnabled!: boolean;

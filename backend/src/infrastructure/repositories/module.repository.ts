@@ -11,10 +11,25 @@ export class ModuleRepository implements IModuleRepository {
         @InjectModel(ModuleModel.name)
         private readonly moduleModel: Model<ModuleDocument>,
     ) {}
+    
 
     private mapToEntity(doc: ModuleDocument): Module {
         const rawDoc = doc.toObject ? doc.toObject({ flattenMaps: true }) : doc;
         const raw = rawDoc as Record<string, unknown>;
+        
+        // Parse moduleTags - try multiple sources
+        let tagsArray: string[] = [];
+        const tagsValue = raw.module_tags || (doc as any).module_tags || doc.moduleTags;
+        if (tagsValue) {
+            try {
+                // Replace single quotes with double quotes to make it valid JSON
+                const jsonString = (tagsValue as string).replace(/'/g, '"');
+                tagsArray = JSON.parse(jsonString);
+            } catch (e) {
+                console.warn('Failed to parse module_tags:', e);
+            }
+        }
+        
         return new Module(
             doc._id.toString(),
             doc.id,
@@ -27,7 +42,7 @@ export class ModuleRepository implements IModuleRepository {
             doc.contactId,
             doc.level,
             (doc.learningOutcomes || raw.learningoutcomes || '') as string,
-            doc.tags,
+            tagsArray,
             '',
             (doc.interestsMatchScore ?? raw.interests_match_score) as number | undefined,
             (doc.popularityScore ?? raw.popularity_score) as number | undefined,
@@ -70,5 +85,39 @@ export class ModuleRepository implements IModuleRepository {
 
     async deleteAll(): Promise<void> {
         await this.moduleModel.deleteMany({}).exec();
+    }
+
+    async getAllTags(): Promise<string[]> {
+        const docs = (await this.moduleModel.find().exec()) as unknown as ModuleDocument[];
+        const allTags = new Set<string>();
+
+        docs.forEach((doc) => {
+            const rawDoc = doc.toObject ? doc.toObject({ flattenMaps: true }) : doc;
+            const raw = rawDoc as Record<string, unknown>;
+            
+            // Try to get module_tags from raw object or moduleTags property
+            const tagsValue = raw.module_tags || (doc as any).module_tags || doc.moduleTags;
+            
+            if (tagsValue) {
+                try {
+                    // Replace single quotes with double quotes to make it valid JSON
+                    const jsonString = (tagsValue as string).replace(/'/g, '"');
+                    const tagsArray = JSON.parse(jsonString);
+                    if (Array.isArray(tagsArray)) {
+                        tagsArray.forEach((tag: string) => {
+                            const trimmedTag = tag.trim().toLowerCase();
+                            if (trimmedTag) {
+                                allTags.add(trimmedTag);
+                            }
+                        });
+                    }
+                } catch (e) {
+                    // If parsing fails, skip this document
+                    console.warn('Failed to parse module_tags:', e);
+                }
+            }
+        });
+
+        return Array.from(allTags).sort();
     }
 }

@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException, ConflictException, Inject } from '@nestjs/common';
+import {
+    Injectable,
+    UnauthorizedException,
+    ConflictException,
+    Inject,
+} from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { User } from '../../domain/entities/user.entity';
@@ -10,7 +15,9 @@ export class AuthService {
     private readonly jwtSecret = process.env.JWT_SECRET || 'defaultsecret';
     private readonly jwtExpiresIn = '24h';
 
-    constructor(@Inject('IUserRepository') private readonly userRepository: IUserRepository) {}
+    constructor(
+        @Inject('IUserRepository') private readonly userRepository: IUserRepository,
+    ) {}
 
     async register(registerDto: RegisterDto): Promise<{ access_token: string; user: any }> {
         // Normalize email to lowercase
@@ -39,7 +46,7 @@ export class AuthService {
             '', // studyProgram
             0, // yearOfStudy
             '', // studyLocation
-            '', // studyCredits
+            0, // studyCredits
             '', // twoFactorSecret
             '', // refreshToken
         );

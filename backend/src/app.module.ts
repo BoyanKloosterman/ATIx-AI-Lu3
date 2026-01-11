@@ -10,28 +10,31 @@ import { ModuleService } from './application/services/module.service';
 import { ModuleController } from './interfaces/controllers/module.controller';
 import { ModuleRepository } from './infrastructure/repositories/module.repository';
 import { MODULESCHEMA, ModuleModel } from './infrastructure/schemas/module.schema';
+import { UserController } from './interfaces/controllers/user.controller';
+import { UserService } from './application/services/user.service';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-    }),
-    DatabaseModule,
-    RepositoryModule,
-    AuthModule,
-    MongooseModule.forFeature([
-      { name: ModuleModel.name, schema: MODULESCHEMA },
-    ]),
-  ],
-  controllers: [AppController, ModuleController],
-  providers: [
-    AppService,
-    ModuleService,
-    {
-      provide: 'IModuleRepository',
-      useClass: ModuleRepository,
-    },
-  ],
+    imports: [
+        ConfigModule.forRoot({
+        isGlobal: true,
+        envFilePath: '.env',
+        }),
+        DatabaseModule,
+        RepositoryModule,
+        AuthModule,
+        MongooseModule.forFeature([
+        { name: ModuleModel.name, schema: MODULESCHEMA },
+        ]),
+    ],
+    controllers: [AppController, ModuleController, UserController],
+    providers: [
+        AppService,
+        ModuleService,
+        {
+        provide: 'IModuleRepository',
+        useClass: ModuleRepository,
+        },
+        UserService,
+    ],
 })
 export class AppModule {}
