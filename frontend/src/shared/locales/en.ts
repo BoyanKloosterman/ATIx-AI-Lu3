@@ -2,7 +2,7 @@ export const en = {
     nav: {
         dashboard: 'Dashboard',
         modules: 'Elective Modules',
-        aiModules: 'AI Recommendations',
+        aiModules: 'AI Recom\u00ADmendations',
         settings: 'Settings',
         logout: 'Log out',
     },

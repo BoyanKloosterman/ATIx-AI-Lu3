@@ -173,8 +173,13 @@ export default function Recomendation() {
     return (
         <div className="max-w-6xl mx-auto p-6">
             <div className="mb-6">
-                <h1 className="text-2xl font-bold text-white mb-2">{t.nav.aiModules}</h1>
-                <p className="text-gray-300">{t.recommendations.subtitle}</p>
+                <h1
+                    lang={language}
+                    className="text-2xl font-bold text-white mb-2 break-words leading-tight text-center"
+                >
+                    {t.nav.aiModules}
+                </h1>
+                <p className="text-gray-300 text-center">{t.recommendations.subtitle}</p>
             </div>
 
             {isLoading ? (
