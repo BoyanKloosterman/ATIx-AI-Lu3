@@ -44,6 +44,25 @@ export default function ModuleDetail() {
         navigate('/keuzemodules');
     };
 
+    const getUniqueTexts = () => {
+        if (!module) return { shortdescription: '', description: '', content: '' };
+
+        const desc = module.description?.trim() || '';
+        const content = module.content?.trim() || '';
+        const shortDesc = module.shortdescription?.trim() || '';
+
+        const uniqueContent = content && content !== desc ? content : '';
+
+        const uniqueShortDesc =
+            shortDesc && shortDesc !== desc && shortDesc !== content ? shortDesc : '';
+
+        return {
+            shortdescription: uniqueShortDesc,
+            description: desc,
+            content: uniqueContent,
+        };
+    };
+
     if (isLoading) {
         return (
             <div className="bg-neutral-950 w-full overflow-x-hidden">
@@ -151,22 +170,24 @@ export default function ModuleDetail() {
 
                     {/* Description */}
                     <div className="text-gray-300 mb-8 space-y-4">
-                        {module.shortdescription && (
-                            <p className="text-lg font-medium">{module.shortdescription}</p>
+                        {getUniqueTexts().shortdescription && (
+                            <p className="text-lg font-medium">
+                                {getUniqueTexts().shortdescription}
+                            </p>
                         )}
-                        {module.description && (
-                            <p className="whitespace-pre-wrap">{module.description}</p>
+                        {getUniqueTexts().description && (
+                            <p className="whitespace-pre-wrap">{getUniqueTexts().description}</p>
                         )}
                     </div>
 
                     {/* Content */}
-                    {module.content && (
+                    {getUniqueTexts().content && (
                         <div className="mb-8">
                             <h2 className="text-xl md:text-2xl font-bold text-white mb-4">
                                 {t.moduleDetail.content}
                             </h2>
                             <div className="text-gray-300 whitespace-pre-wrap bg-gray-700 rounded-lg p-4">
-                                {module.content}
+                                {getUniqueTexts().content}
                             </div>
                         </div>
                     )}
