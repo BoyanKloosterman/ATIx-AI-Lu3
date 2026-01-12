@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import jsPDF from 'jspdf';
 import type { Module } from '../../../shared/types/index';
 import authService from '../../auth/services/auth.service';
 import { useLanguage } from '../../../shared/contexts/useLanguage';
+import { useProfile } from '../../profile/hooks/useProfile';
 
 interface DashboardProps {
     favoriteModules?: Module[];
@@ -22,6 +24,7 @@ export default function Dashboard({
     const [favoriteModules, setFavoriteModules] = useState<Module[]>(propFavoriteModules || []);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const { userProfile, fetchUserProfile } = useProfile();
 
     // Data ophalen bij mount
     useEffect(() => {
@@ -47,6 +50,12 @@ export default function Dashboard({
             setIsLoading(false);
         }
     }, [propFavoriteModules]);
+
+    useEffect(() => {
+        if (!userProfile) {
+            fetchUserProfile();
+        }
+    }, [userProfile]);
 
     // Handlers blijven hetzelfde
     const handleModuleClick = (moduleId: string) => {
@@ -76,21 +85,203 @@ export default function Dashboard({
         return level || 'P3';
     };
 
-    return (
-        <div className="min-h-screen theme-page w-full overflow-x-hidden">
-            <div className="max-w-6xl mx-auto px-4 py-8">
-                <h1 className="text-4xl font-bold theme-text-primary mb-8 text-center">
-                    {t.dashboard.title}
-                </h1>
+    const handleExportFavorites = () => {
+        if (favoriteModules.length === 0) {
+            alert('Geen favorieten om te exporteren');
+            return;
+        }
 
-                <div className="theme-card rounded-lg p-6">
-                    <h2 className="text-2xl font-bold theme-text-primary mb-6 text-center">
-                        {t.dashboard.favoriteModules}
+        const pdf = new jsPDF();
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const margin = 15;
+        const maxWidth = pageWidth - 2 * margin;
+        let yPosition = margin;
+
+        // Title
+        pdf.setFontSize(20);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Mijn Favoriete Modules', margin, yPosition);
+        yPosition += 10;
+
+        // Date
+        pdf.setFontSize(10);
+        pdf.setFont('helvetica', 'normal');
+        pdf.text(`Geëxporteerd op: ${new Date().toLocaleDateString('nl-NL')}`, margin, yPosition);
+        yPosition += 15;
+
+        favoriteModules.forEach((module, index) => {
+            if (index > 0 && index % 2 === 0) {
+                pdf.addPage();
+                yPosition = margin;
+            }
+
+            pdf.setFontSize(14);
+            pdf.setFont('helvetica', 'bold');
+            const titleLines = pdf.splitTextToSize(module.name, maxWidth);
+            pdf.text(titleLines, margin, yPosition);
+            yPosition += titleLines.length * 7;
+
+            pdf.setFontSize(10);
+            pdf.setFont('helvetica', 'normal');
+            const info = `${getLevelTag(module.level)} | ${module.studycredit} ETC | ${module.location || 'Onbekend'}`;
+            pdf.text(info, margin, yPosition);
+            yPosition += 7;
+
+            if (module.shortdescription) {
+                pdf.setFontSize(9);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Korte beschrijving:', margin, yPosition);
+                yPosition += 5;
+                pdf.setFont('helvetica', 'normal');
+                const shortDescLines = pdf.splitTextToSize(module.shortdescription, maxWidth - 5);
+                pdf.text(shortDescLines, margin + 5, yPosition);
+                yPosition += shortDescLines.length * 5;
+                yPosition += 3;
+            }
+
+            if (module.description) {
+                pdf.setFontSize(9);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Beschrijving:', margin, yPosition);
+                yPosition += 5;
+                pdf.setFont('helvetica', 'normal');
+                const descLines = pdf.splitTextToSize(module.description, maxWidth - 5);
+                pdf.text(descLines, margin + 5, yPosition);
+                yPosition += descLines.length * 5;
+                yPosition += 3;
+            }
+
+            if (module.content) {
+                pdf.setFontSize(9);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Inhoud:', margin, yPosition);
+                yPosition += 5;
+                pdf.setFont('helvetica', 'normal');
+                const contentLines = pdf.splitTextToSize(module.content, maxWidth - 5);
+                pdf.text(contentLines, margin + 5, yPosition);
+                yPosition += contentLines.length * 5;
+                yPosition += 3;
+            }
+
+            if (module.learningoutcomes) {
+                pdf.setFontSize(9);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Leerdoelen:', margin, yPosition);
+                yPosition += 5;
+                pdf.setFont('helvetica', 'normal');
+                const outcomesLines = pdf.splitTextToSize(module.learningoutcomes, maxWidth - 5);
+                pdf.text(outcomesLines, margin + 5, yPosition);
+                yPosition += outcomesLines.length * 5;
+                yPosition += 3;
+            }
+
+            if (module.tags && module.tags.length > 0) {
+                pdf.setFontSize(9);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Tags:', margin, yPosition);
+                yPosition += 5;
+                pdf.setFont('helvetica', 'normal');
+                pdf.text(module.tags.join(', '), margin + 5, yPosition);
+                yPosition += 5;
+            }
+
+            // Separator line
+            if (index < favoriteModules.length - 1) {
+                yPosition += 5;
+                pdf.setDrawColor(200, 200, 200);
+                pdf.line(margin, yPosition, pageWidth - margin, yPosition);
+                yPosition += 10;
+            }
+        });
+
+        // Save PDF
+        pdf.save(`favoriete-modules-${new Date().toISOString().split('T')[0]}.pdf`);
+    };
+
+    return (
+        <div className="min-h-screen bg-neutral-950 w-full overflow-x-hidden">
+            <div className="max-w-6xl mx-auto px-10 py-8 ">
+                <h1 className="text-4xl font-bold text-white mb-8 text-center">{t.dashboard.title}</h1>
+
+                <div className="bg-gray-800 rounded-lg p-6 mb-15">
+                    <h2 className="text-2xl font-bold text-white mb-2 text-center">
+                        Mijn Profiel
                     </h2>
+
+                    {!userProfile ? (
+                        <p className="text-gray-400 text-center">Profiel laden...</p>
+                    ) : (
+                        <>
+                        <h3 className="text-xl text-white">Opleiding</h3>
+                        <p className="mb-2">{userProfile.studyProgram}</p>
+
+                        <h3 className="text-xl text-white">Leerjaar</h3>
+                        <p className="mb-2">{userProfile.yearOfStudy}</p>
+
+                        <h3 className="text-xl text-white">Studielocatie</h3>
+                        <p className="mb-2">{userProfile.studyLocation || '—'}</p>
+
+                        <h3 className="text-xl text-white">Studiepunten</h3>
+                        <p className="mb-2">{userProfile.studyCredits}</p>
+
+                        <h3 className="text-xl text-white">Vaardigheden</h3>
+                        <div className="mb-2">
+                            {userProfile.skills?.map(s => (
+                            <span key={s} className="inline-block bg-pink-300 text-black px-3 py-1 rounded-full text-sm font-medium mr-2 mb-2">
+                                {s}
+                            </span>
+                            ))}
+                        </div>
+
+                        <h3 className="text-xl text-white">Intresses</h3>
+                        <div className="mb-4">
+                            {userProfile.interests?.map(i => (
+                            <span key={i} className="inline-block bg-blue-300 text-black px-3 py-1 rounded-full text-sm font-medium mr-2 mb-2">
+                                {i}
+                            </span>
+                            ))}
+                        </div>
+
+                        <button
+                            onClick={() => navigate('/profile/createProfile')}
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                        >
+                            Aanpassen
+                        </button>
+                        </>
+                    )}
+                </div>
+                <div className="bg-gray-800 rounded-lg p-6">
+                    <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-2xl font-bold text-white">
+                            {t.dashboard.favoriteModules}
+                        </h2>
+                        <button
+                            onClick={handleExportFavorites}
+                            className="flex items-center gap-2 bg-violet-500 hover:bg-violet-600 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={favoriteModules.length === 0}
+                            title="Exporteer favorieten naar PDF"
+                        >
+                            <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                                />
+                            </svg>
+                            <span className="hidden sm:inline">Export</span>
+                        </button>
+                    </div>
 
                     {/* Loading state */}
                     {isLoading && (
-                        <div className="text-center theme-text-primary py-8">
+                        <div className="text-center text-white py-8">
                             <p>{t.dashboard.loading}</p>
                         </div>
                     )}
@@ -106,7 +297,7 @@ export default function Dashboard({
 
                     {/* Empty state */}
                     {!isLoading && !error && favoriteModules.length === 0 && (
-                        <div className="text-center theme-text-muted py-8">
+                        <div className="text-center text-gray-400 py-8">
                             <p>{t.dashboard.noFavorites}</p>
                         </div>
                     )}
@@ -115,7 +306,7 @@ export default function Dashboard({
                     {!isLoading && !error && favoriteModules.length > 0 && (
                         <div className="space-y-6">
                             {favoriteModules.map((module) => (
-                                <div key={module.id} className="theme-card-alt rounded-lg p-4">
+                                <div key={module.id} className="bg-gray-700 rounded-lg p-4">
                                     <div className="flex gap-2 mb-3">
                                         <span className="bg-green-700 text-white px-3 py-1 rounded text-sm font-medium">
                                             {getLevelTag(module.level)}
@@ -128,11 +319,11 @@ export default function Dashboard({
                                         </span>
                                     </div>
 
-                                    <h3 className="text-xl font-semibold theme-text-primary mb-2">
+                                    <h3 className="text-xl font-semibold text-white mb-2">
                                         {module.name}
                                     </h3>
 
-                                    <p className="theme-text-secondary mb-4">
+                                    <p className="text-gray-300 mb-4">
                                         {module.shortdescription ||
                                             module.description ||
                                             t.dashboard.noDescription}
