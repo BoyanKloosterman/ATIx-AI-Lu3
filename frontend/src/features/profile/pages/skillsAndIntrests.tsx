@@ -186,13 +186,13 @@ export default function SkillsAndIntrests(): JSX.Element {
 
                     <div className="relative flex items-center w-full max-w-md">
                         {/* Connecting line */}
-                        <div className="absolute left-0 right-0 top-1/2 h-[2px] -translate-y-1/2 bg-gray-200" />
+                        <div className="absolute left-0 right-0 top-1/2 h-[2px] -translate-y-1/2 theme-button-secondary" />
                         {/* Step 1 */}
                         <p className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full theme-button-secondary text-sm font-medium theme-text-primary">
                             1
                         </p>
                         {/* Step 2 */}
-                        <p className="relative z-10 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-black">
+                        <p className="relative z-10 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-200 text-sm font-medium text-black">
                             2
                         </p>
                     </div>
