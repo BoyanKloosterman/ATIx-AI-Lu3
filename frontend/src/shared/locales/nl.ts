@@ -6,6 +6,11 @@ export const nl = {
         settings: 'Instellingen',
         logout: 'Uitloggen',
     },
+    recommendations: {
+        subtitle:
+            'Aanbevolen modules op basis van jouw profiel: opleiding, interesses, skills, favorieten en voorkeuren (locatie, niveau en studiepunten).',
+        empty: 'Geen aanbevelingen gevonden. Vul eerst je profiel in.',
+    },
     dashboard: {
         title: 'Dashboard',
         favoriteModules: 'Favoriete Modules',
