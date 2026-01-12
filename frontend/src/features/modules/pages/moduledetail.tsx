@@ -65,9 +65,9 @@ export default function ModuleDetail() {
 
     if (isLoading) {
         return (
-            <div className="bg-neutral-950 w-full overflow-x-hidden">
+            <div className="theme-page w-full overflow-x-hidden">
                 <div className="max-w-4xl mx-auto px-4 py-8">
-                    <div className="text-center py-12 text-gray-300">{t.modules.loading}</div>
+                    <div className="text-center py-12 theme-text-secondary">{t.modules.loading}</div>
                 </div>
             </div>
         );
@@ -75,15 +75,15 @@ export default function ModuleDetail() {
 
     if (error || !module) {
         return (
-            <div className="bg-neutral-950 w-full overflow-x-hidden">
+            <div className="theme-page w-full overflow-x-hidden">
                 <div className="max-w-4xl mx-auto px-4 py-8">
-                    <div className="bg-red-900 border border-red-700 text-red-200 px-4 py-3 rounded mb-4">
+                    <div className="bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded mb-4">
                         <p className="font-bold">{t.modules.error}</p>
                         <p>{error || t.moduleDetail.moduleNotFound}</p>
                         <button
                             onClick={handleBack}
-                            style={{ backgroundColor: '#c4b5fd' }}
-                            className="mt-2 text-black px-4 py-2 rounded-lg font-medium hover:bg-violet-400 transition-colors"
+                            style={{ backgroundColor: 'var(--accent)' }}
+                            className="mt-2 text-black px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-colors"
                         >
                             {t.moduleDetail.backToOverview}
                         </button>
@@ -94,12 +94,12 @@ export default function ModuleDetail() {
     }
 
     return (
-        <div className="bg-neutral-950 w-full overflow-x-hidden">
+        <div className="theme-page w-full overflow-x-hidden">
             <div className="max-w-4xl mx-auto px-4 py-8">
                 {/* Back Button */}
                 <button
                     onClick={handleBack}
-                    className="mb-6 flex items-center gap-2 text-gray-300 hover:text-violet-400 transition-colors"
+                    className="mb-6 flex items-center gap-2 theme-text-secondary hover:theme-text-accent transition-colors"
                 >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
@@ -113,7 +113,7 @@ export default function ModuleDetail() {
                 </button>
 
                 {/* Module Content */}
-                <div className="bg-gray-800 rounded-lg p-6 md:p-8">
+                <div className="theme-card rounded-lg p-6 md:p-8">
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2 mb-4">
                         <span className="bg-green-700 text-white px-3 py-1 rounded text-sm font-medium">
@@ -128,19 +128,19 @@ export default function ModuleDetail() {
                     </div>
 
                     {/* Title */}
-                    <p className="text-lg md:text-2xl lg:text-3xl font-bold text-white mb-6 leading-tight">
+                    <p className="text-lg md:text-2xl lg:text-3xl font-bold theme-text-primary mb-6 leading-tight">
                         {module.name}
                     </p>
 
                     {/* Practical Info */}
                     {(module.start_date || module.available_spots !== undefined) && (
-                        <div className="bg-gray-700 rounded-lg p-4 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="theme-card-alt rounded-lg p-4 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {module.start_date && (
                                 <div>
-                                    <p className="text-gray-400 text-sm mb-1">
+                                    <p className="theme-text-muted text-sm mb-1">
                                         {t.moduleDetail.startDate}
                                     </p>
-                                    <p className="text-white font-medium">
+                                    <p className="theme-text-primary font-medium">
                                         {new Date(module.start_date).toLocaleDateString('nl-NL', {
                                             year: 'numeric',
                                             month: 'long',
@@ -151,16 +151,16 @@ export default function ModuleDetail() {
                             )}
                             {module.available_spots !== undefined && (
                                 <div>
-                                    <p className="text-gray-400 text-sm mb-1">
+                                    <p className="theme-text-muted text-sm mb-1">
                                         {t.moduleDetail.availableSpots}
                                     </p>
-                                    <p className="text-white font-medium">
+                                    <p className="theme-text-primary font-medium">
                                         {module.available_spots > 0 ? (
-                                            <span className="text-green-400">
+                                            <span className="text-green-500">
                                                 {module.available_spots} plekken
                                             </span>
                                         ) : (
-                                            <span className="text-red-400">Vol</span>
+                                            <span className="text-red-500">Vol</span>
                                         )}
                                     </p>
                                 </div>
@@ -169,11 +169,9 @@ export default function ModuleDetail() {
                     )}
 
                     {/* Description */}
-                    <div className="text-gray-300 mb-8 space-y-4">
-                        {getUniqueTexts().shortdescription && (
-                            <p className="text-lg font-medium">
-                                {getUniqueTexts().shortdescription}
-                            </p>
+                    <div className="theme-text-secondary mb-8 space-y-4">
+                        {module.shortdescription && (
+                            <p className="text-lg font-medium">{module.shortdescription}</p>
                         )}
                         {getUniqueTexts().description && (
                             <p className="whitespace-pre-wrap">{getUniqueTexts().description}</p>
@@ -183,11 +181,11 @@ export default function ModuleDetail() {
                     {/* Content */}
                     {getUniqueTexts().content && (
                         <div className="mb-8">
-                            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">
+                            <h2 className="text-xl md:text-2xl font-bold theme-text-primary mb-4">
                                 {t.moduleDetail.content}
                             </h2>
-                            <div className="text-gray-300 whitespace-pre-wrap bg-gray-700 rounded-lg p-4">
-                                {getUniqueTexts().content}
+                            <div className="theme-text-secondary whitespace-pre-wrap theme-card-alt rounded-lg p-4">
+                                {module.content}
                             </div>
                         </div>
                     )}
@@ -195,10 +193,10 @@ export default function ModuleDetail() {
                     {/* Learning Outcomes */}
                     {module.learningoutcomes && (
                         <div className="mb-8">
-                            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">
+                            <h2 className="text-xl md:text-2xl font-bold theme-text-primary mb-4">
                                 {t.moduleDetail.learningOutcomes}
                             </h2>
-                            <div className="text-gray-300 whitespace-pre-wrap bg-gray-700 rounded-lg p-4">
+                            <div className="theme-text-secondary whitespace-pre-wrap theme-card-alt rounded-lg p-4">
                                 {module.learningoutcomes}
                             </div>
                         </div>
@@ -207,12 +205,12 @@ export default function ModuleDetail() {
                     {/* Module Tags */}
                     {module.tags && module.tags.length > 0 && (
                         <div className="mb-8">
-                            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Tags</h2>
+                            <h2 className="text-xl md:text-2xl font-bold theme-text-primary mb-4">Tags</h2>
                             <div className="flex flex-wrap gap-2">
                                 {module.tags.map((tag, index) => (
                                     <span
                                         key={index}
-                                        className="bg-gray-700 text-gray-200 px-3 py-1 rounded-full text-sm"
+                                        className="theme-card-alt theme-text-secondary px-3 py-1 rounded-full text-sm"
                                     >
                                         {tag}
                                     </span>
@@ -224,8 +222,8 @@ export default function ModuleDetail() {
                     {/* Action Buttons */}
                     <div className="flex justify-center">
                         <button
-                            style={{ backgroundColor: '#c4b5fd' }}
-                            className="w-full sm:w-auto text-black px-8 py-3 rounded-lg font-medium hover:bg-violet-400 transition-colors"
+                            style={{ backgroundColor: 'var(--accent)' }}
+                            className="w-full sm:w-auto text-black px-8 py-3 rounded-lg font-medium hover:opacity-80 transition-colors"
                         >
                             {t.moduleDetail.enroll}
                         </button>
