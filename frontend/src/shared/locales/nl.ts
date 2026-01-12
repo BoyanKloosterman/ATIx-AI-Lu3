@@ -18,7 +18,8 @@ export const nl = {
     },
     modules: {
         title: 'Keuzemodules',
-        description: 'Hier vind je alle keuzemodules die je kunt volgen binnen je opleiding. Bekijk het aanbod, ontdek wat bij jou past en kies de module die aansluit op jouw interesses en ambities.',
+        description:
+            'Hier vind je alle keuzemodules die je kunt volgen binnen je opleiding. Bekijk het aanbod, ontdek wat bij jou past en kies de module die aansluit op jouw interesses en ambities.',
         searchPlaceholder: 'Zoeken...',
         filters: 'Filters',
         aiChoice: 'Ai Keuze',
@@ -65,13 +66,18 @@ export const nl = {
     moduleDetail: {
         backToOverview: 'Terug naar overzicht',
         enroll: 'Inschrijven',
+        startDate: 'Startdatum',
+        availableSpots: 'Beschikbare plekken',
+        content: 'Inhoud',
+        learningOutcomes: 'Leerdoelen',
         noModuleId: 'Geen module ID gevonden',
         moduleNotFound: 'Module niet gevonden',
         unknown: 'Onbekend',
     },
     settings: {
         title: 'Instellingen',
-        description: 'Pas je voorkeuren aan voor taal en thema. Alle wijzigingen worden automatisch opgeslagen.',
+        description:
+            'Pas je voorkeuren aan voor taal en thema. Alle wijzigingen worden automatisch opgeslagen.',
         language: {
             title: 'Taal',
             dutch: 'Nederlands',
@@ -86,7 +92,7 @@ export const nl = {
             title: 'LocalStorage Status',
             language: 'Taal:',
             theme: 'Thema:',
-            description: 'Deze waarden zijn opgeslagen in je browser\'s localStorage',
+            description: "Deze waarden zijn opgeslagen in je browser's localStorage",
         },
     },
     auth: {
@@ -120,7 +126,8 @@ export const nl = {
             passwordRequired: 'Wachtwoord is verplicht',
             passwordsNoMatch: 'Wachtwoorden komen niet overeen',
             passwordMinLength: 'Wachtwoord moet minimaal 6 tekens bevatten',
-            passwordComplexity: 'Wachtwoord moet minimaal 1 hoofdletter, 1 kleine letter, 1 cijfer en 1 speciaal teken (!@#$%^&*) bevatten',
+            passwordComplexity:
+                'Wachtwoord moet minimaal 1 hoofdletter, 1 kleine letter, 1 cijfer en 1 speciaal teken (!@#$%^&*) bevatten',
         },
     },
 };

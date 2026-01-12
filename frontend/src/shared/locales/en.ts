@@ -18,7 +18,8 @@ export const en = {
     },
     modules: {
         title: 'Elective Modules',
-        description: 'Here you will find all elective modules you can take within your program. Browse the offerings, discover what suits you and choose the module that matches your interests and ambitions.',
+        description:
+            'Here you will find all elective modules you can take within your program. Browse the offerings, discover what suits you and choose the module that matches your interests and ambitions.',
         searchPlaceholder: 'Search...',
         filters: 'Filters',
         aiChoice: 'AI Choice',
@@ -65,13 +66,18 @@ export const en = {
     moduleDetail: {
         backToOverview: 'Back to overview',
         enroll: 'Enroll',
+        startDate: 'Start date',
+        availableSpots: 'Available spots',
+        content: 'Content',
+        learningOutcomes: 'Learning outcomes',
         noModuleId: 'No module ID found',
         moduleNotFound: 'Module not found',
         unknown: 'Unknown',
     },
     settings: {
         title: 'Settings',
-        description: 'Adjust your preferences for language and theme. All changes are automatically saved.',
+        description:
+            'Adjust your preferences for language and theme. All changes are automatically saved.',
         language: {
             title: 'Language',
             dutch: 'Dutch',
@@ -86,7 +92,7 @@ export const en = {
             title: 'LocalStorage Status',
             language: 'Language:',
             theme: 'Theme:',
-            description: 'These values are stored in your browser\'s localStorage',
+            description: "These values are stored in your browser's localStorage",
         },
     },
     auth: {
@@ -120,7 +126,8 @@ export const en = {
             passwordRequired: 'Password is required',
             passwordsNoMatch: 'Passwords do not match',
             passwordMinLength: 'Password must be at least 6 characters',
-            passwordComplexity: 'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character (!@#$%^&*)',
+            passwordComplexity:
+                'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character (!@#$%^&*)',
         },
     },
 };
