@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { moduleService } from '../services/module.service';
 import type { Module } from '../../../shared/types/index';
@@ -12,11 +12,7 @@ export default function ModuleDetail() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        loadModule();
-    }, [id]);
-
-    const loadModule = async () => {
+    const loadModule = useCallback(async () => {
         if (!id) {
             setError(t.moduleDetail.noModuleId);
             setIsLoading(false);
@@ -34,7 +30,11 @@ export default function ModuleDetail() {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [id, t]);
+
+    useEffect(() => {
+        void loadModule();
+    }, [loadModule]);
 
     const getLevelTag = (level: string): string => {
         return level || 'P3';
@@ -67,7 +67,9 @@ export default function ModuleDetail() {
         return (
             <div className="theme-page w-full overflow-x-hidden">
                 <div className="max-w-4xl mx-auto px-4 py-8">
-                    <div className="text-center py-12 theme-text-secondary">{t.modules.loading}</div>
+                    <div className="text-center py-12 theme-text-secondary">
+                        {t.modules.loading}
+                    </div>
                 </div>
             </div>
         );
@@ -205,7 +207,9 @@ export default function ModuleDetail() {
                     {/* Module Tags */}
                     {module.tags && module.tags.length > 0 && (
                         <div className="mb-8">
-                            <h2 className="text-xl md:text-2xl font-bold theme-text-primary mb-4">Tags</h2>
+                            <h2 className="text-xl md:text-2xl font-bold theme-text-primary mb-4">
+                                Tags
+                            </h2>
                             <div className="flex flex-wrap gap-2">
                                 {module.tags.map((tag, index) => (
                                     <span

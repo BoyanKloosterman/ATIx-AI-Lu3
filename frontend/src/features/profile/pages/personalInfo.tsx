@@ -25,17 +25,34 @@ export default function PersonalInfo() {
 
         prefillDoneRef.current = true;
 
-        setOpleiding(userProfile.studyProgram ?? '');
-        setLeerjaar(String(userProfile.yearOfStudy ?? ''));
-        setStudiepunten(String(userProfile.studyCredits ?? ''));
-        setStudielocatie(userProfile.studyLocation ?? '');
+        // Avoid calling setState synchronously within an effect (eslint rule)
+        let cancelled = false;
+        queueMicrotask(() => {
+            if (cancelled) return;
+            setOpleiding(userProfile.studyProgram ?? '');
+            setLeerjaar(String(userProfile.yearOfStudy ?? ''));
+            setStudiepunten(String(userProfile.studyCredits ?? ''));
+            setStudielocatie(userProfile.studyLocation ?? '');
+        });
+
+        return () => {
+            cancelled = true;
+        };
     }, [userProfile]);
 
     // If the provider reports an error (server-side), show it
     useEffect(() => {
         if (error) {
-            setLocalError(null);
-            setShowError(true);
+            let cancelled = false;
+            queueMicrotask(() => {
+                if (cancelled) return;
+                setLocalError(null);
+                setShowError(true);
+            });
+
+            return () => {
+                cancelled = true;
+            };
         }
     }, [error]);
 

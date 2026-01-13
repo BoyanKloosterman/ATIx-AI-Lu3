@@ -1,11 +1,4 @@
-import React, {
-    useState,
-    useRef,
-    type Dispatch,
-    type SetStateAction,
-    type KeyboardEvent,
-    type JSX,
-} from 'react';
+import React, { useState, useRef, type Dispatch, type SetStateAction, type JSX } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { PersonalInfo, CreateProfileDto } from '../types/profile.types';
 import { useProfile, useGetAllTags } from '../hooks/useProfile';
@@ -30,20 +23,6 @@ export default function SkillsAndIntrests(): JSX.Element {
 
     // Use refs to track if we've done initial prefill
     const prefillDoneRef = useRef(false);
-
-    const addTag = (
-        value: string,
-        setter: Dispatch<SetStateAction<string[]>>,
-        tags: string[],
-    ): void => {
-        if (!value.trim()) return;
-
-        if (tags.length >= MAX_TAGS) return;
-
-        if (!tags.includes(value.trim())) {
-            setter([...tags, value.trim()]);
-        }
-    };
 
     const addSkillTag = (value: string): void => {
         if (!value.trim()) return;
@@ -103,7 +82,7 @@ export default function SkillsAndIntrests(): JSX.Element {
         if (interests.length === 0 && userProfile?.interests?.length) {
             setInterests(userProfile.interests);
         }
-    }, [userProfile, fetchUserProfile]);
+    }, [userProfile, fetchUserProfile, interests.length, skills.length]);
 
     // If the provider reports an error (server-side), show it
     React.useEffect(() => {
@@ -149,9 +128,13 @@ export default function SkillsAndIntrests(): JSX.Element {
 
             await createProfile(createProfileData);
             navigate('/dashboard'); // Redirect after successful creation
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('Error creating profile:', err);
-            setLocalError(err?.message ?? 'Er is iets misgegaan bij het aanmaken van het profiel.');
+            setLocalError(
+                err instanceof Error
+                    ? err.message
+                    : 'Er is iets misgegaan bij het aanmaken van het profiel.',
+            );
             setShowError(true);
         }
     };
