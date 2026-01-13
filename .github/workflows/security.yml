@@ -129,9 +129,30 @@ jobs:
     name: DAST (OWASP ZAP baseline)
     runs-on: ubuntu-latest
     env:
-      LOCAL_DAST_TARGET: http://127.0.0.1:8000/docs
+      FASTAPI_TARGET: http://127.0.0.1:8000/docs
+      BACKEND_TARGET: http://127.0.0.1:3000
+      FRONTEND_TARGET: http://127.0.0.1:4173
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
 
       - name: Use Python
         uses: actions/setup-python@v5
@@ -140,41 +161,130 @@ jobs:
           cache: pip
           cache-dependency-path: api-recommender/requirements.txt
 
-      - name: Start FastAPI (local target)
-        if: ${{ vars.DAST_TARGET == '' }}
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Build backend
+        run: |
+          cd backend
+          npm run build
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+
+      - name: Install FastAPI dependencies
         run: |
           cd api-recommender
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Start NestJS backend
+        if: ${{ vars.DAST_TARGET == '' }}
+        env:
+          MONGODB_URI: mongodb://localhost:27017/test-db
+          JWT_SECRET: test-jwt-secret-for-dast-scan
+          PORT: 3000
+        run: |
+          cd backend
+          nohup npm run start:prod > ../backend.log 2>&1 &
+
+      - name: Start FastAPI
+        if: ${{ vars.DAST_TARGET == '' }}
+        run: |
+          cd api-recommender
           nohup uvicorn main:app --host 0.0.0.0 --port 8000 > ../uvicorn.log 2>&1 &
 
-      - name: Wait for local target
+      - name: Start frontend
+        if: ${{ vars.DAST_TARGET == '' }}
+        run: |
+          cd frontend
+          nohup npm run preview -- --host 0.0.0.0 --port 4173 > ../frontend.log 2>&1 &
+
+      - name: Wait for NestJS backend
         if: ${{ vars.DAST_TARGET == '' }}
         run: |
           for i in {1..60}; do
-            if curl -fsS "$LOCAL_DAST_TARGET" > /dev/null; then
-              echo "DAST target is up: $LOCAL_DAST_TARGET"
+            if curl -fsS "$BACKEND_TARGET" > /dev/null; then
+              echo "Backend is up: $BACKEND_TARGET"
               exit 0
             fi
             sleep 2
           done
-          echo "DAST target did not become ready"
+          echo "Backend did not become ready"
+          echo "--- backend.log ---"
+          tail -n 200 backend.log || true
+          exit 1
+
+      - name: Wait for FastAPI
+        if: ${{ vars.DAST_TARGET == '' }}
+        run: |
+          for i in {1..60}; do
+            if curl -fsS "$FASTAPI_TARGET" > /dev/null; then
+              echo "FastAPI is up: $FASTAPI_TARGET"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "FastAPI did not become ready"
           echo "--- uvicorn.log ---"
           tail -n 200 uvicorn.log || true
           exit 1
 
-      - name: ZAP Baseline Scan
+      - name: Wait for frontend
+        if: ${{ vars.DAST_TARGET == '' }}
+        run: |
+          for i in {1..60}; do
+            if curl -fsS "$FRONTEND_TARGET" > /dev/null; then
+              echo "Frontend is up: $FRONTEND_TARGET"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Frontend did not become ready"
+          echo "--- frontend.log ---"
+          tail -n 200 frontend.log || true
+          exit 1
+
+      - name: ZAP Baseline Scan - NestJS Backend
         uses: zaproxy/action-baseline@de8ad967d3548d44ef623df22cf95c3b0baf8b25
         with:
-          target: ${{ vars.DAST_TARGET != '' && vars.DAST_TARGET || env.LOCAL_DAST_TARGET }}
+          target: ${{ vars.DAST_TARGET != '' && vars.DAST_TARGET || env.BACKEND_TARGET }}
           token: ${{ secrets.GITHUB_TOKEN }}
           fail_action: false
-          artifact_name: zap-baseline-report
+          artifact_name: zap-baseline-report-backend
 
-      - name: Upload local server log (if any)
+      - name: ZAP Baseline Scan - FastAPI
+        uses: zaproxy/action-baseline@de8ad967d3548d44ef623df22cf95c3b0baf8b25
+        with:
+          target: ${{ vars.DAST_TARGET != '' && vars.DAST_TARGET || env.FASTAPI_TARGET }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_action: false
+          artifact_name: zap-baseline-report-fastapi
+
+      - name: ZAP Baseline Scan - Frontend
+        uses: zaproxy/action-baseline@de8ad967d3548d44ef623df22cf95c3b0baf8b25
+        with:
+          target: ${{ vars.DAST_TARGET != '' && vars.DAST_TARGET || env.FRONTEND_TARGET }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_action: false
+          artifact_name: zap-baseline-report-frontend
+
+      - name: Upload server logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: dast-logs
-          path: uvicorn.log
+          path: |
+            backend.log
+            uvicorn.log
+            frontend.log
           retention-days: 30
