@@ -1,11 +1,4 @@
-import React, {
-    useState,
-    useRef,
-    type Dispatch,
-    type SetStateAction,
-    type KeyboardEvent,
-    type JSX,
-} from 'react';
+import React, { useState, useRef, type Dispatch, type SetStateAction, type JSX } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { PersonalInfo, CreateProfileDto } from '../types/profile.types';
 import { useProfile, useGetAllTags } from '../hooks/useProfile';
@@ -30,20 +23,6 @@ export default function SkillsAndIntrests(): JSX.Element {
 
     // Use refs to track if we've done initial prefill
     const prefillDoneRef = useRef(false);
-
-    const addTag = (
-        value: string,
-        setter: Dispatch<SetStateAction<string[]>>,
-        tags: string[],
-    ): void => {
-        if (!value.trim()) return;
-
-        if (tags.length >= MAX_TAGS) return;
-
-        if (!tags.includes(value.trim())) {
-            setter([...tags, value.trim()]);
-        }
-    };
 
     const addSkillTag = (value: string): void => {
         if (!value.trim()) return;
