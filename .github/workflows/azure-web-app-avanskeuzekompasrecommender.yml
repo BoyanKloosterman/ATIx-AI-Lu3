@@ -78,4 +78,4 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           package: api-recommender.zip
           startup-command: >-
-            gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:$PORT
+            gunicorn --workers 1 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:$PORT
