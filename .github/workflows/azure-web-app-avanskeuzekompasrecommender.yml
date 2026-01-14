@@ -21,6 +21,7 @@ env:
   AZURE_WEBAPP_NAME: 'avanskeuzekompasrecommender'
   AZURE_WEBAPP_PACKAGE_PATH: './api-recommender'
   PYTHON_VERSION: '3.11'
+  AZURE_RESOURCE_GROUP: 'AvansKeuzeKompas'
 
 jobs:
   build:
@@ -64,6 +65,15 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Configure App Service build settings
+        run: |
+          az webapp config appsettings set \
+            --name "${{ env.AZURE_WEBAPP_NAME }}" \
+            --resource-group "${{ env.AZURE_RESOURCE_GROUP }}" \
+            --settings \
+              SCM_DO_BUILD_DURING_DEPLOYMENT=true \
+              ENABLE_ORYX_BUILD=true
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
