@@ -127,7 +127,9 @@ export class AuthService {
         try {
             const payload = this.verifyToken(token);
             const decoded = jwt.decode(token) as { exp?: number };
-            const expiresAt = decoded.exp ? new Date(decoded.exp * 1000) : new Date(Date.now() + 24 * 60 * 60 * 1000);
+            const expiresAt = decoded.exp
+                ? new Date(decoded.exp * 1000)
+                : new Date(Date.now() + 24 * 60 * 60 * 1000);
             await this.tokenBlacklistRepository.addToken(token, expiresAt);
         } catch (error) {
             // Als token niet valide is, hoeven we het niet toe te voegen aan blacklist
