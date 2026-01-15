@@ -208,68 +208,16 @@ export default function Dashboard({
                 <div className="flex flex-col items-center gap-4 mb-8">
                     <button
                         onClick={() => navigate('/keuzemodules')}
-                        className="group relative px-8 py-3 bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2"
+                        className="group relative px-8 py-3 bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
                     >
-                        <svg
-                            className="w-5 h-5 transition-transform group-hover:scale-110"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                            />
-                        </svg>
-                        <span>Bekijk Keuzemodules</span>
-                        <svg
-                            className="w-4 h-4 transition-transform group-hover:translate-x-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 5l7 7-7 7"
-                            />
-                        </svg>
+                        Bekijk Keuzemodules
                     </button>
 
                     <button
                         onClick={() => navigate('/recomendation')}
-                        className="group relative px-8 py-3 bg-[#e38094] hover:bg-[#d4607a] text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2"
+                        className="btn-primary group relative px-8 py-3 shadow-sm hover:shadow-md"
                     >
-                        <svg
-                            className="w-5 h-5 transition-transform group-hover:scale-110"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                            />
-                        </svg>
-                        <span>Bekijk AI Aanbevelingen</span>
-                        <svg
-                            className="w-4 h-4 transition-transform group-hover:translate-x-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 5l7 7-7 7"
-                            />
-                        </svg>
+                        Bekijk AI Aanbevelingen
                     </button>
                 </div>
 
@@ -330,7 +278,7 @@ export default function Dashboard({
                                     {userProfile.skills?.map((s) => (
                                         <span
                                             key={s}
-                                            className="inline-block bg-pink-300 text-black px-3 py-1 rounded-full text-sm font-medium"
+                                            className="inline-block bg-[#fde6ea] text-[#e30613] px-3 py-1 rounded-full text-sm font-medium"
                                         >
                                             {s}
                                         </span>
@@ -346,7 +294,7 @@ export default function Dashboard({
                                     {userProfile.interests?.map((i) => (
                                         <span
                                             key={i}
-                                            className="inline-block bg-blue-300 text-black px-3 py-1 rounded-full text-sm font-medium"
+                                            className="inline-block bg-[#fde6ea] text-[#e30613] px-3 py-1 rounded-full text-sm font-medium"
                                         >
                                             {i}
                                         </span>
@@ -356,7 +304,7 @@ export default function Dashboard({
 
                             <button
                                 onClick={() => navigate('/profile/createProfile')}
-                                className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium transition-colors"
+                                className="btn-accent w-full sm:w-auto"
                             >
                                 {t.dashboard.profile.editProfile}
                             </button>
@@ -370,7 +318,7 @@ export default function Dashboard({
                         </h2>
                         <button
                             onClick={handleExportFavorites}
-                            className="flex items-center gap-2 bg-[#e38094] hover:bg-[#d4607a] text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="btn-primary flex items-center gap-2 px-4 py-2"
                             disabled={favoriteModules.length === 0}
                             title="Exporteer favorieten naar PDF"
                         >
@@ -420,13 +368,13 @@ export default function Dashboard({
                             {favoriteModules.map((module) => (
                                 <div key={module.id} className="theme-card-alt rounded-lg p-4">
                                     <div className="flex gap-2 mb-3">
-                                        <span className="bg-green-700 text-white px-3 py-1 rounded text-sm font-medium">
+                                        <span className="bg-green-700/20 text-green-400 px-3 py-1 rounded text-sm font-medium">
                                             {getLevelTag(module.level)}
                                         </span>
-                                        <span className="bg-red-800 text-white px-3 py-1 rounded text-sm font-medium">
+                                        <span className="bg-red-600/20 text-red-400 px-3 py-1 rounded text-sm font-medium">
                                             {module.studycredit} ETC
                                         </span>
-                                        <span className="bg-[#e38094] text-white px-3 py-1 rounded text-sm font-medium">
+                                        <span className="bg-blue-600/20 text-blue-400 px-3 py-1 rounded text-sm font-medium">
                                             {module.location || t.dashboard.unknown}
                                         </span>
                                     </div>

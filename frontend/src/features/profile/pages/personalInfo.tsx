@@ -143,8 +143,7 @@ export default function PersonalInfo() {
 
                                 <button
                                     onClick={() => setShowStudielocatieInfo(false)}
-                                    style={{ backgroundColor: 'var(--accent)' }}
-                                    className="mt-6 w-full rounded-lg hover:opacity-80 text-black font-medium py-2 transition"
+                                    className="btn-accent w-full py-2 mt-6"
                                 >
                                     Sluiten
                                 </button>
@@ -211,8 +210,7 @@ export default function PersonalInfo() {
                     <button
                         type="button"
                         onClick={handleNext}
-                        style={{ backgroundColor: 'var(--accent)' }}
-                        className="w-full hover:opacity-80 text-black font-medium rounded-lg px-4 py-3 mt-4 transition-colors"
+                        className="btn-accent w-full py-3 mt-4"
                     >
                         Volgende
                     </button>

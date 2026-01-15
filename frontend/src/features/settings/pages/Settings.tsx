@@ -26,26 +26,16 @@ export default function Settings() {
                         <div className="flex gap-4">
                             <button
                                 onClick={() => setLanguage('nl')}
-                                style={{
-                                    backgroundColor: language === 'nl' ? 'var(--accent)' : '',
-                                }}
-                                className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
-                                    language === 'nl'
-                                        ? 'text-black hover:opacity-80'
-                                        : 'theme-button-secondary'
+                                className={`flex-1 px-6 py-3 ${
+                                    language === 'nl' ? 'btn-accent' : 'btn-secondary'
                                 }`}
                             >
                                 {t.settings.language.dutch}
                             </button>
                             <button
                                 onClick={() => setLanguage('en')}
-                                style={{
-                                    backgroundColor: language === 'en' ? 'var(--accent)' : '',
-                                }}
-                                className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
-                                    language === 'en'
-                                        ? 'text-black hover:opacity-80'
-                                        : 'theme-button-secondary'
+                                className={`flex-1 px-6 py-3 ${
+                                    language === 'en' ? 'btn-accent' : 'btn-secondary'
                                 }`}
                             >
                                 {t.settings.language.english}
@@ -62,24 +52,16 @@ export default function Settings() {
                         <div className="flex gap-4">
                             <button
                                 onClick={() => setTheme('light')}
-                                style={{
-                                    backgroundColor: theme === 'light' ? 'var(--accent)' : '',
-                                }}
-                                className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
-                                    theme === 'light'
-                                        ? 'text-black hover:opacity-80'
-                                        : 'theme-button-secondary'
+                                className={`flex-1 px-6 py-3 ${
+                                    theme === 'light' ? 'btn-accent' : 'btn-secondary'
                                 }`}
                             >
                                 {t.settings.theme.light}
                             </button>
                             <button
                                 onClick={() => setTheme('dark')}
-                                style={{ backgroundColor: theme === 'dark' ? 'var(--accent)' : '' }}
-                                className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
-                                    theme === 'dark'
-                                        ? 'text-black hover:opacity-80'
-                                        : 'theme-button-secondary'
+                                className={`flex-1 px-6 py-3 ${
+                                    theme === 'dark' ? 'btn-accent' : 'btn-secondary'
                                 }`}
                             >
                                 {t.settings.theme.dark}

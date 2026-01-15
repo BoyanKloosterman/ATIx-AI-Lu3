@@ -41,7 +41,7 @@ function LogoutButton({
     return (
         <button
             onClick={onClick}
-            className={`bg-red-600 hover:bg-red-700 px-4 py-3 rounded-lg transition-colors font-medium ${className}`}
+            className={`btn-primary px-4 py-3 ${className}`}
         >
             {label}
         </button>

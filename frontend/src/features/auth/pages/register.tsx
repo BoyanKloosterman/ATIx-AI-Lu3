@@ -187,8 +187,7 @@ export default function Register() {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        style={{ backgroundColor: 'var(--accent)' }}
-                        className="w-full hover:opacity-80 text-black font-medium rounded-lg px-4 py-3 mt-4 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="btn-accent w-full py-3 mt-4"
                     >
                         {isLoading ? t.auth.register.loading : t.auth.register.submit}
                     </button>

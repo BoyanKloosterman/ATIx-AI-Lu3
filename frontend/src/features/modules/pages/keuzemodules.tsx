@@ -382,24 +382,16 @@ export default function Keuzemodules() {
                             setShowAiKeuze(false);
                             setShowFilters(!showFilters);
                         }}
-                        style={{
-                            backgroundColor: !showAiKeuze && showFilters ? '#e38094' : '#d4607a',
-                        }}
-                        className={`px-6 py-3 rounded-lg font-medium text-base transition-colors ${
-                            !showAiKeuze && showFilters
-                                ? 'hover:bg-[#d4607a] text-white'
-                                : 'hover:bg-[#e38094] text-white'
+                        className={`btn-primary px-6 py-3 ${
+                            !showAiKeuze && showFilters ? 'opacity-100' : 'opacity-80'
                         }`}
                     >
                         {t.modules.filters}
                     </button>
                     <button
                         onClick={() => navigate('/recomendation')}
-                        style={{ backgroundColor: showAiKeuze ? '#e38094' : '#d4607a' }}
-                        className={`px-6 py-3 rounded-lg font-medium text-base transition-colors ${
-                            showAiKeuze
-                                ? 'hover:bg-[#d4607a] text-white'
-                                : 'hover:bg-[#e38094] text-white'
+                        className={`btn-primary px-6 py-3 ${
+                            showAiKeuze ? 'opacity-100' : 'opacity-80'
                         }`}
                     >
                         {t.modules.aiChoice}
@@ -431,23 +423,17 @@ export default function Keuzemodules() {
                             <div className="flex gap-3 w-full md:w-auto">
                                 <button
                                     onClick={() => setSelectedForCompare(new Set())}
-                                    className="flex-1 md:flex-initial theme-button-secondary px-4 py-2 rounded-lg font-medium transition-colors"
+                                    className="btn-secondary flex-1 md:flex-initial px-4 py-2"
                                 >
                                     {t.modules.compare.remove}
                                 </button>
                                 <button
                                     onClick={handleCompare}
                                     disabled={selectedForCompare.size < 2}
-                                    style={{
-                                        backgroundColor:
-                                            selectedForCompare.size >= 2
-                                                ? 'var(--accent)'
-                                                : 'var(--bg-button)',
-                                    }}
                                     className={`flex-1 md:flex-initial px-6 py-2 rounded-lg font-medium transition-colors ${
                                         selectedForCompare.size >= 2
-                                            ? 'text-black hover:opacity-80 cursor-pointer'
-                                            : 'theme-text-muted cursor-not-allowed'
+                                            ? 'btn-accent'
+                                            : 'btn-secondary cursor-not-allowed'
                                     }`}
                                 >
                                     {t.modules.compare.button}
@@ -584,8 +570,7 @@ export default function Keuzemodules() {
                         <p className="text-red-600 mb-4">{error}</p>
                         <button
                             onClick={loadModules}
-                            style={{ backgroundColor: 'var(--accent)' }}
-                            className="text-black px-6 py-2.5 rounded-lg font-medium hover:opacity-80 transition-colors"
+                            className="btn-accent"
                         >
                             {t.modules.tryAgain}
                         </button>
@@ -622,16 +607,17 @@ export default function Keuzemodules() {
                                                 <div 
                                                     className="w-6 h-6 border-2 rounded-md peer-disabled:opacity-50 peer-disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center"
                                                     style={{
-                                                        backgroundColor: selectedForCompare.has(module.id) ? '#e38094' : 'var(--bg-card-alt)',
-                                                        borderColor: '#e38094'
+                                                        backgroundColor: selectedForCompare.has(module.id) ? 'var(--checkbox-bg)' : 'var(--bg-card-alt)',
+                                                        borderColor: 'var(--checkbox-border)'
                                                     }}
                                                 >
                                                     <svg
-                                                        className={`w-4 h-4 text-white transition-all duration-200 ${
+                                                        className={`w-4 h-4 transition-all duration-200 ${
                                                             selectedForCompare.has(module.id)
                                                                 ? 'opacity-100 scale-100'
                                                                 : 'opacity-0 scale-50'
                                                         }`}
+                                                        style={{ color: 'var(--btn-accent-text)' }}
                                                         fill="none"
                                                         stroke="currentColor"
                                                         viewBox="0 0 24 24"
@@ -689,8 +675,7 @@ export default function Keuzemodules() {
                                                         state: { from: '/keuzemodules' },
                                                     })
                                                 }
-                                                style={{ backgroundColor: 'var(--accent)' }}
-                                                className="text-black px-6 py-2.5 rounded-lg font-medium hover:opacity-80 transition-colors"
+                                                className="btn-accent"
                                             >
                                                 {t.modules.learnMore}
                                             </button>
@@ -733,16 +718,10 @@ export default function Keuzemodules() {
                                 <button
                                     onClick={() => handlePageChange(currentPage - 1)}
                                     disabled={currentPage === 1}
-                                    style={{
-                                        backgroundColor:
-                                            currentPage === 1
-                                                ? 'var(--bg-button)'
-                                                : 'var(--accent)',
-                                    }}
-                                    className={`px-3 py-2 rounded-lg font-medium transition-colors ${
+                                    className={`px-3 py-2 rounded-lg font-medium border border-black bg-white transition-colors ${
                                         currentPage === 1
-                                            ? 'theme-text-muted cursor-not-allowed'
-                                            : 'text-black hover:opacity-80'
+                                            ? 'theme-text-muted cursor-not-allowed opacity-50'
+                                            : 'text-black hover:bg-gray-100'
                                     }`}
                                 >
                                     <svg
@@ -767,16 +746,10 @@ export default function Keuzemodules() {
                                 <button
                                     onClick={() => handlePageChange(currentPage + 1)}
                                     disabled={currentPage === totalPages}
-                                    style={{
-                                        backgroundColor:
-                                            currentPage === totalPages
-                                                ? 'var(--bg-button)'
-                                                : 'var(--accent)',
-                                    }}
-                                    className={`px-3 py-2 rounded-lg font-medium transition-colors ${
+                                    className={`px-3 py-2 rounded-lg font-medium border border-black bg-white transition-colors ${
                                         currentPage === totalPages
-                                            ? 'theme-text-muted cursor-not-allowed'
-                                            : 'text-black hover:opacity-80'
+                                            ? 'theme-text-muted cursor-not-allowed opacity-50'
+                                            : 'text-black hover:bg-gray-100'
                                     }`}
                                 >
                                     <svg

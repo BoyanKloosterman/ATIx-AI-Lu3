@@ -103,6 +103,116 @@ html.light {
   filter: brightness(1.1);
 }
 
+/* ===== BUTTON SYSTEM ===== */
+/* Button 1: Primary action button (accent color - pink/red) */
+.btn-primary {
+  background-color: var(--btn-primary-bg, #e38094);
+  color: var(--btn-primary-text, #ffffff);
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.btn-primary:hover {
+  background-color: var(--btn-primary-hover, #d4607a);
+  border-color: transparent;
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Button 2: Secondary button (neutral/gray) */
+.btn-secondary {
+  background-color: var(--btn-secondary-bg, var(--bg-button));
+  color: var(--btn-secondary-text, var(--text-primary));
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.btn-secondary:hover {
+  background-color: var(--btn-secondary-hover, var(--bg-card-alt));
+  border-color: transparent;
+}
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Button 3: Accent button (yellow/accent for positive actions) */
+.btn-accent {
+  background-color: var(--btn-accent-bg, var(--accent));
+  color: var(--btn-accent-text, #000000);
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.btn-accent:hover {
+  opacity: 0.8;
+  border-color: transparent;
+}
+.btn-accent:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Button 4: Outline/Ghost button (transparent with border) */
+.btn-outline {
+  background-color: transparent;
+  color: var(--btn-outline-text, var(--text-primary));
+  border: 2px solid var(--btn-outline-border, var(--border));
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.btn-outline:hover {
+  background-color: var(--btn-outline-hover-bg, var(--bg-card-alt));
+  border-color: var(--btn-outline-border, var(--border));
+}
+.btn-outline:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Button CSS Variables (easy to customize) */
+:root,
+:root.dark,
+html.dark {
+  --btn-primary-bg: #ffffff;
+  --btn-primary-text: #000000;
+  --btn-primary-hover: #e5e5e5;
+  
+  --btn-secondary-bg: var(--bg-button);
+  --btn-secondary-text: var(--text-primary);
+  --btn-secondary-hover: var(--bg-card-alt);
+  
+  --btn-accent-bg: #ffffff;
+  --btn-accent-text: #000000;
+  
+  --btn-outline-text: var(--text-primary);
+  --btn-outline-border: var(--border);
+  --btn-outline-hover-bg: var(--bg-card-alt);
+  
+  --checkbox-bg: #ffffff;
+  --checkbox-border: #ffffff;
+}
+
+:root.light,
+html.light {
+  --btn-primary-bg: #000000;
+  --btn-primary-text: #ffffff;
+  --btn-primary-hover: #333333;
+  
+  --btn-accent-bg: #000000;
+  --btn-accent-text: #ffffff;
+  
+  --checkbox-bg: #000000;
+  --checkbox-border: #000000;
+}
+
 .theme-border {
   border-color: var(--border);
 }

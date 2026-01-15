@@ -247,8 +247,7 @@ export default function Recomendation() {
                     <p className="text-red-600 mb-4">{error}</p>
                     <button
                         onClick={loadRecommendations}
-                        style={{ backgroundColor: '#e38094' }}
-                        className="text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#d4607a] transition-colors"
+                        className="btn-primary"
                     >
                         {t.modules.tryAgain}
                     </button>
@@ -263,8 +262,7 @@ export default function Recomendation() {
                     </p>
                     <button
                         onClick={() => navigate('/profile/createProfile')}
-                        style={{ backgroundColor: '#e38094' }}
-                        className="text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#d4607a] transition-colors"
+                        className="btn-primary"
                     >
                         {t.recommendations.fillProfileCta}
                     </button>
@@ -295,23 +293,17 @@ export default function Recomendation() {
                                 <div className="flex gap-3 w-full md:w-auto">
                                     <button
                                         onClick={() => setSelectedForCompare(new Set())}
-                                        className="flex-1 md:flex-initial theme-button-secondary px-4 py-2 rounded-lg font-medium transition-colors"
+                                        className="btn-secondary flex-1 md:flex-initial px-4 py-2"
                                     >
                                         {t.modules.compare.remove}
                                     </button>
                                     <button
                                         onClick={handleCompare}
                                         disabled={selectedForCompare.size < 2}
-                                        style={{
-                                            backgroundColor:
-                                                selectedForCompare.size >= 2
-                                                    ? 'var(--accent)'
-                                                    : 'var(--bg-button)',
-                                        }}
                                         className={`flex-1 md:flex-initial px-6 py-2 rounded-lg font-medium transition-colors ${
                                             selectedForCompare.size >= 2
-                                                ? 'text-black hover:opacity-80 cursor-pointer'
-                                                : 'theme-text-muted cursor-not-allowed'
+                                                ? 'btn-accent'
+                                                : 'btn-secondary cursor-not-allowed'
                                         }`}
                                     >
                                         {t.modules.compare.button}
@@ -355,17 +347,18 @@ export default function Recomendation() {
                                                 <div 
                                                     className="w-6 h-6 border-2 rounded-md peer-disabled:opacity-50 peer-disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center"
                                                     style={{
-                                                        backgroundColor: mongoId && selectedForCompare.has(mongoId) ? '#e38094' : 'var(--bg-card-alt)',
-                                                        borderColor: '#e38094'
+                                                        backgroundColor: mongoId && selectedForCompare.has(mongoId) ? 'var(--checkbox-bg)' : 'var(--bg-card-alt)',
+                                                        borderColor: 'var(--checkbox-border)'
                                                     }}
                                                 >
                                                     <svg
-                                                        className={`w-4 h-4 text-white transition-all duration-200 ${
+                                                        className={`w-4 h-4 transition-all duration-200 ${
                                                             mongoId &&
                                                             selectedForCompare.has(mongoId)
                                                                 ? 'opacity-100 scale-100'
                                                                 : 'opacity-0 scale-50'
                                                         }`}
+                                                        style={{ color: 'var(--btn-accent-text)' }}
                                                         fill="none"
                                                         stroke="currentColor"
                                                         viewBox="0 0 24 24"
@@ -431,8 +424,7 @@ export default function Recomendation() {
                                         <div className="flex items-center gap-4 justify-end">
                                             <button
                                                 onClick={() => void openDetails(rec)}
-                                                style={{ backgroundColor: 'var(--accent)' }}
-                                                className="text-black px-6 py-2.5 rounded-lg font-medium hover:opacity-80 transition-colors"
+                                                className="btn-accent"
                                             >
                                                 {t.modules.learnMore}
                                             </button>

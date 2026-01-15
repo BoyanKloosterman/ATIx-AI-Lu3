@@ -410,11 +410,7 @@ export default function SkillsAndIntrests(): JSX.Element {
                         </div>
                     </div>
 
-                    <button
-                        onClick={handleSave}
-                        style={{ backgroundColor: 'var(--accent)' }}
-                        className="w-full hover:opacity-80 text-black font-medium rounded-lg px-4 py-3 mt-4 transition-colors"
-                    >
+                    <button onClick={handleSave} className="btn-accent w-full py-3 mt-4">
                         Opslaan
                     </button>
 
@@ -425,7 +421,7 @@ export default function SkillsAndIntrests(): JSX.Element {
                             setLocalError(null);
                             navigate('/profile/createProfile');
                         }}
-                        className="w-full theme-button-secondary theme-text-primary font-medium rounded-lg px-4 py-3 hover:opacity-80 transition-colors"
+                        className="btn-secondary w-full py-3"
                     >
                         Terug
                     </button>
