@@ -104,10 +104,10 @@ function MobileNavLink({
                 isActive
                     ? theme === 'dark'
                         ? '!text-black bg-white hover:bg-gray-100'
-                        : '!text-white bg-gray-800 hover:bg-gray-700'
+                        : '!text-white bg-black hover:bg-gray-900'
                     : theme === 'dark'
-                      ? '!text-white bg-[#3a3a3a] hover:bg-[#4a4a4a]'
-                      : '!text-gray-700 bg-gray-200 hover:bg-gray-300'
+                        ? '!text-white bg-[#3a3a3a] hover:bg-[#4a4a4a]'
+                        : '!text-gray-700 bg-gray-200 hover:bg-gray-300'
             }
             transition-all duration-200 px-4 py-3 rounded-lg font-medium text-center
         `}
