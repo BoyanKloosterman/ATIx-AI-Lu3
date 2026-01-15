@@ -4,7 +4,7 @@ import { Model, Types } from 'mongoose';
 import { User, UserFavorite } from '../../domain/entities/user.entity';
 import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
 import { UserDocument } from '../schemas/user.schema';
-import { UpdateUserDto } from 'src/interfaces/presenters/user.dto';
+import { UpdateUserDto } from '../../interfaces/presenters/user.dto';
 
 @Injectable()
 export class UserRepository implements IUserRepository {

@@ -12,9 +12,9 @@ import {
 import { UserService } from '../../application/services/user.service';
 import { UpdateUserDto } from '../presenters/user.dto';
 import { CURRENTUSER } from '../decorators/current.user.decorator';
-import { User } from 'src/domain/entities/user.entity';
-import { JwtAuthGuard } from 'src/infrastructure/auth/jwt.auth.guard';
-import { Module } from 'src/domain/entities/module.entity';
+import { User } from '../../domain/entities/user.entity';
+import { JwtAuthGuard } from '../../infrastructure/auth/jwt.auth.guard';
+import { Module } from '../../domain/entities/module.entity';
 
 @Controller('api/user')
 export class UserController {
