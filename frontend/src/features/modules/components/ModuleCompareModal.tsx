@@ -79,7 +79,7 @@ export default function ModuleCompareModal({ modules, onClose }: ModuleCompareMo
                     {value.map((tag, index) => (
                         <span
                             key={index}
-                            className="bg-violet-600 dark:bg-violet-600 text-white px-2 py-1 rounded text-xs font-medium"
+                            className="bg-[#e38094] text-white px-2 py-1 rounded text-xs font-medium"
                         >
                             {tag}
                         </span>
@@ -149,9 +149,9 @@ export default function ModuleCompareModal({ modules, onClose }: ModuleCompareMo
                 <div className="p-4 md:p-6 space-y-6">
                     {/* Similarities Section */}
                     {similarities.length > 0 && (
-                        <div className="bg-green-50 dark:bg-green-900 dark:bg-opacity-30 border-2 border-green-500 dark:border-green-600 rounded-xl p-5 shadow-lg">
-                            <h3 className="text-xl font-bold text-green-700 dark:text-green-300 mb-4 flex items-center gap-2">
-                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <div className="bg-[#e38094]/10 border-2 border-[#e38094]/30 rounded-xl p-5 shadow-lg">
+                            <h3 className="text-xl font-bold theme-text-primary mb-4 flex items-center gap-2">
+                                <svg className="w-6 h-6 text-[#e38094]" fill="currentColor" viewBox="0 0 20 20">
                                     <path
                                         fillRule="evenodd"
                                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -162,9 +162,9 @@ export default function ModuleCompareModal({ modules, onClose }: ModuleCompareMo
                             </h3>
                             <ul className="space-y-2">
                                 {similarities.map((similarity, index) => (
-                                    <li key={index} className="text-green-700 dark:text-green-200 flex items-start">
+                                    <li key={index} className="theme-text-primary flex items-start">
                                         <svg
-                                            className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-green-600 dark:text-green-400"
+                                            className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-[#e38094]"
                                             fill="currentColor"
                                             viewBox="0 0 20 20"
                                         >
@@ -205,10 +205,10 @@ export default function ModuleCompareModal({ modules, onClose }: ModuleCompareMo
                             {modules.map((module) => (
                                 <div
                                     key={module.id}
-                                    className="theme-card-alt rounded-xl p-5 theme-border shadow-lg hover:border-violet-500 transition-colors"
+                                    className="theme-card-alt rounded-xl p-5 theme-border shadow-lg hover:border-[#e38094] transition-colors"
                                 >
                                     <h4 className="text-lg font-bold theme-text-primary mb-4 pb-3 theme-border border-b flex items-center gap-2">
-                                        <span className="bg-violet-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">
+                                        <span className="bg-[#e38094] text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">
                                             {modules.indexOf(module) + 1}
                                         </span>
                                         {module.name}
@@ -247,7 +247,7 @@ export default function ModuleCompareModal({ modules, onClose }: ModuleCompareMo
                                                 }`}
                                             >
                                                 <div className="flex items-center gap-2 max-w-xs">
-                                                    <span className="bg-violet-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
+                                                    <span className="bg-[#e38094] text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
                                                         {index + 1}
                                                     </span>
                                                     <span>{module.name}</span>

@@ -97,7 +97,7 @@ export default function Login() {
                             value={formData.email}
                             onChange={handleInputChange}
                             required
-                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#e38094]"
                         />
                     </div>
 
@@ -112,7 +112,7 @@ export default function Login() {
                             value={formData.password}
                             onChange={handleInputChange}
                             required
-                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#e38094]"
                         />
                     </div>
 

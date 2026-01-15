@@ -247,8 +247,8 @@ export default function Recomendation() {
                     <p className="text-red-600 mb-4">{error}</p>
                     <button
                         onClick={loadRecommendations}
-                        style={{ backgroundColor: '#c4b5fd' }}
-                        className="text-black px-6 py-2.5 rounded-lg font-medium hover:bg-violet-400 transition-colors"
+                        style={{ backgroundColor: '#e38094' }}
+                        className="text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#d4607a] transition-colors"
                     >
                         {t.modules.tryAgain}
                     </button>
@@ -263,8 +263,8 @@ export default function Recomendation() {
                     </p>
                     <button
                         onClick={() => navigate('/profile/createProfile')}
-                        style={{ backgroundColor: '#c4b5fd' }}
-                        className="text-black px-6 py-2.5 rounded-lg font-medium hover:bg-violet-400 transition-colors"
+                        style={{ backgroundColor: '#e38094' }}
+                        className="text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#d4607a] transition-colors"
                     >
                         {t.recommendations.fillProfileCta}
                     </button>
@@ -352,7 +352,13 @@ export default function Recomendation() {
                                                     }
                                                     className="peer sr-only"
                                                 />
-                                                <div className="w-6 h-6 border-2 border-violet-400 rounded-md theme-card-alt peer-checked:bg-violet-600 peer-checked:border-violet-600 peer-disabled:opacity-50 peer-disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center">
+                                                <div 
+                                                    className="w-6 h-6 border-2 rounded-md peer-disabled:opacity-50 peer-disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center"
+                                                    style={{
+                                                        backgroundColor: mongoId && selectedForCompare.has(mongoId) ? '#e38094' : 'var(--bg-card-alt)',
+                                                        borderColor: '#e38094'
+                                                    }}
+                                                >
                                                     <svg
                                                         className={`w-4 h-4 text-white transition-all duration-200 ${
                                                             mongoId &&
@@ -388,10 +394,10 @@ export default function Recomendation() {
                                             <span className="bg-red-600 text-white px-3 py-1 rounded text-sm font-medium">
                                                 {getCredits(rec) ?? t.modules.unknown} ECTS
                                             </span>
-                                            <span className="bg-purple-600 text-white px-3 py-1 rounded text-sm font-medium">
+                                            <span className="bg-[#e38094] text-white px-3 py-1 rounded text-sm font-medium">
                                                 {rec.location || t.modules.unknown}
                                             </span>
-                                            <span className="bg-violet-600 text-white px-3 py-1 rounded text-sm font-medium">
+                                            <span className="bg-[#d4607a] text-white px-3 py-1 rounded text-sm font-medium">
                                                 {Math.round((rec.similarity ?? 0) * 100)}%
                                             </span>
                                         </div>

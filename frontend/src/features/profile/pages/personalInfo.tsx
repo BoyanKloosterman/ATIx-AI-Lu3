@@ -111,7 +111,7 @@ export default function PersonalInfo() {
                                 setShowError(false);
                                 setLocalError(null);
                             }}
-                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#e38094]"
                         />
                     </div>
 
@@ -128,7 +128,7 @@ export default function PersonalInfo() {
                                 setShowError(false);
                                 setLocalError(null);
                             }}
-                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#e38094]"
                         />
                     </div>
                     {showStudielocatieInfo && (
@@ -176,7 +176,7 @@ export default function PersonalInfo() {
                                 setShowError(false);
                                 setLocalError(null);
                             }}
-                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#e38094]"
                         >
                             <option value="">Selecteer studielocatie</option>
                             <option value="Breda">Breda</option>
@@ -200,7 +200,7 @@ export default function PersonalInfo() {
                                 setShowError(false);
                                 setLocalError(null);
                             }}
-                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#e38094]"
                         >
                             <option value="0">Selecteer studiepunten</option>
                             <option value="15">15</option>

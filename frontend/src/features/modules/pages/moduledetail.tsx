@@ -135,7 +135,7 @@ export default function ModuleDetail() {
                         <span className="bg-red-600 text-white px-3 py-1 rounded text-sm font-medium">
                             {module.studycredit} ETC
                         </span>
-                        <span className="bg-purple-600 text-white px-3 py-1 rounded text-sm font-medium">
+                        <span className="bg-[#e38094] text-white px-3 py-1 rounded text-sm font-medium">
                             {module.location || t.moduleDetail.unknown}
                         </span>
                     </div>

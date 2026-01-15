@@ -357,7 +357,7 @@ export default function Keuzemodules() {
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder={t.modules.searchPlaceholder}
-                            className="w-full theme-card theme-text-primary rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-400"
+                            className="w-full theme-card theme-text-primary rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#e38094]"
                         />
                         <svg
                             className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 theme-text-muted"
@@ -383,23 +383,23 @@ export default function Keuzemodules() {
                             setShowFilters(!showFilters);
                         }}
                         style={{
-                            backgroundColor: !showAiKeuze && showFilters ? '#c4b5fd' : '#a78bfa',
+                            backgroundColor: !showAiKeuze && showFilters ? '#e38094' : '#d4607a',
                         }}
                         className={`px-6 py-3 rounded-lg font-medium text-base transition-colors ${
                             !showAiKeuze && showFilters
-                                ? 'hover:bg-violet-400 text-black'
-                                : 'hover:bg-violet-500 text-black'
+                                ? 'hover:bg-[#d4607a] text-white'
+                                : 'hover:bg-[#e38094] text-white'
                         }`}
                     >
                         {t.modules.filters}
                     </button>
                     <button
                         onClick={() => navigate('/recomendation')}
-                        style={{ backgroundColor: showAiKeuze ? '#c4b5fd' : '#a78bfa' }}
+                        style={{ backgroundColor: showAiKeuze ? '#e38094' : '#d4607a' }}
                         className={`px-6 py-3 rounded-lg font-medium text-base transition-colors ${
                             showAiKeuze
-                                ? 'hover:bg-violet-400 text-black'
-                                : 'hover:bg-violet-500 text-black'
+                                ? 'hover:bg-[#d4607a] text-white'
+                                : 'hover:bg-[#e38094] text-white'
                         }`}
                     >
                         {t.modules.aiChoice}
@@ -408,7 +408,7 @@ export default function Keuzemodules() {
 
                 {/* Compare Bar - Fixed bottom on mobile */}
                 {selectedForCompare.size > 0 && (
-                    <div className="fixed md:static bottom-0 left-0 right-0 theme-card-alt md:bg-violet-900 md:bg-opacity-30 border-t md:border border-violet-700 md:rounded-lg p-4 mb-0 md:mb-8 z-40 shadow-lg md:shadow-none">
+                    <div className="fixed md:static bottom-0 left-0 right-0 theme-card-alt md:theme-card border-t md:border theme-border md:rounded-lg p-4 mb-0 md:mb-8 z-40 shadow-lg md:shadow-none">
                         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                             <div className="flex items-center gap-3 w-full md:w-auto">
                                 <div className="theme-text-primary font-medium">
@@ -489,7 +489,7 @@ export default function Keuzemodules() {
                                                     onChange={() =>
                                                         toggleFilter('difficulties', difficulty)
                                                     }
-                                                    className="w-5 h-5 text-violet-500 theme-card-alt border-gray-600 rounded focus:ring-violet-500 focus:ring-2"
+                                                    className="w-5 h-5 text-[#e38094] theme-card-alt border-gray-600 rounded focus:ring-[#e38094] focus:ring-2"
                                                 />
                                                 <span className="theme-text-primary">
                                                     {difficulty}
@@ -515,7 +515,7 @@ export default function Keuzemodules() {
                                                     onChange={() =>
                                                         toggleFilter('locations', location)
                                                     }
-                                                    className="w-5 h-5 text-violet-500 theme-card-alt border-gray-600 rounded focus:ring-violet-500 focus:ring-2"
+                                                    className="w-5 h-5 text-[#e38094] theme-card-alt border-gray-600 rounded focus:ring-[#e38094] focus:ring-2"
                                                 />
                                                 <span className="theme-text-primary">
                                                     {location}
@@ -541,7 +541,7 @@ export default function Keuzemodules() {
                                                     onChange={() =>
                                                         toggleFilter('studyCredits', credits)
                                                     }
-                                                    className="w-5 h-5 text-violet-500 theme-card-alt border-gray-600 rounded focus:ring-violet-500 focus:ring-2"
+                                                    className="w-5 h-5 text-[#e38094] theme-card-alt border-gray-600 rounded focus:ring-[#e38094] focus:ring-2"
                                                 />
                                                 <span className="theme-text-primary">
                                                     {credits} ECTS
@@ -619,7 +619,13 @@ export default function Keuzemodules() {
                                                     }
                                                     className="peer sr-only"
                                                 />
-                                                <div className="w-6 h-6 border-2 border-violet-400 rounded-md theme-card-alt peer-checked:bg-violet-600 peer-checked:border-violet-600 peer-disabled:opacity-50 peer-disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center">
+                                                <div 
+                                                    className="w-6 h-6 border-2 rounded-md peer-disabled:opacity-50 peer-disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center"
+                                                    style={{
+                                                        backgroundColor: selectedForCompare.has(module.id) ? '#e38094' : 'var(--bg-card-alt)',
+                                                        borderColor: '#e38094'
+                                                    }}
+                                                >
                                                     <svg
                                                         className={`w-4 h-4 text-white transition-all duration-200 ${
                                                             selectedForCompare.has(module.id)
@@ -655,7 +661,7 @@ export default function Keuzemodules() {
                                             <span className="bg-red-600 text-white px-3 py-1 rounded text-sm font-medium">
                                                 {module.studycredit} ECTS
                                             </span>
-                                            <span className="bg-purple-600 text-white px-3 py-1 rounded text-sm font-medium">
+                                            <span className="bg-[#e38094] text-white px-3 py-1 rounded text-sm font-medium">
                                                 {module.location || t.modules.unknown}
                                             </span>
                                         </div>

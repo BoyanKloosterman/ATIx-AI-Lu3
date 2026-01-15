@@ -241,7 +241,7 @@ export default function Dashboard({
 
                     <button
                         onClick={() => navigate('/recomendation')}
-                        className="group relative px-8 py-3 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2"
+                        className="group relative px-8 py-3 bg-[#e38094] hover:bg-[#d4607a] text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2"
                     >
                         <svg
                             className="w-5 h-5 transition-transform group-hover:scale-110"
@@ -370,7 +370,7 @@ export default function Dashboard({
                         </h2>
                         <button
                             onClick={handleExportFavorites}
-                            className="flex items-center gap-2 bg-violet-500 hover:bg-violet-600 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex items-center gap-2 bg-[#e38094] hover:bg-[#d4607a] text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             disabled={favoriteModules.length === 0}
                             title="Exporteer favorieten naar PDF"
                         >
@@ -426,7 +426,7 @@ export default function Dashboard({
                                         <span className="bg-red-800 text-white px-3 py-1 rounded text-sm font-medium">
                                             {module.studycredit} ETC
                                         </span>
-                                        <span className="bg-purple-600 text-white px-3 py-1 rounded text-sm font-medium">
+                                        <span className="bg-[#e38094] text-white px-3 py-1 rounded text-sm font-medium">
                                             {module.location || t.dashboard.unknown}
                                         </span>
                                     </div>
