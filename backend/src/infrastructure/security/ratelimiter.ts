@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 
 const WINDOW_MS = 15 * 60 * 1000;
-const MAX_REQUESTS = 10;
+const MAX_REQUESTS = 500;
 
 type RateLimitEntry = {
     count: number;
