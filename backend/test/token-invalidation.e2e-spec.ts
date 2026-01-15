@@ -128,7 +128,9 @@ describe('Token Invalidation (e2e)', () => {
             .set('Authorization', `Bearer ${token}`)
             .expect(401);
 
-        expect((logoutResponse.body as ErrorResponse).message).toContain('Token has been invalidated');
+        expect((logoutResponse.body as ErrorResponse).message).toContain(
+            'Token has been invalidated',
+        );
 
         // Probeer het token te gebruiken voor getProfile endpoint (moet ook falen)
         const profileResponse = await request(app.getHttpServer())
@@ -136,6 +138,8 @@ describe('Token Invalidation (e2e)', () => {
             .set('Authorization', `Bearer ${token}`)
             .expect(401);
 
-        expect((profileResponse.body as ErrorResponse).message).toContain('Token has been invalidated');
+        expect((profileResponse.body as ErrorResponse).message).toContain(
+            'Token has been invalidated',
+        );
     });
 });
