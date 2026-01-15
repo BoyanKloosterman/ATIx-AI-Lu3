@@ -93,11 +93,7 @@ export default function ModuleDetail() {
                     <div className="bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded mb-4">
                         <p className="font-bold">{t.modules.error}</p>
                         <p>{error || t.moduleDetail.moduleNotFound}</p>
-                        <button
-                            onClick={handleBack}
-                            style={{ backgroundColor: 'var(--accent)' }}
-                            className="mt-2 text-black px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-colors"
-                        >
+                        <button onClick={handleBack} className="btn-accent mt-2">
                             {t.moduleDetail.backToOverview}
                         </button>
                     </div>
@@ -129,13 +125,13 @@ export default function ModuleDetail() {
                 <div className="theme-card rounded-lg p-6 md:p-8">
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                        <span className="bg-green-700 text-white px-3 py-1 rounded text-sm font-medium">
+                        <span className="bg-green-700/20 text-green-400 px-3 py-1 rounded text-sm font-medium">
                             {getLevelTag(module.level)}
                         </span>
-                        <span className="bg-red-600 text-white px-3 py-1 rounded text-sm font-medium">
+                        <span className="bg-red-600/20 text-red-400 px-3 py-1 rounded text-sm font-medium">
                             {module.studycredit} ETC
                         </span>
-                        <span className="bg-purple-600 text-white px-3 py-1 rounded text-sm font-medium">
+                        <span className="bg-blue-600/20 text-blue-400 px-3 py-1 rounded text-sm font-medium">
                             {module.location || t.moduleDetail.unknown}
                         </span>
                     </div>
@@ -236,10 +232,7 @@ export default function ModuleDetail() {
 
                     {/* Action Buttons */}
                     <div className="flex justify-center">
-                        <button
-                            style={{ backgroundColor: 'var(--accent)' }}
-                            className="w-full sm:w-auto text-black px-8 py-3 rounded-lg font-medium hover:opacity-80 transition-colors"
-                        >
+                        <button className="btn-accent w-full sm:w-auto px-8 py-3">
                             {t.moduleDetail.enroll}
                         </button>
                     </div>

@@ -233,38 +233,33 @@ export default function Recomendation() {
             <div className="mb-6">
                 <h1
                     lang={language}
-                    className="text-2xl font-bold text-white mb-2 break-words leading-tight text-center"
+                    className="text-2xl font-bold theme-text-primary mb-2 break-words leading-tight text-center"
                 >
                     {t.nav.aiModules}
                 </h1>
-                <p className="text-gray-300 text-center">{t.recommendations.subtitle}</p>
+                <p className="theme-text-secondary text-center">{t.recommendations.subtitle}</p>
             </div>
 
             {isLoading ? (
-                <div className="text-center py-12 text-gray-600">{t.modules.loading}</div>
+                <div className="text-center py-12 theme-text-secondary">{t.modules.loading}</div>
             ) : error ? (
                 <div className="text-center py-12">
                     <p className="text-red-600 mb-4">{error}</p>
-                    <button
-                        onClick={loadRecommendations}
-                        style={{ backgroundColor: '#c4b5fd' }}
-                        className="text-black px-6 py-2.5 rounded-lg font-medium hover:bg-violet-400 transition-colors"
-                    >
+                    <button onClick={loadRecommendations} className="btn-primary">
                         {t.modules.tryAgain}
                     </button>
                 </div>
             ) : sortedItems.length === 0 ? (
-                <div className="text-center py-12 text-gray-600">
-                    <p className="text-white text-lg font-semibold mb-2">
+                <div className="text-center py-12">
+                    <p className="theme-text-primary text-lg font-semibold mb-2">
                         {t.recommendations.noProfileTitle}
                     </p>
-                    <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+                    <p className="theme-text-secondary mb-6 max-w-2xl mx-auto">
                         {t.recommendations.noProfileBody}
                     </p>
                     <button
                         onClick={() => navigate('/profile/createProfile')}
-                        style={{ backgroundColor: '#c4b5fd' }}
-                        className="text-black px-6 py-2.5 rounded-lg font-medium hover:bg-violet-400 transition-colors"
+                        className="btn-primary"
                     >
                         {t.recommendations.fillProfileCta}
                     </button>
@@ -272,7 +267,7 @@ export default function Recomendation() {
             ) : (
                 <>
                     {selectedForCompare.size > 0 && (
-                        <div className="fixed md:static bottom-0 left-0 right-0 theme-card-alt md:bg-violet-900 md:bg-opacity-30 border-t md:border border-violet-700 md:rounded-lg p-4 mb-0 md:mb-8 z-40 shadow-lg md:shadow-none">
+                        <div className="fixed md:static bottom-0 left-0 right-0 theme-card md:theme-card-alt border-t md:border theme-border md:rounded-lg p-4 mb-0 md:mb-8 z-40 shadow-lg md:shadow-none">
                             <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                                 <div className="flex items-center gap-3 w-full md:w-auto">
                                     <div className="theme-text-primary font-medium">
@@ -295,23 +290,17 @@ export default function Recomendation() {
                                 <div className="flex gap-3 w-full md:w-auto">
                                     <button
                                         onClick={() => setSelectedForCompare(new Set())}
-                                        className="flex-1 md:flex-initial theme-button-secondary px-4 py-2 rounded-lg font-medium transition-colors"
+                                        className="btn-secondary flex-1 md:flex-initial px-4 py-2"
                                     >
                                         {t.modules.compare.remove}
                                     </button>
                                     <button
                                         onClick={handleCompare}
                                         disabled={selectedForCompare.size < 2}
-                                        style={{
-                                            backgroundColor:
-                                                selectedForCompare.size >= 2
-                                                    ? 'var(--accent)'
-                                                    : 'var(--bg-button)',
-                                        }}
                                         className={`flex-1 md:flex-initial px-6 py-2 rounded-lg font-medium transition-colors ${
                                             selectedForCompare.size >= 2
-                                                ? 'text-black hover:opacity-80 cursor-pointer'
-                                                : 'theme-text-muted cursor-not-allowed'
+                                                ? 'btn-accent'
+                                                : 'btn-secondary cursor-not-allowed'
                                         }`}
                                     >
                                         {t.modules.compare.button}
@@ -352,14 +341,25 @@ export default function Recomendation() {
                                                     }
                                                     className="peer sr-only"
                                                 />
-                                                <div className="w-6 h-6 border-2 border-violet-400 rounded-md theme-card-alt peer-checked:bg-violet-600 peer-checked:border-violet-600 peer-disabled:opacity-50 peer-disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center">
+                                                <div
+                                                    className="w-6 h-6 border-2 rounded-md peer-disabled:opacity-50 peer-disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center"
+                                                    style={{
+                                                        backgroundColor:
+                                                            mongoId &&
+                                                            selectedForCompare.has(mongoId)
+                                                                ? 'var(--checkbox-bg)'
+                                                                : 'var(--bg-card-alt)',
+                                                        borderColor: 'var(--checkbox-border)',
+                                                    }}
+                                                >
                                                     <svg
-                                                        className={`w-4 h-4 text-white transition-all duration-200 ${
+                                                        className={`w-4 h-4 transition-all duration-200 ${
                                                             mongoId &&
                                                             selectedForCompare.has(mongoId)
                                                                 ? 'opacity-100 scale-100'
                                                                 : 'opacity-0 scale-50'
                                                         }`}
+                                                        style={{ color: 'var(--btn-accent-text)' }}
                                                         fill="none"
                                                         stroke="currentColor"
                                                         viewBox="0 0 24 24"
@@ -382,21 +382,21 @@ export default function Recomendation() {
                                     {/* Module Content */}
                                     <div className="flex-1 pr-12 md:pr-16">
                                         <div className="flex gap-2 mb-3 flex-wrap">
-                                            <span className="bg-green-700 text-white px-3 py-1 rounded text-sm font-medium">
+                                            <span className="bg-green-700/20 text-green-400 px-3 py-1 rounded text-sm font-medium">
                                                 {rec.level || t.modules.unknown}
                                             </span>
-                                            <span className="bg-red-600 text-white px-3 py-1 rounded text-sm font-medium">
+                                            <span className="bg-red-600/20 text-red-400 px-3 py-1 rounded text-sm font-medium">
                                                 {getCredits(rec) ?? t.modules.unknown} ECTS
                                             </span>
-                                            <span className="bg-purple-600 text-white px-3 py-1 rounded text-sm font-medium">
+                                            <span className="bg-blue-600/20 text-blue-400 px-3 py-1 rounded text-sm font-medium">
                                                 {rec.location || t.modules.unknown}
                                             </span>
-                                            <span className="bg-violet-600 text-white px-3 py-1 rounded text-sm font-medium">
+                                            <span className="bg-[#d4607a]/20 text-[#d4607a] px-3 py-1 rounded text-sm font-medium">
                                                 {Math.round((rec.similarity ?? 0) * 100)}%
                                             </span>
                                         </div>
 
-                                        <h2 className="text-lg font-semibold theme-text-primary mb-2">
+                                        <h2 className="text-xl font-bold theme-text-primary mb-2">
                                             {rec.name}
                                         </h2>
                                         <p className="theme-text-secondary mb-4">
@@ -425,8 +425,7 @@ export default function Recomendation() {
                                         <div className="flex items-center gap-4 justify-end">
                                             <button
                                                 onClick={() => void openDetails(rec)}
-                                                style={{ backgroundColor: 'var(--accent)' }}
-                                                className="text-black px-6 py-2.5 rounded-lg font-medium hover:opacity-80 transition-colors"
+                                                className="btn-accent"
                                             >
                                                 {t.modules.learnMore}
                                             </button>

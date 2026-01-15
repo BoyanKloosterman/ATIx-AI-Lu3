@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../features/auth/hooks/useAuth';
 import { useLanguage } from '../contexts/useLanguage';
 import { useTheme } from '../contexts/useTheme';
+import AvansLogo from './AvansLogo';
 
 interface User {
     firstName: string;
@@ -11,11 +12,8 @@ interface User {
 
 function Logo() {
     return (
-        <Link
-            to="/dashboard"
-            className="text-2xl font-bold !text-red-600 hover:!text-red-500 transition-colors"
-        >
-            Avans
+        <Link to="/dashboard" className="hover:opacity-80 transition-opacity">
+            <AvansLogo />
         </Link>
     );
 }
@@ -38,10 +36,7 @@ function LogoutButton({
     label: string;
 }) {
     return (
-        <button
-            onClick={onClick}
-            className={`bg-red-600 hover:bg-red-700 px-4 py-3 rounded-lg transition-colors font-medium ${className}`}
-        >
+        <button onClick={onClick} className={`btn-primary px-4 py-3 ${className}`}>
             {label}
         </button>
     );
@@ -103,7 +98,7 @@ function MobileNavLink({
                 isActive
                     ? theme === 'dark'
                         ? '!text-black bg-white hover:bg-gray-100'
-                        : '!text-white bg-gray-800 hover:bg-gray-700'
+                        : '!text-white bg-black hover:bg-gray-900'
                     : theme === 'dark'
                       ? '!text-white bg-[#3a3a3a] hover:bg-[#4a4a4a]'
                       : '!text-gray-700 bg-gray-200 hover:bg-gray-300'

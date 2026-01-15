@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.tsx';
 import { useLanguage } from '../../../shared/contexts/useLanguage';
+import AvansLogo from '../../../shared/components/AvansLogo';
 
 function isValidToken(token: string | null): boolean {
     if (!token) return false;
@@ -96,7 +97,7 @@ export default function Login() {
                             value={formData.email}
                             onChange={handleInputChange}
                             required
-                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#e38094]"
                         />
                     </div>
 
@@ -111,15 +112,14 @@ export default function Login() {
                             value={formData.password}
                             onChange={handleInputChange}
                             required
-                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#e38094]"
                         />
                     </div>
 
                     <button
                         type="submit"
                         disabled={isLoading}
-                        style={{ backgroundColor: 'var(--accent)' }}
-                        className="w-full hover:opacity-80 text-black font-medium rounded-lg px-4 py-3 mt-4 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="btn-accent w-full py-3 mt-4"
                     >
                         {isLoading ? t.auth.login.loading : t.auth.login.submit}
                     </button>
@@ -136,7 +136,9 @@ export default function Login() {
                 </div>
             </div>
 
-            <div className="fixed bottom-4 left-4 text-red-600 text-xl font-bold">Avans</div>
+            <div className="fixed bottom-4 left-4">
+                <AvansLogo />
+            </div>
         </div>
     );
 }

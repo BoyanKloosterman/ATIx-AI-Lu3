@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '../hooks/useProfile';
+import AvansLogo from '../../../shared/components/AvansLogo';
 
 // import { CreateProfileDto } from '../types/profile.types';
 
@@ -110,7 +111,7 @@ export default function PersonalInfo() {
                                 setShowError(false);
                                 setLocalError(null);
                             }}
-                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#e38094]"
                         />
                     </div>
 
@@ -127,7 +128,7 @@ export default function PersonalInfo() {
                                 setShowError(false);
                                 setLocalError(null);
                             }}
-                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#e38094]"
                         />
                     </div>
                     {showStudielocatieInfo && (
@@ -142,8 +143,7 @@ export default function PersonalInfo() {
 
                                 <button
                                     onClick={() => setShowStudielocatieInfo(false)}
-                                    style={{ backgroundColor: 'var(--accent)' }}
-                                    className="mt-6 w-full rounded-lg hover:opacity-80 text-black font-medium py-2 transition"
+                                    className="btn-accent w-full py-2 mt-6"
                                 >
                                     Sluiten
                                 </button>
@@ -175,7 +175,7 @@ export default function PersonalInfo() {
                                 setShowError(false);
                                 setLocalError(null);
                             }}
-                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#e38094]"
                         >
                             <option value="">Selecteer studielocatie</option>
                             <option value="Breda">Breda</option>
@@ -199,7 +199,7 @@ export default function PersonalInfo() {
                                 setShowError(false);
                                 setLocalError(null);
                             }}
-                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            className="w-full theme-card-alt theme-text-primary rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#e38094]"
                         >
                             <option value="0">Selecteer studiepunten</option>
                             <option value="15">15</option>
@@ -210,15 +210,16 @@ export default function PersonalInfo() {
                     <button
                         type="button"
                         onClick={handleNext}
-                        style={{ backgroundColor: 'var(--accent)' }}
-                        className="w-full hover:opacity-80 text-black font-medium rounded-lg px-4 py-3 mt-4 transition-colors"
+                        className="btn-accent w-full py-3 mt-4"
                     >
                         Volgende
                     </button>
                 </div>
             </div>
 
-            <div className="fixed bottom-4 left-4 text-red-600 text-xl font-bold">Avans</div>
+            <div className="fixed bottom-4 left-4">
+                <AvansLogo />
+            </div>
         </div>
     );
 }

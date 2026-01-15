@@ -2,6 +2,7 @@ import React, { useState, useRef, type Dispatch, type SetStateAction, type JSX }
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { PersonalInfo, CreateProfileDto } from '../types/profile.types';
 import { useProfile, useGetAllTags } from '../hooks/useProfile';
+import AvansLogo from '../../../shared/components/AvansLogo';
 
 const normalizeTag = (tag: string): string => tag.trim().toLowerCase();
 const hasTag = (tags: string[], candidate: string): boolean =>
@@ -183,7 +184,7 @@ export default function SkillsAndIntrests(): JSX.Element {
                                 {skills.map((tag, i) => (
                                     <span
                                         key={i}
-                                        className="bg-violet-400/20 text-violet-300 px-3 py-1 rounded-full text-sm flex items-center"
+                                        className="bg-[#e38094]/20 text-[#e38094] px-3 py-1 rounded-full text-sm flex items-center"
                                     >
                                         {tag}
                                         <button
@@ -302,7 +303,7 @@ export default function SkillsAndIntrests(): JSX.Element {
                                 {interests.map((tag, i) => (
                                     <span
                                         key={i}
-                                        className="bg-violet-400/20 text-violet-300 px-3 py-1 rounded-full text-sm flex items-center"
+                                        className="bg-[#e38094]/20 text-[#e38094] px-3 py-1 rounded-full text-sm flex items-center"
                                     >
                                         {tag}
                                         <button
@@ -409,11 +410,7 @@ export default function SkillsAndIntrests(): JSX.Element {
                         </div>
                     </div>
 
-                    <button
-                        onClick={handleSave}
-                        style={{ backgroundColor: 'var(--accent)' }}
-                        className="w-full hover:opacity-80 text-black font-medium rounded-lg px-4 py-3 mt-4 transition-colors"
-                    >
+                    <button onClick={handleSave} className="btn-accent w-full py-3 mt-4">
                         Opslaan
                     </button>
 
@@ -424,14 +421,16 @@ export default function SkillsAndIntrests(): JSX.Element {
                             setLocalError(null);
                             navigate('/profile/createProfile');
                         }}
-                        className="w-full theme-button-secondary theme-text-primary font-medium rounded-lg px-4 py-3 hover:opacity-80 transition-colors"
+                        className="btn-secondary w-full py-3"
                     >
                         Terug
                     </button>
                 </div>
             </div>
 
-            <div className="fixed bottom-4 left-4 text-red-600 font-bold">Avans</div>
+            <div className="fixed bottom-4 left-4">
+                <AvansLogo />
+            </div>
         </div>
     );
 }
