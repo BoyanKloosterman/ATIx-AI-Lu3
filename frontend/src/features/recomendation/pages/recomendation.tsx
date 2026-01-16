@@ -380,59 +380,63 @@ export default function Recomendation() {
                                     </div>
 
                                     {/* Module Content */}
-                                    <div className="flex-1 pr-12 md:pr-16">
-                                        <div className="flex gap-2 mb-3 flex-wrap">
-                                            <span className="bg-green-700/20 text-green-400 px-3 py-1 rounded text-sm font-medium">
-                                                {rec.level || t.modules.unknown}
-                                            </span>
-                                            <span className="bg-red-600/20 text-red-400 px-3 py-1 rounded text-sm font-medium">
-                                                {getCredits(rec) ?? t.modules.unknown} ECTS
-                                            </span>
-                                            <span className="bg-blue-600/20 text-blue-400 px-3 py-1 rounded text-sm font-medium">
-                                                {rec.location || t.modules.unknown}
-                                            </span>
-                                            <span className="bg-[#d4607a]/20 text-[#d4607a] px-3 py-1 rounded text-sm font-medium">
-                                                {Math.round((rec.similarity ?? 0) * 100)}%
-                                            </span>
+                                    <div className="flex-1">
+                                        {/* Text/content gets right padding to avoid overlap with compare checkbox */}
+                                        <div className="pr-12 md:pr-16">
+                                            <div className="flex gap-2 mb-3 flex-wrap">
+                                                <span className="bg-green-700/20 text-green-400 px-3 py-1 rounded text-sm font-medium">
+                                                    {rec.level || t.modules.unknown}
+                                                </span>
+                                                <span className="bg-red-600/20 text-red-400 px-3 py-1 rounded text-sm font-medium">
+                                                    {getCredits(rec) ?? t.modules.unknown} ECTS
+                                                </span>
+                                                <span className="bg-blue-600/20 text-blue-400 px-3 py-1 rounded text-sm font-medium">
+                                                    {rec.location || t.modules.unknown}
+                                                </span>
+                                                <span className="bg-[#d4607a]/20 text-[#d4607a] px-3 py-1 rounded text-sm font-medium">
+                                                    {Math.round((rec.similarity ?? 0) * 100)}%
+                                                </span>
+                                            </div>
+
+                                            <h2 className="text-xl font-bold theme-text-primary mb-2">
+                                                {rec.name}
+                                            </h2>
+                                            <p className="theme-text-secondary mb-4">
+                                                {rec.shortdescription}
+                                            </p>
+
+                                            {rec.match_terms?.length ? (
+                                                <div className="flex gap-2 flex-wrap mb-4">
+                                                    {rec.match_terms.slice(0, 8).map((term) => (
+                                                        <span
+                                                            key={term}
+                                                            className="theme-card-alt theme-text-secondary px-2 py-1 rounded text-xs"
+                                                        >
+                                                            {term}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            ) : null}
+
+                                            {getReason(rec) ? (
+                                                <p className="theme-text-secondary mb-4">
+                                                    {getReason(rec)}
+                                                </p>
+                                            ) : null}
                                         </div>
 
-                                        <h2 className="text-xl font-bold theme-text-primary mb-2">
-                                            {rec.name}
-                                        </h2>
-                                        <p className="theme-text-secondary mb-4">
-                                            {rec.shortdescription}
-                                        </p>
-
-                                        {rec.match_terms?.length ? (
-                                            <div className="flex gap-2 flex-wrap mb-4">
-                                                {rec.match_terms.slice(0, 8).map((term) => (
-                                                    <span
-                                                        key={term}
-                                                        className="theme-card-alt theme-text-secondary px-2 py-1 rounded text-xs"
-                                                    >
-                                                        {term}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        ) : null}
-
-                                        {getReason(rec) ? (
-                                            <p className="theme-text-secondary mb-4">
-                                                {getReason(rec)}
-                                            </p>
-                                        ) : null}
-
-                                        <div className="flex items-center gap-4 justify-end">
+                                        {/* Action Buttons (centered group) */}
+                                        <div className="flex items-center justify-center gap-4">
                                             <button
                                                 onClick={() => void openDetails(rec)}
-                                                className="btn-accent"
+                                                className="btn-accent whitespace-nowrap shrink-0"
                                             >
                                                 {t.modules.learnMore}
                                             </button>
                                             <button
                                                 onClick={() => void toggleFavorite(rec)}
                                                 disabled={pendingFavorites.has(rec.id)}
-                                                className="p-2 hover:opacity-70 transition-opacity disabled:opacity-40"
+                                                className="p-2 hover:opacity-70 transition-opacity disabled:opacity-40 shrink-0"
                                                 aria-label="Toggle favorite"
                                                 title="Favoriet"
                                             >

@@ -200,7 +200,7 @@ export default function Dashboard({
 
     return (
         <div className="min-h-screen theme-page w-full overflow-x-hidden">
-            <div className="max-w-6xl mx-auto px-10 py-8 ">
+            <div className="max-w-6xl mx-auto px-4 sm:px-10 py-8 ">
                 <h1 className="text-4xl font-bold theme-text-primary mb-4 text-center">
                     {t.dashboard.title}
                 </h1>
@@ -364,7 +364,7 @@ export default function Dashboard({
                                     className="theme-card-alt rounded-lg p-6 relative"
                                 >
                                     {/* Module Content */}
-                                    <div className="flex-1 pr-12 md:pr-16">
+                                    <div className="flex-1">
                                         {/* Tags */}
                                         <div className="flex gap-2 mb-3 flex-wrap">
                                             <span className="bg-green-700/20 text-green-400 px-3 py-1 rounded text-sm font-medium">
@@ -391,16 +391,16 @@ export default function Dashboard({
                                         </p>
 
                                         {/* Action Buttons */}
-                                        <div className="flex items-center justify-end gap-4">
+                                        <div className="flex items-center justify-center gap-4">
                                             <button
                                                 onClick={() => handleModuleClick(module.id)}
-                                                className="btn-accent"
+                                                className="btn-accent whitespace-nowrap shrink-0"
                                             >
                                                 {t.dashboard.learnMore}
                                             </button>
                                             <button
                                                 onClick={() => handleToggleFavorite(module.id)}
-                                                className="p-2 hover:opacity-70 transition-opacity"
+                                                className="p-2 hover:opacity-70 transition-opacity shrink-0"
                                                 aria-label="Toggle favorite"
                                             >
                                                 <svg
