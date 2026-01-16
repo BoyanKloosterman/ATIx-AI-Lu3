@@ -28,11 +28,7 @@ export class ModuleController {
 
     @Get('external/:externalId')
     async findByExternalId(@Param('externalId') externalId: string) {
-        const module = await this.moduleService.findByExternalId(Number(externalId));
-        if (!module) {
-            return null;
-        }
-        return module;
+        return await this.moduleService.findByExternalId(Number(externalId));
     }
 
     @Get(':id')
