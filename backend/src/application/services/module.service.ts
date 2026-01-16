@@ -27,7 +27,11 @@ export class ModuleService {
             throw new BadRequestException('Invalid ID format');
         }
 
-        return await this.moduleRepository.findById(trimmedId);
+        const module = await this.moduleRepository.findById(id);
+        if (!module) {
+            throw new BadRequestException('Module with this ID doesnt exists');
+        }
+        return module;
     }
 
     async findByExternalId(externalId: number): Promise<Module | null> {
