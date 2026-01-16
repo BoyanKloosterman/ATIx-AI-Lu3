@@ -1,4 +1,5 @@
-import { Injectable, Inject, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Inject } from '@nestjs/common';
+import { Types } from 'mongoose';
 import { Module } from '../../domain/entities/module.entity';
 import type { IModuleRepository } from '../../domain/repositories/module.repository.interface';
 
@@ -13,11 +14,28 @@ export class ModuleService {
     }
 
     async findById(id: string): Promise<Module | null> {
-        return await this.moduleRepository.findById(id);
+        if (!id || typeof id !== 'string') {
+            throw new BadRequestException('Invalid module id');
+        }
+
+        const trimmedId = id.trim();
+        if (!trimmedId || !Types.ObjectId.isValid(trimmedId)) {
+            throw new BadRequestException('Invalid module id');
+        }
+
+        if (!Types.ObjectId.isValid(id)) {
+            throw new BadRequestException('Invalid ID format');
+        }
+
+        return await this.moduleRepository.findById(trimmedId);
     }
 
     async findByExternalId(externalId: number): Promise<Module | null> {
-        return await this.moduleRepository.findByExternalId(externalId);
+        const module = await this.moduleRepository.findByExternalId(externalId);
+        if (!module) {
+            throw new BadRequestException('Module with this external ID doesnt exists');
+        }
+        return module;
     }
 
     async search(query: string): Promise<Module[]> {
