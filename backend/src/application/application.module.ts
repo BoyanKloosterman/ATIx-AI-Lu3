@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { RepositoryModule } from 'src/infrastructure/repositoy.module';
+import { RepositoryModule } from '../infrastructure/repositoy.module';
 
 @Module({
     imports: [RepositoryModule],

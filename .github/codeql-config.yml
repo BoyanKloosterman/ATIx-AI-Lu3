@@ -1,0 +1,10 @@
+name: "CodeQL config"
+
+# Avoid scanning generated artifacts / dependencies.
+# These folders can contain minified bundles that create noisy alerts.
+paths-ignore:
+  - "**/node_modules/**"
+  - "**/dist/**"
+  - "**/build/**"
+  - "**/.next/**"
+  - "**/coverage/**"

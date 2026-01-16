@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { User } from '../../domain/entities/user.entity';
 import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
-import { UpdateUserDto } from 'src/interfaces/presenters/user.dto';
+import { UpdateUserDto } from '../../interfaces/presenters/user.dto';
 import { response } from 'express';
 import { ModuleService } from './module.service';
 import { Module } from '../../domain/entities/module.entity';

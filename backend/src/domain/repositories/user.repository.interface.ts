@@ -1,4 +1,4 @@
-import { UpdateUserDto } from 'src/interfaces/presenters/user.dto';
+import { UpdateUserDto } from '../../interfaces/presenters/user.dto';
 import { User, UserFavorite } from '../entities/user.entity';
 
 export interface IUserRepository {

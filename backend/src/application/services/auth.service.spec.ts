@@ -1,16 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { UnauthorizedException, ConflictException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
+import { IUserRepository } from '../../domain/repositories/user.repository.interface';
+import { ITokenBlacklistRepository } from '../../domain/repositories/token-blacklist.repository.interface';
 
 // Mock bcrypt
 jest.mock('bcryptjs');
 
 describe('AuthService', () => {
     let service: AuthService;
-    let userRepository: any;
+    let userRepository: IUserRepository;
+    let tokenBlacklistRepository: ITokenBlacklistRepository;
 
     const mockUser = {
         _id: '507f1f77bcf86cd799439011',
@@ -21,18 +24,34 @@ describe('AuthService', () => {
         skills: [],
         interests: [],
         favorites: [],
+        twoFactorEnabled: false,
         createdAt: new Date(),
         updatedAt: new Date(),
     };
 
-    const mockUserRepository = {
+    const mockUserRepository: jest.Mocked<IUserRepository> = {
         findByEmail: jest.fn(),
         create: jest.fn(),
         findById: jest.fn(),
         update: jest.fn(),
+        delete: jest.fn(),
+        addFavorite: jest.fn(),
+        removeFavorite: jest.fn(),
+        updateRefreshToken: jest.fn(),
+        enable2FA: jest.fn(),
+        disable2FA: jest.fn(),
+        getFavorites: jest.fn(),
+    };
+
+    const mockTokenBlacklistRepository: jest.Mocked<ITokenBlacklistRepository> = {
+        addToken: jest.fn(),
+        isTokenBlacklisted: jest.fn(),
+        removeExpiredTokens: jest.fn(),
     };
 
     beforeEach(async () => {
+        process.env.JWT_SECRET = 'test-secret-key';
+
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 AuthService,
@@ -40,11 +59,16 @@ describe('AuthService', () => {
                     provide: 'IUserRepository',
                     useValue: mockUserRepository,
                 },
+                {
+                    provide: 'ITokenBlacklistRepository',
+                    useValue: mockTokenBlacklistRepository,
+                },
             ],
         }).compile();
 
         service = module.get<AuthService>(AuthService);
         userRepository = module.get('IUserRepository');
+        tokenBlacklistRepository = module.get('ITokenBlacklistRepository');
     });
 
     afterEach(() => {
@@ -132,6 +156,55 @@ describe('AuthService', () => {
 
             await expect(service.register(registerDto)).rejects.toThrow(ConflictException);
             expect(mockUserRepository.findByEmail).toHaveBeenCalledWith('test@example.com');
+        });
+    });
+
+    describe('invalidateToken', () => {
+        it('should add token to blacklist when token is valid', async () => {
+            const token = jwt.sign(
+                { email: 'test@example.com', sub: mockUser._id },
+                'test-secret-key',
+                { expiresIn: '24h' },
+            );
+
+            mockTokenBlacklistRepository.addToken.mockResolvedValue(undefined);
+
+            await service.invalidateToken(token);
+
+            expect(mockTokenBlacklistRepository.addToken).toHaveBeenCalled();
+            const callArgs = mockTokenBlacklistRepository.addToken.mock.calls[0] as [string, Date];
+            expect(callArgs[0]).toBe(token);
+            expect(callArgs[1]).toBeInstanceOf(Date);
+        });
+
+        it('should not throw error when token is invalid', async () => {
+            const invalidToken = 'invalid.token.here';
+
+            mockTokenBlacklistRepository.addToken.mockResolvedValue(undefined);
+
+            await expect(service.invalidateToken(invalidToken)).resolves.not.toThrow();
+        });
+    });
+
+    describe('isTokenBlacklisted', () => {
+        it('should return true when token is blacklisted', async () => {
+            const token = 'some-token';
+            mockTokenBlacklistRepository.isTokenBlacklisted.mockResolvedValue(true);
+
+            const result = await service.isTokenBlacklisted(token);
+
+            expect(result).toBe(true);
+            expect(mockTokenBlacklistRepository.isTokenBlacklisted).toHaveBeenCalledWith(token);
+        });
+
+        it('should return false when token is not blacklisted', async () => {
+            const token = 'some-token';
+            mockTokenBlacklistRepository.isTokenBlacklisted.mockResolvedValue(false);
+
+            const result = await service.isTokenBlacklisted(token);
+
+            expect(result).toBe(false);
+            expect(mockTokenBlacklistRepository.isTokenBlacklisted).toHaveBeenCalledWith(token);
         });
     });
 });
