@@ -85,8 +85,20 @@ export class ModuleRepository implements IModuleRepository {
     }
 
     async search(query: string): Promise<Module[]> {
+        // Valideer query type en lengte
+        if (!query || typeof query !== 'string') {
+            return [];
+        }
+        
+        const trimmedQuery = query.trim();
+        if (trimmedQuery.length === 0) {
+            return [];
+        }
+        
+        // MongoDB $text search is relatief veilig, maar extra validatie voor zekerheid
+        // $text search escapt automatisch speciale tekens, maar we willen geen lege queries
         const docs = (await this.moduleModel
-            .find({ $text: { $search: query } }, { score: { $meta: 'textScore' } })
+            .find({ $text: { $search: trimmedQuery } }, { score: { $meta: 'textScore' } })
             .sort({ score: { $meta: 'textScore' } })
             .exec()) as unknown as ModuleDocument[];
         return docs.map((doc) => this.mapToEntity(doc));
