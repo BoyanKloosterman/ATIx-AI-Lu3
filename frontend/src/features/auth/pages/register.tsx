@@ -103,7 +103,12 @@ export default function Register() {
                 >
                     {(showError && error) || validationError ? (
                         <div className="bg-red-500/20 border border-red-500 rounded-lg p-3 mb-4">
-                            <p className="text-red-300 text-sm">{validationError || error}</p>
+                            <p className="text-red-300 text-sm">
+                                {validationError ||
+                                    (error === 'REGISTRATION_FAILED'
+                                        ? t.auth.validation.registrationFailed
+                                        : error)}
+                            </p>
                         </div>
                     ) : null}
 
