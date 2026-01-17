@@ -56,7 +56,7 @@ export class UserController {
     @Get('favorites')
     @UseGuards(JwtAuthGuard)
     async getFavorites(@CURRENTUSER() user: User): Promise<Module[]> {
-        return await this.userService.getFavorites(user._id);
+        return await this.userService.getFavorites(user, user._id);
     }
 
     @Post('favorites/:moduleId')
@@ -69,7 +69,7 @@ export class UserController {
         if (!moduleId || typeof moduleId !== 'string' || !Types.ObjectId.isValid(moduleId)) {
             throw new BadRequestException('Invalid module ID');
         }
-        await this.userService.addFavorite(user._id, moduleId);
+        await this.userService.addFavorite(user, user._id, moduleId);
         return { message: 'Favorite added successfully' };
     }
 
@@ -83,7 +83,7 @@ export class UserController {
         if (!moduleId || typeof moduleId !== 'string' || !Types.ObjectId.isValid(moduleId)) {
             throw new BadRequestException('Invalid module ID');
         }
-        await this.userService.removeFavorite(user._id, moduleId);
+        await this.userService.removeFavorite(user, user._id, moduleId);
         return { message: 'Favorite removed successfully' };
     }
 }
