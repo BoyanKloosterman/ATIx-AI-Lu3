@@ -86,7 +86,8 @@ export class RecommendationController {
             study_year: user.yearOfStudy || 2,
             study_program: user.studyProgram || 'Informatica',
             study_location: sanitizedStudyLocation || user.studyLocation,
-            study_credit: sanitizedStudyCredit !== undefined ? sanitizedStudyCredit : user.studyCredits,
+            study_credit:
+                sanitizedStudyCredit !== undefined ? sanitizedStudyCredit : user.studyCredits,
             level: sanitizedLevel,
             skills: user.skills || [],
             interests: user.interests || [],
