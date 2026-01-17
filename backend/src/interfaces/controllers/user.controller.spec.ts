@@ -147,7 +147,7 @@ describe('UserController', () => {
             const result = await controller.getFavorites(mockUser);
 
             expect(result).toEqual(modules);
-            expect(userService.getFavorites).toHaveBeenCalledWith(mockUser._id);
+            expect(userService.getFavorites).toHaveBeenCalledWith(mockUser, mockUser._id);
         });
 
         it('should return empty array when no favorites', async () => {
@@ -166,15 +166,19 @@ describe('UserController', () => {
             const result = await controller.addFavorite(mockUser, mockModule.id);
 
             expect(result).toEqual({ message: 'Favorite added successfully' });
-            expect(userService.addFavorite).toHaveBeenCalledWith(mockUser._id, mockModule.id);
+            expect(userService.addFavorite).toHaveBeenCalledWith(
+                mockUser,
+                mockUser._id,
+                mockModule.id,
+            );
         });
 
         it('should handle errors when adding favorite', async () => {
             mockUserService.addFavorite.mockRejectedValue(new Error('Module not found'));
 
-            await expect(controller.addFavorite(mockUser, 'invalid-id')).rejects.toThrow(
-                'Module not found',
-            );
+            await expect(
+                controller.addFavorite(mockUser, '507f1f77bcf86cd799439012'),
+            ).rejects.toThrow('Module not found');
         });
     });
 
@@ -185,15 +189,19 @@ describe('UserController', () => {
             const result = await controller.removeFavorite(mockUser, mockModule.id);
 
             expect(result).toEqual({ message: 'Favorite removed successfully' });
-            expect(userService.removeFavorite).toHaveBeenCalledWith(mockUser._id, mockModule.id);
+            expect(userService.removeFavorite).toHaveBeenCalledWith(
+                mockUser,
+                mockUser._id,
+                mockModule.id,
+            );
         });
 
         it('should handle errors when removing favorite', async () => {
             mockUserService.removeFavorite.mockRejectedValue(new Error('User not found'));
 
-            await expect(controller.removeFavorite(mockUser, 'invalid-id')).rejects.toThrow(
-                'User not found',
-            );
+            await expect(
+                controller.removeFavorite(mockUser, '507f1f77bcf86cd799439012'),
+            ).rejects.toThrow('User not found');
         });
     });
 });

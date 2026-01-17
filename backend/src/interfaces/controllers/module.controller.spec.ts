@@ -77,10 +77,14 @@ describe('ModuleController', () => {
             expect(moduleService.findById).toHaveBeenCalledWith('507f1f77bcf86cd799439011');
         });
 
+        it('should throw BadRequestException when invalid id provided', async () => {
+            await expect(controller.findById('nonexistent')).rejects.toThrow('Invalid module ID');
+        });
+
         it('should return null when module not found', async () => {
             mockModuleService.findById.mockResolvedValue(null);
 
-            const result = await controller.findById('nonexistent');
+            const result = await controller.findById('507f1f77bcf86cd799439011');
 
             expect(result).toBeNull();
         });

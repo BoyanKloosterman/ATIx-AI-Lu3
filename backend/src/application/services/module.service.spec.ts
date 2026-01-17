@@ -84,13 +84,16 @@ describe('ModuleService', () => {
             expect(mockModuleRepository.findById).toHaveBeenCalledWith('507f1f77bcf86cd799439011');
         });
 
-        it('should return null when module not found', async () => {
+        it('should throw BadRequestException when invalid id provided', async () => {
+            await expect(service.findById('nonexistent')).rejects.toThrow('Invalid module id');
+        });
+
+        it('should throw BadRequestException when module not found', async () => {
             mockModuleRepository.findById.mockResolvedValue(null);
 
-            const result = await service.findById('nonexistent');
-
-            expect(result).toBeNull();
-            expect(mockModuleRepository.findById).toHaveBeenCalledWith('nonexistent');
+            await expect(service.findById('507f1f77bcf86cd799439011')).rejects.toThrow(
+                'Module with this ID doesnt exists',
+            );
         });
     });
 
@@ -104,13 +107,12 @@ describe('ModuleService', () => {
             expect(mockModuleRepository.findByExternalId).toHaveBeenCalledWith(123);
         });
 
-        it('should return null when module not found by external ID', async () => {
+        it('should throw BadRequestException when module not found by external ID', async () => {
             mockModuleRepository.findByExternalId.mockResolvedValue(null);
 
-            const result = await service.findByExternalId(999);
-
-            expect(result).toBeNull();
-            expect(mockModuleRepository.findByExternalId).toHaveBeenCalledWith(999);
+            await expect(service.findByExternalId(999)).rejects.toThrow(
+                'Module with this external ID doesnt exists',
+            );
         });
     });
 
@@ -134,14 +136,12 @@ describe('ModuleService', () => {
             expect(mockModuleRepository.search).toHaveBeenCalledWith('nonexistent');
         });
 
-        it('should handle empty search query', async () => {
-            const modules = [mockModule];
-            mockModuleRepository.search.mockResolvedValue(modules);
+        it('should throw BadRequestException for empty search query', async () => {
+            await expect(service.search('')).rejects.toThrow('Invalid search query');
+        });
 
-            const result = await service.search('');
-
-            expect(result).toEqual(modules);
-            expect(mockModuleRepository.search).toHaveBeenCalledWith('');
+        it('should throw BadRequestException for invalid search query', async () => {
+            await expect(service.search(null as any)).rejects.toThrow('Invalid search query');
         });
     });
 

@@ -87,7 +87,7 @@ describe('AuthService', () => {
                     firstName: 'Test',
                     lastName: 'User',
                 }),
-            ).rejects.toThrow('User already exists');
+            ).rejects.toThrow('REGISTRATION_FAILED');
         });
     });
 

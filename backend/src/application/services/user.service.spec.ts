@@ -313,16 +313,19 @@ describe('UserService', () => {
             mockUserRepository.findById.mockResolvedValue(userWithFavorites);
             (mockModuleService.findById as jest.Mock).mockResolvedValue(mockModule);
 
-            const result = await service.getFavorites(mockUser._id);
+            const result = await service.getFavorites(mockUser, mockUser._id);
 
             expect(result).toHaveLength(1);
             expect(result[0]).toEqual(mockModule);
         });
 
         it('should throw NotFoundException when user not found', async () => {
+            const nonexistentUser = { ...mockUser, _id: 'nonexistent' };
             mockUserRepository.findById.mockResolvedValue(null);
 
-            await expect(service.getFavorites('nonexistent')).rejects.toThrow(NotFoundException);
+            await expect(service.getFavorites(nonexistentUser, 'nonexistent')).rejects.toThrow(
+                NotFoundException,
+            );
         });
 
         it('should filter out null modules', async () => {
@@ -338,7 +341,7 @@ describe('UserService', () => {
                 .mockResolvedValueOnce(mockModule)
                 .mockResolvedValueOnce(null);
 
-            const result = await service.getFavorites(mockUser._id);
+            const result = await service.getFavorites(mockUser, mockUser._id);
 
             expect(result).toHaveLength(1);
             expect(result[0]).toEqual(mockModule);
@@ -350,7 +353,7 @@ describe('UserService', () => {
             mockUserRepository.findById.mockResolvedValue(mockUser);
             (mockModuleService.findById as jest.Mock).mockResolvedValue(mockModule);
 
-            await service.addFavorite(mockUser._id, mockModule.id);
+            await service.addFavorite(mockUser, mockUser._id, mockModule.id);
 
             expect(mockUserRepository.addFavorite).toHaveBeenCalledWith(
                 mockUser._id,
@@ -362,20 +365,21 @@ describe('UserService', () => {
         });
 
         it('should throw NotFoundException when user not found', async () => {
+            const nonexistentUser = { ...mockUser, _id: 'nonexistent' };
             mockUserRepository.findById.mockResolvedValue(null);
 
-            await expect(service.addFavorite('nonexistent', 'module-id')).rejects.toThrow(
-                NotFoundException,
-            );
+            await expect(
+                service.addFavorite(nonexistentUser, 'nonexistent', 'module-id'),
+            ).rejects.toThrow(NotFoundException);
         });
 
         it('should throw NotFoundException when module not found', async () => {
             mockUserRepository.findById.mockResolvedValue(mockUser);
             (mockModuleService.findById as jest.Mock).mockResolvedValue(null);
 
-            await expect(service.addFavorite(mockUser._id, 'nonexistent-module')).rejects.toThrow(
-                NotFoundException,
-            );
+            await expect(
+                service.addFavorite(mockUser, mockUser._id, 'nonexistent-module'),
+            ).rejects.toThrow(NotFoundException);
         });
 
         it('should not add duplicate favorites', async () => {
@@ -385,7 +389,7 @@ describe('UserService', () => {
             };
             mockUserRepository.findById.mockResolvedValue(userWithFavorite);
 
-            await service.addFavorite(mockUser._id, mockModule.id);
+            await service.addFavorite(mockUser, mockUser._id, mockModule.id);
 
             expect(mockUserRepository.addFavorite).not.toHaveBeenCalled();
         });
@@ -395,7 +399,7 @@ describe('UserService', () => {
         it('should remove favorite successfully', async () => {
             mockUserRepository.findById.mockResolvedValue(mockUser);
 
-            await service.removeFavorite(mockUser._id, mockModule.id);
+            await service.removeFavorite(mockUser, mockUser._id, mockModule.id);
 
             expect(mockUserRepository.removeFavorite).toHaveBeenCalledWith(
                 mockUser._id,
@@ -404,11 +408,12 @@ describe('UserService', () => {
         });
 
         it('should throw NotFoundException when user not found', async () => {
+            const nonexistentUser = { ...mockUser, _id: 'nonexistent' };
             mockUserRepository.findById.mockResolvedValue(null);
 
-            await expect(service.removeFavorite('nonexistent', 'module-id')).rejects.toThrow(
-                NotFoundException,
-            );
+            await expect(
+                service.removeFavorite(nonexistentUser, 'nonexistent', 'module-id'),
+            ).rejects.toThrow(NotFoundException);
         });
     });
 });
